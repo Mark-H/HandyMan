@@ -9,6 +9,7 @@
     /* Declare the class */
     class HandyMan {
         public $basedir;
+        public $webroot;
         public $modx;
         public $authorized;
         public $user_fullname;
@@ -17,6 +18,7 @@
         
         function __construct() {
             $this->basedir = realpath('.').'\\';
+            $this->webroot = 'http://localhost/handyman/handyman/';
             
             if (!(include_once MODX_CORE_PATH . 'model/modx/modx.class.php')) {
                 include MODX_CORE_PATH . 'error/unavailable.include.php';
@@ -135,8 +137,8 @@
             $login =& $this;
             $result = include $processor;
         } else {
-            $this->modx->log(modX::LOG_LEVEL_ERROR, "Processor {$processor} does not exist; " . print_r($options, true));
-            $result = 'error';
+            //$this->modx->error->failure(modX::LOG_LEVEL_ERROR, "Processor {$processor} does not exist; " . print_r($options, true));
+            $result = 'error'.$processor;
         }
         return $result;
     }
