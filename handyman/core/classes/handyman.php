@@ -11,7 +11,9 @@
         public $basedir;
         public $modx;
         public $authorized;
+        public $user_fullname;
         public $action = 'startscreen';
+        public $errors = array();
         
         function __construct() {
             $this->basedir = realpath('.').'\\';
@@ -25,11 +27,18 @@
             $this->authorized = $this->modx->checkSession('mgr');
             
             if (!$this->authorized) { 
-                $this->action = 'login';
                 if ($_POST['hm_action'] == 'login') {
-                    $this->authorized = $this->processor(array(
+                    $tryAuth = $this->modx->fromJSON($this->processor(array(
                     'action' =>'login',
-                    'location' => 'security'));
+                    'location' => 'security')));
+                    if ($tryAuth['success'] == true) { 
+                        $this->action = ($_GET['hma']) ? $_GET['hma'] : 'startscreen';
+                    }
+                    else { 
+                        $this->action = 'login';
+                    }
+                } else {
+                    $this->action = 'login';
                 }
             }
             
@@ -89,13 +98,17 @@
                         '.$footer.'
                     </div>
                     
-                    
-                    <div data-role="header"  id="hdrConfirmation" name="hdrConfirmation" data-nobackbtn="true">...</div>  
-  <div data-role="content" id="contentConfirmation" name="contentConfirmation" align="center">  
-    ...  
+                    <div align="CENTER" data-role="content" id="contentDialog" name="contentDialog">  
   </div>  
-  <div data-role="footer" id="ftrConfirmation" name="ftrConfirmation"></div>  
-  <!-- ====== confirmation content ends here ===== -->  
+  
+                    <div data-role="header" id="hdrConfirmation" name="hdrConfirmation" data-nobackbtn="true">
+                    
+                    </div>  
+                    <div data-role="content" id="contentConfirmation" name="contentConfirmation" align="center">  
+                    
+                    </div>  
+                    <div data-role="footer" id="ftrConfirmation" name="ftrConfirmation">
+                    </div>  
                 </div>
             </body>
             </html>';

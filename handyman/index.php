@@ -20,6 +20,6 @@
             'title' => 'HandyMan'
         ),
         $hmo,
-        'Authed: '.$hm->authorized.' | Action: '.$hm->action.' | &copy; 2011 Mark Hamstra'
+        '&laquo; Action: '.$hm->action.' &raquo; &laquo; &copy; 2011 Mark Hamstra &raquo;'
     );
 ?>

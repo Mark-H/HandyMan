@@ -1,7 +1,6 @@
 <?php
     
     class login extends HandyMan {
-        
         function __construct() {
             
         }
@@ -10,9 +9,7 @@
             $o .= $this->displayForm();
             return $o;
         }
-        public function tryLogin($user = '', $password = '', $rememberme = false) {
-            
-        }
+
         public function displayForm($user = '', $rememberme = false) {
             $df = '<form action="'.$_SERVER['REQUEST_URI'].'" method="post">
                 <fieldset>
