@@ -11,6 +11,7 @@
     /* Declare the new class */
     $hm = new HandyMan;
     
+    /* Process w/e is going on. $hm->action is set by the class */
     $hmo = $hm->processAction($hm->action);
     
     /* Take the info, and spit it out. */
