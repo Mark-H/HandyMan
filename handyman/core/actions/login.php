@@ -14,16 +14,25 @@
         public function displayForm($user = '', $rememberme = false, $lifetime = 0) {
             $df = '<form action="">
                 <fieldset>
-                    <label for="login_username">Username</label>
-                    <input type="text" name="username" id="login_username" />
+                    <div data-role="fieldcontain">
+                        <label for="login_username">Username</label>
+                        <input type="text" name="username" id="login_username" />
+                    </div>
                     
-                    <label for="login_password">Password</label>
-                    <input type="password" name="password" id="login_password" />
+                    <div data-role="fieldcontain">
+                        <label for="login_password">Password</label>
+                        <input type="password" name="password" id="login_password" />
+                    </div>
                     
-                    <label for="login_rememberme">Stay logged in</label>
-                    <input type="checkbox" name="rememberme" id="login_rememberme" />
+                    <div data-role="fieldcontain">
+                        <label for="login_rememberme">Stay logged in</label>
+                        <input type="checkbox" name="rememberme" id="login_rememberme" />
+                    </div>
                     
-                    <input type="submit" name="submit" value="Login">
+                    <div data-role="fieldcontain">
+                        <input type="submit" name="submit" value="Login">
+                    </div>
+
                 </fieldset>
                 </form>';
             return $df;
