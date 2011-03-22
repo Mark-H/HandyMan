@@ -10,9 +10,11 @@
             $o .= $this->displayForm();
             return $o;
         }
-        
-        public function displayForm($user = '', $rememberme = false, $lifetime = 0) {
-            $df = '<form action="">
+        public function tryLogin($user = '', $password = '', $rememberme = false) {
+            
+        }
+        public function displayForm($user = '', $rememberme = false) {
+            $df = '<form action="'.$_SERVER['REQUEST_URI'].'" method="post">
                 <fieldset>
                     <div data-role="fieldcontain">
                         <label for="login_username">Username</label>
@@ -30,7 +32,8 @@
                     </div>
                     
                     <div data-role="fieldcontain">
-                        <input type="submit" name="submit" value="Login">
+                        <input type="hidden" name="hm_action" value="login" />
+                        <input type="submit" value="Login" />
                     </div>
 
                 </fieldset>

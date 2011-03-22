@@ -23,8 +23,16 @@
             $this->modx = new modX;
             $this->modx->initialize('mgr');
             $this->authorized = $this->modx->checkSession('mgr');
-            if (!$this->authorized) { $this->action = 'login'; }
-            elseif ($_GET['hma']) { 
+            
+            if (!$this->authorized) { 
+                $this->action = 'login';
+                if ($_POST['hm_action'] == 'login') {
+                    $this->authorized = $this->modx->runProcessor('login',$_POST,array('location' => 'security'));
+                }
+            }
+            
+            
+            if ($_GET['hma'] && $this->authorized) { 
                 $this->action = $_GET['hma']; 
             }
         } // End of method __construct()
@@ -78,10 +86,20 @@
                     <div data-role="footer">
                         '.$footer.'
                     </div>
+                    
+                    
+                    <div data-role="header"  id="hdrConfirmation" name="hdrConfirmation" data-nobackbtn="true">...</div>  
+  <div data-role="content" id="contentConfirmation" name="contentConfirmation" align="center">  
+    ...  
+  </div>  
+  <div data-role="footer" id="ftrConfirmation" name="ftrConfirmation"></div>  
+  <!-- ====== confirmation content ends here ===== -->  
                 </div>
             </body>
             </html>';
         }
         
+
+
     } // End of class HandyMan
 ?>
