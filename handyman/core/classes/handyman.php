@@ -56,7 +56,8 @@
         } // End of function loadClass($classname)
         
         
-        function parseMarkup($header = array('title' => 'HandyMan - Mobile Manager for MODX'), $body, $footer = '') {   
+        function parseMarkup($header = array('title' => 'HandyMan'), $body, $footer = '',$id = '') {   
+            $id = ($id != '') ? $id : $this->action;
             return '<!DOCTYPE HTML>
             <html lang="en-US">
             <head>
