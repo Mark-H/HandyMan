@@ -27,7 +27,9 @@
             if (!$this->authorized) { 
                 $this->action = 'login';
                 if ($_POST['hm_action'] == 'login') {
-                    $this->authorized = $this->modx->runProcessor('login',$_POST,array('location' => 'security'));
+                    $this->authorized = $this->processor(array(
+                    'action' =>'login',
+                    'location' => 'security'));
                 }
             }
             
@@ -100,6 +102,30 @@
         }
         
 
+    public function processor(array $options = array()) {
+        $processor = isset($options['processors_path']) && !empty($options['processors_path']) ? $options['processors_path'] : $this->modx->config['processors_path'];
+        if (isset($options['location']) && !empty($options['location'])) $processor .= $options['location'] . '/';
+        $processor .= str_replace('../', '', $options['action']) . '.php';
+        if (file_exists($processor)) {
+            if (!isset($this->modx->lexicon)) $this->modx->getService('lexicon', 'modLexicon');
+            if (!isset($this->modx->error)) $this->modx->getService('error','error.modError');
 
+            /* create scriptProperties array from HTTP GPC vars */
+            if (!isset($_POST)) $_POST = array();
+            if (!isset($_GET)) $_GET = array();
+            $scriptProperties = array_merge($_GET,$_POST,$options);
+            if (isset($_FILES) && !empty($_FILES)) {
+                $scriptProperties = array_merge($scriptProperties,$_FILES);
+            }
+
+            $modx =& $this->modx;
+            $login =& $this;
+            $result = include $processor;
+        } else {
+            $this->modx->log(modX::LOG_LEVEL_ERROR, "Processor {$processor} does not exist; " . print_r($options, true));
+            $result = 'error';
+        }
+        return $result;
+    }
     } // End of class HandyMan
 ?>
