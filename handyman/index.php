@@ -11,15 +11,7 @@
     /* Declare the new class */
     $hm = new HandyMan;
     
-    /* If not logged in, show a login form */
-    if (!$hm->authorized) { 
-        $hmo = '<p>Please login.</p>';
-    }
-    
-    /* If logged in... */
-    else {
-        $hmo = $hm->processAction($hm->action);
-    }
+    $hmo = $hm->processAction($hm->action);
     
     /* Take the info, and spit it out. */
     echo $hm->parseMarkup(
@@ -27,6 +19,6 @@
             'title' => 'HandyMan'
         ),
         $hmo,
-        '&copy; 2011 Mark Hamstra'
+        'Action: '.$hm->action.' | &copy; 2011 Mark Hamstra'
     );
 ?>

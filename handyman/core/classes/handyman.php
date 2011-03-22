@@ -23,7 +23,10 @@
             $this->modx = new modX;
             $this->modx->initialize('mgr');
             $this->authorized = $this->modx->checkSession('mgr');
-            if ($_GET['hma']) { $this->action = $_GET['hma']; }
+            if (!$this->authorized) { $this->action = 'login'; }
+            elseif ($_GET['hma']) { 
+                $this->action = $_GET['hma']; 
+            }
         } // End of method __construct()
 
         function processAction ($actionname = '') {
@@ -32,7 +35,10 @@
             if (file_exists($this->basedir.'core\actions\\'.$actionname.'.php')) {
                 include_once ($this->basedir.'core\actions\\'.$actionname.'.php');  
                 $this->$actionname = new $actionname;
-                $this->$actionname->run();
+                return $this->$actionname->run();
+            }
+            else {
+                return 'Uh oh, unable to find the '.$actionname.' action!';
             }
         } // End of function processAction
         
@@ -50,16 +56,28 @@
         } // End of function loadClass($classname)
         
         
-        function parseMarkup($header = array('title' => 'HandyMan - Mobile Manager for MODX'),$body,$footer) {   
+        function parseMarkup($header = array('title' => 'HandyMan - Mobile Manager for MODX'), $body, $footer = '') {   
             return '<!DOCTYPE HTML>
             <html lang="en-US">
             <head>
             	<meta charset="UTF-8">
             	<title>'.$header['title'].'</title>
+                <link rel="stylesheet" href="http://code.jquery.com/mobile/1.0a3/jquery.mobile-1.0a3.min.css" />
+                <script src="http://code.jquery.com/jquery-1.5.min.js"></script>
+                <script src="http://code.jquery.com/mobile/1.0a3/jquery.mobile-1.0a3.min.js"></script>
             </head>
             <body>
-            	'.$body.'
-                <div id="footer">'.$footer.'</div>
+                <div data-role="page" id="'.$id.'">
+                    <div data-role="header">
+                        <h1>'.$header['title'].'</h1>
+                    </div>
+                    <div data-role="content">
+                        '.$body.'
+                    </div>
+                    <div data-role="footer">
+                        '.$footer.'
+                    </div>
+                </div>
             </body>
             </html>';
         }
