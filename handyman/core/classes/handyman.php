@@ -28,25 +28,37 @@
             $this->modx->initialize('mgr');
             $this->authorized = $this->modx->checkSession('mgr');
             
+            // If not yet logged in...
             if (!$this->authorized) { 
+                // Check if there is a login attempt, and if so validate it
                 if ($_POST['hm_action'] == 'login') {
-                    $tryAuth = $this->modx->fromJSON($this->processor(array(
-                    'action' =>'login',
-                    'location' => 'security')));
-                    if ($tryAuth['success'] == true) { 
-                        $this->action = ($_GET['hma']) ? $_GET['hma'] : 'startscreen';
-                    }
-                    else { 
+                    $return = $this->processor(array(
+                        'action' =>'login',
+                        'location' => 'security'));
+                    if ($return['success'] == 1) {
+                        $this->action = 'startscreen';
+                    } else {
+                        $msg = $return['message'];
                         $this->action = 'login';
                     }
+
+                // Show the "login" action -> a login form.
                 } else {
                     $this->action = 'login';
                 }
             }
             
-            
-            if ($_GET['hma'] && $this->authorized) { 
-                $this->action = $_GET['hma']; 
+            // If logged in..
+            elseif ($this->authorized) {
+                // Check if it needs to log out
+                if ($_GET['session'] == 'logout') {
+                    $logout = $this->modx->fromJSON($this->processor(array(
+                    'action' => 'logout',
+                    'location' => 'security')));
+                    $this->action = $logout;
+                } else {
+                    $this->action = ($_GET['hma']) ? $_GET['hma'] : 'startscreen'; 
+                }
             }
         } // End of method __construct()
 
