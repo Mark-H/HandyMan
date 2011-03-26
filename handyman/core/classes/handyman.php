@@ -13,7 +13,7 @@
         public $modx;
         public $authorized;
         public $user_fullname;
-        public $action = 'startscreen';
+        public $action = array('hma' => 'startscreen','options' => array('source' => 'default'));
         public $errors = array();
         
         function __construct() {
@@ -36,15 +36,17 @@
                     'action' => 'logout',
                     'location' => 'security'));
                     if ($return['success'] == 1) {
-                        $this->action = 'loginscreen';
+                        $this->action = array('hma' => 'loginscreen','options' => array('message' => 'Succesfully logged out.'));
                         $this->authorized = false;
                     } else {
-                        $this->action = $return['message'];
+                        $this->action = array('hma' => 'startscreen','options' => array('message' => $return['message']));
                     }
                 } 
                 // Set the action
                 else {
-                    $this->action = ($_GET['hma']) ? $_GET['hma'] : 'startscreen'; 
+                    $this->action = ($_GET['hma']) ? 
+                        array('hma' => $_GET['hma'],'options' => array('source' => 'get')) :
+                        array('hma' => 'startscreen','options' => array('source' => 'default'));
                 }
             }       
             
@@ -56,27 +58,34 @@
                         'action' =>'login',
                         'location' => 'security'));
                     if ($return['success'] == 1) {
-                        $this->action = 'startscreen';
+                        $this->action = array('hma' => 'startscreen','options' => array('source' => 'login'));
                     } else {
                         $msg = $return['message'];
-                        $this->action = 'loginscreen';
+                        $this->action = array('hma' => 'loginscreen','options' => array('message' => $msg));
                     }
-
                 // Show the "login" action -> a login form.
                 } else {
-                    $this->action = 'loginscreen';
+                    $this->action = array('hma' => 'loginscreen','options' => array('source' => 'default'));
                 }
             }
             
         } // End of method __construct()
 
-        function processAction ($actionname = '') {
-            if ($actionname == '') { return false; }
+        function processAction ($action = array()) {
+            if ((!is_array($action)) OR (count($action) < 1)) {
+                return 'Oops. Failure.';
+            }
+            
+            $actionname = $action['hma'];
+            if (strlen(actionname) < 1) { return 'Oops, hma failure.'; }
+            if (count($action['options']) > 0) {
+                $actionOptions = $action['options'];
+            }
             
             if (file_exists($this->basedir.'core\actions\\'.$actionname.'.php')) {
                 include_once ($this->basedir.'core\actions\\'.$actionname.'.php');  
                 $this->$actionname = new $actionname;
-                return $this->$actionname->run();
+                return $this->$actionname->run($actionOptions);
             }
             else {
                 return 'Uh oh, unable to find the '.$actionname.' action!';
@@ -119,18 +128,6 @@
                     <div data-role="footer">
                         '.$footer.'
                     </div>
-                    
-                    <div align="CENTER" data-role="content" id="contentDialog" name="contentDialog">  
-  </div>  
-  
-                    <div data-role="header" id="hdrConfirmation" name="hdrConfirmation" data-nobackbtn="true">
-                    
-                    </div>  
-                    <div data-role="content" id="contentConfirmation" name="contentConfirmation" align="center">  
-                    
-                    </div>  
-                    <div data-role="footer" id="ftrConfirmation" name="ftrConfirmation">
-                    </div>  
                 </div>
             </body>
             </html>';

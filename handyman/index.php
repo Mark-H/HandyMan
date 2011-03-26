@@ -10,7 +10,7 @@
     
     /* Declare the new class */
     $hm = new HandyMan;
-    $debug = '{{DEBUG a: '.$hm->action.' b: '.$hm->modx->checkSession('mgr').' c: '.$hm->authorized.'}}';
+    $debug = '{{DEBUG a: '.print_r($hm->action,true).' b: '.$hm->modx->checkSession('mgr').' c: '.$hm->authorized.'}}';
     /* Process w/e is going on. $hm->action is set by the class */
     $hmo = $hm->processAction($hm->action);
     echo $hm->action;
@@ -19,8 +19,7 @@
         array(
             'title' => 'HandyMan'
         ),
-        $debug.
         $hmo,
-        '&laquo; Action: '.$hm->action.' &raquo; &laquo; &copy; 2011 Mark Hamstra &raquo;'
+        '&laquo; HandyMan &copy; 2011 Mark Hamstra &raquo; <br />'.$debug
     );
 ?>

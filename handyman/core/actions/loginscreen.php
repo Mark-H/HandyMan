@@ -5,13 +5,20 @@
             
         }
         public function run($options = array()) {
-            $o = '<p>Please login to access your MODX Mobile Manager, powered by HandyMan.</p>';
-            $o .= $this->displayForm();
+            if ($options['message']) { $o .= '<p>'.$options['message'].'</p>'; }
+            $o .= '<p>Please login to access your MODX Mobile Manager, powered by HandyMan.</p>';
+            if (count($options) > 0) {
+                $opts = array();
+                foreach ($options as $opt => $val) {
+                    $opts[$opt] = $val;
+                }
+            }
+            $o .= $this->displayForm($opts);
             return $o;
         }
 
-        public function displayForm() {
-            $df = '<form action="'.$_SERVER['REQUEST_URI'].'" method="post">
+        public function displayForm($options) {
+            $df = '<form action="" method="post">
                 <fieldset>
                     <div data-role="fieldcontain">
                         <label for="login_username">Username</label>
