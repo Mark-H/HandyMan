@@ -1,16 +1,16 @@
 <?php
     
-    class login extends HandyMan {
+    class loginscreen extends HandyMan {
         function __construct() {
             
         }
-        public function run() {
+        public function run($options = array()) {
             $o = '<p>Please login to access your MODX Mobile Manager, powered by HandyMan.</p>';
             $o .= $this->displayForm();
             return $o;
         }
 
-        public function displayForm($user = '', $rememberme = false) {
+        public function displayForm() {
             $df = '<form action="'.$_SERVER['REQUEST_URI'].'" method="post">
                 <fieldset>
                     <div data-role="fieldcontain">

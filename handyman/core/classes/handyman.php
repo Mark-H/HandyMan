@@ -27,9 +27,29 @@
             $this->modx = new modX;
             $this->modx->initialize('mgr');
             $this->authorized = $this->modx->checkSession('mgr');
+
+            // If logged in..
+            if ($this->authorized) {
+                // Check if it needs to log out
+                if ($_GET['session'] == 'logout') {
+                    $return = $this->processor(array(
+                    'action' => 'logout',
+                    'location' => 'security'));
+                    if ($return['success'] == 1) {
+                        $this->action = 'loginscreen';
+                        $this->authorized = false;
+                    } else {
+                        $this->action = $return['message'];
+                    }
+                } 
+                // Set the action
+                else {
+                    $this->action = ($_GET['hma']) ? $_GET['hma'] : 'startscreen'; 
+                }
+            }       
             
             // If not yet logged in...
-            if (!$this->authorized) { 
+            else if (!$this->authorized) { 
                 // Check if there is a login attempt, and if so validate it
                 if ($_POST['hm_action'] == 'login') {
                     $return = $this->processor(array(
@@ -39,27 +59,15 @@
                         $this->action = 'startscreen';
                     } else {
                         $msg = $return['message'];
-                        $this->action = 'login';
+                        $this->action = 'loginscreen';
                     }
 
                 // Show the "login" action -> a login form.
                 } else {
-                    $this->action = 'login';
+                    $this->action = 'loginscreen';
                 }
             }
             
-            // If logged in..
-            elseif ($this->authorized) {
-                // Check if it needs to log out
-                if ($_GET['session'] == 'logout') {
-                    $logout = $this->modx->fromJSON($this->processor(array(
-                    'action' => 'logout',
-                    'location' => 'security')));
-                    $this->action = $logout;
-                } else {
-                    $this->action = ($_GET['hma']) ? $_GET['hma'] : 'startscreen'; 
-                }
-            }
         } // End of method __construct()
 
         function processAction ($actionname = '') {

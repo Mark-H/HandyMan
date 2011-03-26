@@ -10,7 +10,7 @@
     
     /* Declare the new class */
     $hm = new HandyMan;
-    $debug = 'a: '.$hm->action.' b: '.$hm->modx->checkSession('mgr').' c: '.$hm->authorized;
+    $debug = '{{DEBUG a: '.$hm->action.' b: '.$hm->modx->checkSession('mgr').' c: '.$hm->authorized.'}}';
     /* Process w/e is going on. $hm->action is set by the class */
     $hmo = $hm->processAction($hm->action);
     echo $hm->action;
