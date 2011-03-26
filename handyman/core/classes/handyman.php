@@ -81,11 +81,12 @@
             if (count($action['options']) > 0) {
                 $actionOptions = $action['options'];
             }
+            $actionOptions['get'] = $_GET;
             
             if (file_exists($this->basedir.'core\actions\\'.$actionname.'.php')) {
                 include_once ($this->basedir.'core\actions\\'.$actionname.'.php');  
                 $this->$actionname = new $actionname;
-                return $this->$actionname->run($actionOptions);
+                return $this->$actionname->run($actionOptions,$this->modx);
             }
             else {
                 return 'Uh oh, unable to find the '.$actionname.' action!';
@@ -159,5 +160,21 @@
         }
         return $result;
     }
-    } // End of class HandyMan
+    
+    
+    public function processActions($actionMap) {
+        $ret = '';
+        foreach ($actionMap as $a) {
+            $ret .= '<li>
+                <a href="'.$this->webroot.'index.php?hma='.$a['action'];
+            if (count($a['linkparams']) > 0) { 
+                foreach ($a['linkparams'] as $lp => $lpv) { 
+                    $ret .= '&'.$lp.'='.$lpv; 
+                }
+            }
+            $ret .= '" data-ajax="false">'.$a['linktext'].'</a></li>';
+        }
+        return $ret;
+    }
+} // End of class HandyMan
 ?>
