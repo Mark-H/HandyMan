@@ -31,7 +31,7 @@
             // If logged in..
             if ($this->authorized) {
                 // Check if it needs to log out
-                if ($_GET['session'] == 'logout') {
+                if ($_GET['hma'] == 'logout') {
                     $return = $this->processor(array(
                     'action' => 'logout',
                     'location' => 'security'));
