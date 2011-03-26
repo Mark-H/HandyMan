@@ -1,12 +1,38 @@
 <?php
-/* HandyMan main class */
-    
-    /* Prevent direct access */
+    /* HandyMan - a Mobile Manager for MODX 
+     *
+     * Copyright 2010-2011 by Mark Hamstra (contact via www.markhamstra.nl)
+     *
+     * This file is part of HandyMan, a Mobile Manager for MODX.
+     *
+     * HandyMan is free software; you can redistribute it and/or modify it under the
+     * terms of the GNU General Public License as published by the Free Software
+     * Foundation; either version 2 of the License, or (at your option) any later
+     * version.
+     *
+     * HandyMan is distributed in the hope that it will be useful, but WITHOUT ANY
+     * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+     * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+     *
+     * You should have received a copy of the GNU General Public License along with
+     * HandyMan; if not, write to the Free Software Foundation, Inc., 59 Temple Place,
+     * Suite 330, Boston, MA 02111-1307 USA
+     *
+     * @package HandyMan
+     ***/
+
+    /* Check against direct access (which we don't want).
+     ***/
     if (!defined('HANDYMAN')) { die ('Do not access this file directly.'); }
+    
+    /* Next, define the necessary mode for MODX to work, and define the core path.
+     * @TO-DO: Set it somewhere instead of hardcode in the main class.
+     ***/
     define('IN_MANAGER_MODE',true);
     define('MODX_CORE_PATH','c:\wamp\www\handyman\core\\');
 
-    /* Declare the class */
+    /* Start defining the main HandyMan class.
+     ***/
     class HandyMan {
         public $basedir;
         public $webroot;
@@ -16,19 +42,33 @@
         public $action = array('hma' => 'startscreen','options' => array('source' => 'default'));
         public $errors = array();
         
+        /* The construct method is called when the class is instantiated, so we
+         * can use that to set some variables to the appropriate values and check
+         * authorization.
+         ***/
         function __construct() {
             $this->basedir = realpath('.').'\\';
             $this->webroot = 'http://localhost/handyman/handyman/';
             
+            /* Attempt to include the main MODX class to get access to xPDO
+             * and the required MODX information. If this fails, halt the process.
+             ***/
             if (!(include_once MODX_CORE_PATH . 'model/modx/modx.class.php')) {
                 include MODX_CORE_PATH . 'error/unavailable.include.php';
                 die('Site temporarily unavailable!');
             }
+            
+            /* Instantiate the main MODX class for the manager context.
+             ***/
             $this->modx = new modX;
             $this->modx->initialize('mgr');
+            
+            /* Use the MODX session checker to see if we are authorized.
+             ***/
             $this->authorized = $this->modx->checkSession('mgr');
 
-            // If logged in..
+            /* If we are authorized, the $this->authorized variable will have a value
+             ***/
             if ($this->authorized) {
                 // Check if it needs to log out
                 if ($_GET['hma'] == 'logout') {
