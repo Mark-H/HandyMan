@@ -151,6 +151,10 @@
             $id = ($id != '') ? $id : $this->action;
             return '<!DOCTYPE HTML>
             <html lang="en-US">
+			
+			<link href="core/classes/handyman_styles.css" rel="stylesheet" type="text/css" />
+
+			
             <head>
             	<meta charset="UTF-8">
             	<title>'.$header['title'].'</title>
@@ -212,7 +216,7 @@
                     $ret .= '&'.$lp.'='.$lpv; 
                 }
             }
-            $ret .= '" data-ajax="false">'.$a['linktext'].'</a></li>';
+            $ret .= '" data-transition="slide">'.$a['linktext'].'</a></li>';
         }
         return $ret;
     }

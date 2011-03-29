@@ -39,7 +39,7 @@
         }
 
         public function displayForm($options) {
-            $df = '<form action="" method="post">
+            $df = '<form action="index.php" method="post">
                 <fieldset>
                     <div data-role="fieldcontain">
                         <label for="login_username">Username</label>
@@ -58,7 +58,7 @@
                     
                     <div data-role="fieldcontain">
                         <input type="hidden" name="hm_action" value="login" />
-                        <input type="submit" value="Login" />
+                        <input type="submit" value="Login" data-transition="slide"/>
                     </div>
 
                 </fieldset>
