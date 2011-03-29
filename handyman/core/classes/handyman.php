@@ -151,10 +151,7 @@
             $id = ($id != '') ? $id : $this->action;
             return '<!DOCTYPE HTML>
             <html lang="en-US">
-			
-			<link href="core/classes/handyman_styles.css" rel="stylesheet" type="text/css" />
-
-			
+			<link href="assets/css/override.css" rel="stylesheet" type="text/css" />
             <head>
             	<meta charset="UTF-8">
             	<title>'.$header['title'].'</title>
