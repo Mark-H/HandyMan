@@ -170,7 +170,7 @@
                         '.$body.'
                     </div>
                     <div data-role="footer">
-                        '.$footer.'
+                        <h4>'.$footer.'</h4>
                     </div>
                 </div>
             </body>

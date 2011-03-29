@@ -32,6 +32,11 @@
                     'icon' => 'grid',
                 ),
                 array(
+                    'action' => 'res_create',
+                    'linktext' => 'Create resource',
+                    'icon' => 'plus'
+                ),
+                array(
                     'action' => 'logout',
                     'linktext' => 'Logout',
                     'reset' => true,
