@@ -209,7 +209,8 @@
         $ret = '';
         foreach ($actionMap as $a) {
             $transition = ($a['transition']) ? $a['transition'] : 'slide';
-            $ret .= '<li>
+            $icon = ($a['icon']) ? $a['icon'] : 'arrow-r';
+            $ret .= '<li data-icon="'.$icon.'">
                 <a href="'.$this->webroot.'index.php?hma='.$a['action'];
             if (count($a['linkparams']) > 0) { 
                 foreach ($a['linkparams'] as $lp => $lpv) { 

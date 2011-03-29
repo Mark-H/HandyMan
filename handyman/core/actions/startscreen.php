@@ -29,12 +29,14 @@
                 array(
                     'action' => 'resourcelist',
                     'linktext' => 'List Resources',
+                    'icon' => 'grid',
                 ),
                 array(
                     'action' => 'logout',
                     'linktext' => 'Logout',
-                    //'linkparams' => array ('session' => 'logout'),
-                    //'transition' => 'pop',
+                    // 'icon' => 'arrow-r',
+                    // 'linkparams' => array ('session' => 'logout'),
+                    // 'transition' => 'pop',
                 )
             );
         }

@@ -58,7 +58,7 @@
                     
                     <div data-role="fieldcontain">
                         <input type="hidden" name="hm_action" value="login" />
-                        <input type="submit" value="Login" data-transition="slide"/>
+                        <input type="submit" value="Login" data-transition="slide" />
                     </div>
 
                 </fieldset>

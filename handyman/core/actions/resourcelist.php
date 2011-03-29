@@ -65,7 +65,8 @@
                             'linkparams' => array(
                                 'ctx' => $ctx,
                                 'rid' => $parent
-                            )
+                            ),
+                            'icon' => 'grid'
                         ),
                         array(
                             'action' => 'res_publish',
@@ -73,7 +74,8 @@
                             'linkparams' => array(
                                 'ctx' => $ctx,
                                 'rid' => $parent
-                            )
+                            ),
+                            'icon' => 'star'
                         ),
                         array(
                             'action' => 'res_modify',
@@ -81,7 +83,8 @@
                             'linkparams' => array(
                                 'ctx' => $ctx,
                                 'rid' => $parent
-                            )
+                            ),
+                            'icon' => 'gear'
                         ),
                         array(
                             'action' => 'res_delete',
@@ -89,7 +92,17 @@
                             'linkparams' => array(
                                 'ctx' => $ctx,
                                 'rid' => $parent
-                            )
+                            ),
+                            'icon' => 'delete'
+                        ),
+                        array(
+                            'action' => 'res_create',
+                            'linktext' => 'New resource here',
+                            'linkparams' => array(
+                                'ctx' => $ctx,
+                                'parent' => $parent
+                            ),
+                            'icon' => 'plus'
                         )
                     );
                     $o .= '<ul data-inset="true" data-role="listview">';
