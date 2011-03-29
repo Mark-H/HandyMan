@@ -210,14 +210,17 @@
         foreach ($actionMap as $a) {
             $transition = ($a['transition']) ? $a['transition'] : 'slide';
             $icon = ($a['icon']) ? $a['icon'] : 'arrow-r';
-            $ret .= '<li data-icon="'.$icon.'">
-                <a href="'.$this->webroot.'index.php?hma='.$a['action'];
+            $ajaxreset = ($a['reset']) ? ' data-ajax="false"' : '';
             if (count($a['linkparams']) > 0) { 
+                $lps = '';
                 foreach ($a['linkparams'] as $lp => $lpv) { 
-                    $ret .= '&'.$lp.'='.$lpv; 
+                    $lps .= '&'.$lp.'='.$lpv; 
                 }
             }
-            $ret .= '" data-transition="'.$transition.'">'.$a['linktext'].'</a></li>';
+            $link = $this->webroot.'index.php?hma='.$a['action'].$lps;
+            $ret .= '<li data-icon="'.$icon.'">
+                <a href="'.$link.'" data-transition="'.$transition.'"'.$ajaxreset.'>'.$a['linktext'].'</a>
+                </li>';
         }
         return $ret;
     }

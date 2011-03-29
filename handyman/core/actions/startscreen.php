@@ -34,6 +34,7 @@
                 array(
                     'action' => 'logout',
                     'linktext' => 'Logout',
+                    'reset' => true,
                     // 'icon' => 'arrow-r',
                     // 'linkparams' => array ('session' => 'logout'),
                     // 'transition' => 'pop',
