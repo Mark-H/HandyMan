@@ -33,7 +33,8 @@
                 array(
                     'action' => 'logout',
                     'linktext' => 'Logout',
-                    //'linkparams' => array ('session' => 'logout')
+                    //'linkparams' => array ('session' => 'logout'),
+                    //'transition' => 'pop',
                 )
             );
         }

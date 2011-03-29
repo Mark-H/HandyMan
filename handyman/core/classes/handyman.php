@@ -208,6 +208,7 @@
     public function processActions($actionMap) {
         $ret = '';
         foreach ($actionMap as $a) {
+            $transition = ($a['transition']) ? $a['transition'] : 'slide';
             $ret .= '<li>
                 <a href="'.$this->webroot.'index.php?hma='.$a['action'];
             if (count($a['linkparams']) > 0) { 
@@ -215,7 +216,7 @@
                     $ret .= '&'.$lp.'='.$lpv; 
                 }
             }
-            $ret .= '" data-transition="slide">'.$a['linktext'].'</a></li>';
+            $ret .= '" data-transition="'.$transition.'">'.$a['linktext'].'</a></li>';
         }
         return $ret;
     }
