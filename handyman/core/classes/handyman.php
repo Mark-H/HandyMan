@@ -151,13 +151,13 @@
             $id = ($id != '') ? $id : $this->action;
             return '<!DOCTYPE HTML>
             <html lang="en-US">
-			<link href="assets/css/override.css" rel="stylesheet" type="text/css" />
             <head>
             	<meta charset="UTF-8">
             	<title>'.$header['title'].'</title>
-                <link rel="stylesheet" href="http://code.jquery.com/mobile/1.0a3/jquery.mobile-1.0a3.min.css" />
-                <script src="http://code.jquery.com/jquery-1.5.min.js"></script>
-                <script src="http://code.jquery.com/mobile/1.0a3/jquery.mobile-1.0a3.min.js"></script>
+                <link rel="stylesheet" href="assets/jqm/jquery.mobile-1.0a3.min.css" />
+                <script src="assets/jqm/jquery-1.5.1.min.js"></script>
+                <script src="assets/jqm/jquery.mobile-1.0a3.min.js"></script>
+                <link href="assets/css/override.css" rel="stylesheet" type="text/css" />
             </head>
             <body>
                 <div data-role="page" id="'.$id.'">
