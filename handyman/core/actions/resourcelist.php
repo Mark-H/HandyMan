@@ -60,13 +60,14 @@
                     $o = '<h2>'.$current->get('pagetitle').'</h2>';
                     $resEditMap = array(
                         array (
-                            'action' => 'res_details',
+                            'action' => 'res_view',
                             'linktext' => 'Show details',
                             'linkparams' => array(
                                 'ctx' => $ctx,
                                 'rid' => $parent
                             ),
-                            'icon' => 'grid'
+                            'icon' => 'grid',
+                            'reset' => true
                         ),
                         array(
                             'action' => 'res_publish',
