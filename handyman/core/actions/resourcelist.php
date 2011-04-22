@@ -34,10 +34,11 @@
         }
         
         public function run($options = array(),&$modx) {
-            $wantedOpts = array('ctx','parent','start','limit','list');
-            foreach ($wantedOpts as $wantedOpt) {
-                $$wantedOpt = ($options['get'][$wantedOpt]) ? $options['get'][$wantedOpt] : null;
-            }
+            $ctx = (isset($options['get']['ctx'])) ? $options['get']['ctx'] : null;
+            $parent = (isset($options['get']['parent'])) ? (int)$options['get']['parent'] : 0;
+            $start = (isset($options['get']['start'])) ? $options['get']['start'] : null;
+            $limit = (isset($options['get']['limit'])) ? $options['get']['limit'] : null;
+            $list = (isset($options['get']['list'])) ? $options['get']['list'] : null;
             if (!$ctx) {
                 $contexts = $this->listContexts($modx);
                 if (count($contexts) > 1) {
@@ -52,12 +53,12 @@
                 else {
                     return 'Your contexts are messed up.';
                 }
-            } 
-            
-            if ($ctx) {
+            } // End if (!isset($ctx))
+
+            if (!empty($ctx)) {
                 if ($parent > 0) {
                     $current = $modx->getObject('modResource',$parent);
-                    $o = '<h2>'.$current->get('pagetitle').'</h2>';
+                    $o = '<h2>'.$current->get('pagetitle').' ('.$current->get('id').')</h2>';
                     $resEditMap = array(
                         array (
                             'action' => 'res_view',
@@ -98,7 +99,7 @@
                         ),
                         array(
                             'action' => 'res_create',
-                            'linktext' => 'New resource here',
+                            'linktext' => 'Create resource here',
                             'linkparams' => array(
                                 'ctx' => $ctx,
                                 'parent' => $parent
@@ -112,7 +113,7 @@
                     $o .= '<h2>Children Resources</h2>';
                 } else {
                     $parent = 0;
-                    $o .= '<h2>Resources</h2>';
+                    $o = '<h2>Resources</h2>';
                 }
                 $subResources = $this->listResources($modx,$ctx,$parent);
                 if (count($subResources) > 0) {
@@ -156,7 +157,7 @@
             foreach ($ress as $res) {
                 $resources[] = array(
                     'action' => 'resourcelist',
-                    'linktext' => $res->get('pagetitle'),
+                    'linktext' => $res->get('pagetitle').' ('.$res->get('id').')',
                     'linkparams' => array('ctx' => $ctx, 'parent' => $res->get('id')),
                     'object' => $ctx
                 );
