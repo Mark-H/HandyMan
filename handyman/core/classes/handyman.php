@@ -28,8 +28,7 @@
     /* Next, define the necessary mode for MODX to work, and define the core path.
      * @TO-DO: Set it somewhere instead of hardcode in the main class.
      ***/
-    define('IN_MANAGER_MODE',true);
-    define('MODX_CORE_PATH','c:\wamp\www\handyman\core\\');
+    require_once(dirname(dirname(dirname(dirname(__FILE__))))).'/config.core.php';
 
     /* Start defining the main HandyMan class.
      ***/
@@ -47,9 +46,6 @@
          * authorization.
          ***/
         function __construct() {
-            $this->basedir = realpath('.').'\\';
-            $this->webroot = 'http://localhost/handyman/handyman/';
-            
             /* Attempt to include the main MODX class to get access to xPDO
              * and the required MODX information. If this fails, halt the process.
              ***/
@@ -62,7 +58,12 @@
              ***/
             $this->modx = new modX;
             $this->modx->initialize('mgr');
-            
+
+            /* Set some paths to use throughout HandyMan
+             ***/
+            $this->basedir = realpath('.').'/';
+            $this->webroot = $this->modx->getOption('handyman.webroot','',MODX_SITE_URL.'handyman/');
+
             /* Use the MODX session checker to see if we are authorized.
              ***/
             $this->authorized = $this->modx->checkSession('mgr');
@@ -121,15 +122,16 @@
             if (count($action['options']) > 0) {
                 $actionOptions = $action['options'];
             }
+            // @TODO: $_GET[] validation, sanitation
             $actionOptions['get'] = $_GET;
             
-            if (file_exists($this->basedir.'core\actions\\'.$actionname.'.php')) {
-                include_once ($this->basedir.'core\actions\\'.$actionname.'.php');  
+            if (file_exists($this->basedir.'core/actions/'.$actionname.'.php')) {
+                include_once ($this->basedir.'core/actions/'.$actionname.'.php');
                 $this->$actionname = new $actionname;
                 return $this->$actionname->run($actionOptions,$this->modx);
             }
             else {
-                return 'Uh oh, unable to find the '.$actionname.' action!';
+                return 'Uh oh, unable to find the '.$actionname.' action! (Requested path: '.$this->basedir.'core/actions/'.$actionname.'.php)';
             }
         } // End of function processAction
         
@@ -138,8 +140,8 @@
         function loadClass($classname = '') {
             if ($classname == '') { return false; }
             
-            if (file_exists($this->basedir.'core\classes\\'.$classname.'.php')) {
-                include_once ($this->basedir.'core\classes\\'.$classname.'.php');
+            if (file_exists($this->basedir.'core/classes/'.$classname.'.php')) {
+                include_once ($this->basedir.'core/classes/'.$classname.'.php');
                 $this->$classname = new $classname;
             } else {
                 return false;
