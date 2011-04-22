@@ -156,9 +156,9 @@
             <head>
             	<meta charset="UTF-8">
             	<title>'.$header['title'].'</title>
-                <link rel="stylesheet" href="assets/jqm/jquery.mobile-1.0a3.min.css" />
-                <script src="assets/jqm/jquery-1.5.1.min.js"></script>
-                <script src="assets/jqm/jquery.mobile-1.0a3.min.js"></script>
+                <link rel="stylesheet" href="assets/jqm/jquery.mobile-1.0a4.1.min.css" />
+                <script src="assets/jqm/jquery-1.5.2.min.js"></script>
+                <script src="assets/jqm/jquery.mobile-1.0a4.1.min.js"></script>
                 <link href="assets/css/override.css" rel="stylesheet" type="text/css" />
             </head>
             <body>
