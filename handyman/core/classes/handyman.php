@@ -220,9 +220,16 @@
                 }
             }
             $link = $this->webroot.'index.php?hma='.$a['action'].$lps;
+            if ((isset($a['count'])) && ($a['count'] > 0)) { $count = '<p class="ui-li-count">'.$a['count'].'</p>'; }
+            if (isset($a['aside'])) { $aside = '<p>'.$a['aside'].'</p>'; }
             $ret .= '<li data-icon="'.$icon.'">
-                <a href="'.$link.'" data-transition="'.$transition.'"'.$ajaxreset.'>'.$a['linktext'].'</a>
+                <a href="'.$link.'" data-transition="'.$transition.'"'.$ajaxreset.'>
+                    <h3>'.$a['linktext'].'</h3>'.
+                    $aside.
+                    $count.
+                    '</a>
                 </li>';
+            unset ($lps,$lp,$link,$count,$aside);
         }
         return $ret;
     }

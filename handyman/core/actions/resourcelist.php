@@ -155,12 +155,20 @@
             $resources = array();
             $ress = $modx->getCollection('modResource',$c);
             foreach ($ress as $res) {
+                $aside = array();
+                $aside[] = ($res->get('published')) ? 'Published' : 'Unpublished';
+                if ($res->get('deleted')) { $aside[] = 'Deleted'; }
+                if ($res->get('hidemenu')) { $aside[] = 'Hidden from menu'; }
+                $aside = implode(", ",$aside);
                 $resources[] = array(
                     'action' => 'resourcelist',
                     'linktext' => $res->get('pagetitle').' ('.$res->get('id').')',
+                    'aside' => $aside,
                     'linkparams' => array('ctx' => $ctx, 'parent' => $res->get('id')),
-                    'object' => $ctx
+                    'object' => $ctx,
+                    'count' => count($res->getMany('Children'))
                 );
+                //if ($res->getMany('Children')) { $resources['count'] = count($res->getMany('Children')); }
             }
             return $resources;
         }

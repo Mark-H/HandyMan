@@ -43,7 +43,7 @@
             $r = $resource->toArray();
             $r['tplObj'] = $resource->getOne('Template');
             $r['template'] = $r['tplObj']->get('templatename');
-            $o .= '<h2>'.$r['class_key'].': '.$r['pagetitle'].'</h2>';
+            $o .= '<h2>'.$r['pagetitle'].' ('.$r['id'].')</h2>';
             
             /* Will use three sections: resource fields, resource settings 
              * and template variables. These will be styled in an accordeon-ish
@@ -63,23 +63,23 @@
             $o .= '</ul></div>';
             
             // Resource Settings
-            $o .= '<div data-role="collapsible"><h3>Resource Settings</h3><ul data-role="listview" data-inset="true">';
+            $o .= '<div data-role="collapsible" data-collapsed="true"><h3>Page Settings</h3><ul data-role="listview" data-inset="true">';
             $rfields = array('container', 'richtext', 'publishedon', 'pub_date', 'unpub_date', 'searchable', 'cacheable', 'deleted', 'content_type', 'content_dispo', 'class_key');
             foreach ($rfields as $rf) {
                 if (($rf == 'content') && (!empty($r[$rf]))) { $o .= '<li>'.$r[$rf].'</li>'; }
                 elseif (!empty($r[$rf])) $o .= '<li>'.$rf.': '.$r[$rf].'</li>';
             }
             $o .= '</ul></div>';
-            
-            $o .= '<div data-role="collapsible"><h3>Template Variables</h3><ul data-role="listview" data-inset="true">';
+
             /*$tpl = $modx->getObject('modTemplate',$r['template']);*/
             $tvs = $r['tplObj']->getMany('modTemplateVar');
             if (count($tvs) > 0) {
+                $o .= '<div data-role="collapsible" data-collapsed="true"><h3>Template Variables</h3><ul data-role="listview" data-inset="true">';
                 foreach ($tvs as $tv) {
                     $o .= '<li>'.$tv->get('caption').': '.$tv->get('value').'</li>';
                 }
+                $o .= '</ul></div>';
             }
-            $o .= '</ul></div>';
             
             
             $o .= '</div>';
