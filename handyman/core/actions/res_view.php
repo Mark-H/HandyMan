@@ -34,7 +34,7 @@
                 return 'No valid resource id passed.';
             }
             
-            $resource = $modx->getObjectGraph('modResource',$rid);
+            $resource = $modx->getObject('modResource',$rid);
          
             if (empty($resource)) {
                 return 'Resource not found.';
