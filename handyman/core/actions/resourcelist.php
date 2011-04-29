@@ -59,6 +59,8 @@
                 if ($parent > 0) {
                     $current = $modx->getObject('modResource',$parent);
                     $o = '<h2>'.$current->get('pagetitle').' ('.$current->get('id').')</h2>';
+                    $pubstate = (boolean)$current->get('published');
+                    $deleted = (boolean)$current->get('deleted');
                     $resEditMap = array(
                         array (
                             'action' => 'res_view',
@@ -72,7 +74,7 @@
                         ),
                         array(
                             'action' => 'res_publish',
-                            'linktext' => 'Publish',
+                            'linktext' => ($pubstate) ? 'Unpublish' : 'Publish',
                             'linkparams' => array(
                                 'ctx' => $ctx,
                                 'rid' => $parent
@@ -90,7 +92,7 @@
                         ),
                         array(
                             'action' => 'res_delete',
-                            'linktext' => 'Delete',
+                            'linktext' => ($deleted) ? 'Restore' : 'Delete',
                             'linkparams' => array(
                                 'ctx' => $ctx,
                                 'rid' => $parent
