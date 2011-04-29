@@ -118,7 +118,7 @@
             }
             
             $actionname = $action['hma'];
-            if (strlen(actionname) < 1) { return 'Oops, hma failure.'; }
+            if (strlen($actionname) < 1) { return 'Oops, hma failure.'; }
             if (count($action['options']) > 0) {
                 $actionOptions = $action['options'];
             }
@@ -166,7 +166,7 @@
                     <div data-role="header">
                         <a href="javascript: history.go(-1);" data-icon="arrow-l" data-rel="back" data-direction="reverse">Back</a>
                         <h1>'.$header['title'].'</h1>
-                        <a href="index.php" data-icon="home" data-iconpos="notext">Home</a>
+                        <a href="index.php" data-icon="home" data-iconpos="notext" data-transition="flip">Home</a>
                     </div>
                     <div data-role="content">
                         '.$body.'
