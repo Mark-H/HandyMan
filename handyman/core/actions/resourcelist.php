@@ -79,7 +79,8 @@
                                 'ctx' => $ctx,
                                 'rid' => $parent
                             ),
-                            'icon' => 'star'
+                            'icon' => 'star',
+                            'dialog' => true
                         ),
                         array(
                             'action' => 'res_modify',

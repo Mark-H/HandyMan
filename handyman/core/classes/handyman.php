@@ -74,8 +74,9 @@
                 // Check if it needs to log out
                 if ($_GET['hma'] == 'logout') {
                     $return = $this->processor(array(
-                    'action' => 'logout',
-                    'location' => 'security'));
+                        'action' => 'logout',
+                        'location' => 'security'),
+                    $this->modx);
                     if ($return['success'] == 1) {
                         $this->action = array('hma' => 'loginscreen','options' => array('message' => 'Succesfully logged out.'));
                         $this->authorized = false;
@@ -97,7 +98,8 @@
                 if ($_POST['hm_action'] == 'login') {
                     $return = $this->processor(array(
                         'action' =>'login',
-                        'location' => 'security'));
+                        'location' => 'security'),
+                    $this->modx);
                     if ($return['success'] == 1) {
                         $this->action = array('hma' => 'startscreen','options' => array('source' => 'login'));
                     } else {
@@ -180,13 +182,13 @@
         }
         
 
-    public function processor(array $options = array()) {
-        $processor = isset($options['processors_path']) && !empty($options['processors_path']) ? $options['processors_path'] : $this->modx->config['processors_path'];
+    public function processor(array $options = array(),&$modx) {
+        $processor = isset($options['processors_path']) && !empty($options['processors_path']) ? $options['processors_path'] : MODX_PROCESSORS_PATH;
         if (isset($options['location']) && !empty($options['location'])) $processor .= $options['location'] . '/';
         $processor .= str_replace('../', '', $options['action']) . '.php';
         if (file_exists($processor)) {
-            if (!isset($this->modx->lexicon)) $this->modx->getService('lexicon', 'modLexicon');
-            if (!isset($this->modx->error)) $this->modx->getService('error','error.modError');
+            if (!isset($modx->lexicon)) $modx->getService('lexicon', 'modLexicon');
+            if (!isset($modx->error)) $modx->getService('error','error.modError');
 
             /* create scriptProperties array from HTTP GPC vars */
             if (!isset($_POST)) $_POST = array();
@@ -195,13 +197,10 @@
             if (isset($_FILES) && !empty($_FILES)) {
                 $scriptProperties = array_merge($scriptProperties,$_FILES);
             }
-
-            $modx =& $this->modx;
-            $login =& $this;
             $result = include $processor;
         } else {
             //$this->modx->error->failure(modX::LOG_LEVEL_ERROR, "Processor {$processor} does not exist; " . print_r($options, true));
-            $result = 'error'.$processor;
+            $result = 'Processor not found: '.$processor;
         }
         return $result;
     }
@@ -210,7 +209,12 @@
     public function processActions($actionMap) {
         $ret = '';
         foreach ($actionMap as $a) {
-            $transition = ($a['transition']) ? $a['transition'] : 'slide';
+            if (isset($a['dialog'])) {
+                $dialog = ' data-rel="dialog"';
+                $transition = ($a['transition']) ? $a['transition'] : 'pop';
+            } else {
+                $transition = ($a['transition']) ? $a['transition'] : 'slide';
+            }
             $icon = ($a['icon']) ? $a['icon'] : 'arrow-r';
             $ajaxreset = ($a['reset']) ? ' data-ajax="false"' : '';
             if (count($a['linkparams']) > 0) { 
@@ -223,7 +227,7 @@
             if ((isset($a['count'])) && ($a['count'] > 0)) { $count = '<p class="ui-li-count">'.$a['count'].'</p>'; }
             if (isset($a['aside'])) { $aside = '<p>'.$a['aside'].'</p>'; }
             $ret .= '<li data-icon="'.$icon.'">
-                <a href="'.$link.'" data-transition="'.$transition.'"'.$ajaxreset.'>
+                <a href="'.$link.'" data-transition="'.$transition.'"'.$ajaxreset.$dialog.'>
                     <h3>'.$a['linktext'].'</h3>'.
                     $aside.
                     $count.
