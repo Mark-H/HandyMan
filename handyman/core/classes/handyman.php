@@ -164,7 +164,7 @@
             <body>
                 <div data-role="page" id="'.$id.'">
                     <div data-role="header">
-                        <a href="javascript: history.go(-1);" data-icon="arrow-l" data-rel="back">Back</a>
+                        <a href="javascript: history.go(-1);" data-icon="arrow-l" data-rel="back" data-direction="reverse">Back</a>
                         <h1>'.$header['title'].'</h1>
                         <a href="index.php" data-icon="home" data-iconpos="notext">Home</a>
                     </div>
