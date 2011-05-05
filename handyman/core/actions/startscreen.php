@@ -22,6 +22,9 @@
      ***/
 
     class startscreen extends HandyMan {
+        public $meta = array(
+            'title' => 'Welcome to HandyMan'
+        );
         public $actionMap;
         
         function __construct() {

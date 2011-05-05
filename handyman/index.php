@@ -53,9 +53,7 @@
      * function. Takes three properties: meta data, body and footer text.
      ***/
     echo $hm->parseMarkup(
-        array(
-            'title' => 'HandyMan'
-        ),
+        $hm->action['meta'],
         $hmo,
         '&laquo; HandyMan &copy; 2011 Mark Hamstra &raquo; <br />'.$debug
     );

@@ -22,10 +22,14 @@
      ***/
     
     class loginscreen extends HandyMan {
+        public $meta = array(
+                'title' => 'Please login'
+            ); 
         function __construct() {
-            
+
         }
         public function run($options = array()) {
+            $o = '';
             if ($options['message']) { $o .= '<p>'.$options['message'].'</p>'; }
             $o .= '<p>Please login to access your MODX Mobile Manager, powered by HandyMan.</p>';
             if (count($options) > 0) {

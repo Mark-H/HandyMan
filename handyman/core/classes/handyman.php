@@ -130,10 +130,21 @@
             if (file_exists($this->basedir.'core/actions/'.$actionname.'.php')) {
                 include_once ($this->basedir.'core/actions/'.$actionname.'.php');
                 $this->$actionname = new $actionname;
+                if ($this->$actionname->meta) {
+                    $this->action['meta'] = $this->$actionname->meta;
+                } else {
+                    $this->action['meta'] = array(
+                        'title' => 'HandyMan'
+                    );
+                }
                 return $this->$actionname->run($actionOptions,$this->modx);
             }
             else {
-                return 'Uh oh, unable to find the '.$actionname.' action! (Requested path: '.$this->basedir.'core/actions/'.$actionname.'.php)';
+                $this->action['meta'] = array(
+                    'title' => 'An error occurred'
+                );
+                return 'Uh oh, unable to find the '.$actionname.' action! (Requested path: '.$this->basedir.'core/actions/'.$actionname.'.php)
+                <br /><br />During development, some actions may not have been included and this error may show up.';
             }
         } // End of function processAction
         

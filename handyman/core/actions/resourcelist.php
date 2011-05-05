@@ -23,6 +23,9 @@
 
      
     class resourcelist extends HandyMan {
+        public $meta = array(
+            'title' => 'Listing Resources'
+        );
         public $parent;
         public $context;
         public $start;
