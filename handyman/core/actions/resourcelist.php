@@ -84,7 +84,7 @@
                         ),
                         array(
                             'action' => 'res_modify',
-                            'linktext' => 'Modify',
+                            'linktext' => 'Modify (coming soon!)',
                             'linkparams' => array(
                                 'ctx' => $ctx,
                                 'rid' => $parent
@@ -103,7 +103,7 @@
                         ),
                         array(
                             'action' => 'res_create',
-                            'linktext' => 'Create resource here',
+                            'linktext' => 'Create resource here (coming soon!)',
                             'linkparams' => array(
                                 'ctx' => $ctx,
                                 'parent' => $parent
