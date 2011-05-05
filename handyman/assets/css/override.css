@@ -7,3 +7,7 @@ li a{
 .ui-li-heading {
     margin: .2em 0;
 }
+.ui-footer p.license {
+    font-size: 85%;
+    text-align: center;
+}

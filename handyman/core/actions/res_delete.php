@@ -23,7 +23,8 @@
 
     class res_delete extends HandyMan {
         public $meta = array(
-            'title' => 'Delete resource'
+            'title' => 'Delete resource',
+            'view' => 'dialog'
         );
         function __construct() {
 

@@ -44,17 +44,17 @@
      * Set it to the $hmo variable for later output.
      ***/
     $hmo = $hm->processAction($hm->action);
-    
-    /* Collect some basic debug information for inclusion during development.
-     ***/
-    $debug = '{{DEBUG action: '.print_r($hm->action,true).' authorized: '.$hm->modx->checkSession('mgr').'/'.$hm->authorized.'}}';
 
     /* Use the collected data to output the HandyMan UI with the parseMarkup 
      * function. Takes three properties: meta data, body and footer text.
      ***/
+    $footer = '<h4>HandyMan &copy; 2011 Mark Hamstra</h4>';
+    if ($hm->getLicense()) {
+        $footer .= '<p class="license">Licensed to: '.$hm->getLicenseName().'</p>';
+    }
     echo $hm->parseMarkup(
         $hm->action['meta'],
         $hmo,
-        '&laquo; HandyMan &copy; 2011 Mark Hamstra &raquo; <br />'.$debug
+        $footer
     );
 ?>

@@ -162,91 +162,127 @@
         } // End of function loadClass($classname)
         
         
-        function parseMarkup($header = array('title' => 'HandyMan'), $body, $footer = '',$id = '') {   
-            $id = ($id != '') ? $id : $this->action;
-            return '<!DOCTYPE HTML>
+        function parseMarkup($meta = array('title' => 'HandyMan'), $body, $footer = '',$id = '') {
+            $id = ($id != '') ? $id : $this->action['hma'];
+            $o = '<!DOCTYPE HTML>
             <html lang="en-US">
             <head>
             	<meta charset="UTF-8">
-            	<title>'.$header['title'].'</title>
+            	<title>'.$meta['title'].'</title>
                 <link rel="stylesheet" href="assets/jqm/jquery.mobile-1.0a4.1.min.css" />
                 <script src="assets/jqm/jquery-1.5.2.min.js"></script>
                 <script src="assets/jqm/jquery.mobile-1.0a4.1.min.js"></script>
                 <link href="assets/css/override.css" rel="stylesheet" type="text/css" />
             </head>
             <body>
-                <div data-role="page" id="'.$id.'">
+                <div data-role="page" id="'.$id.'">';
+            // Depending on the type of page (determined by the $meta['page'] option) we'll output something here.
+            switch ($meta['view']) {
+                // First "view" is a dialog window, which doesn't need as many buttons and stuff. We do add a "Close window" button here.
+                case 'dialog':
+                    $o .= '<div data-role="header">
+                        <h1>'.$meta['title'].'</h1>
+                    </div>
+                    <div data-role="content">
+                        '.$body.'
+                        <br />
+                        <a href="#" data-icon="delete" data-rel="back" data-transition="pop"
+                            data-role="button" data-inline="true">Close window</a>
+                    </div>
+                    <div data-role="footer">
+                        '.$footer.'
+                    </div>';
+                    break;
+                // The default view is the "page" one, which has a back & home button and just the main content after that.
+                case 'page':
+                default:
+                    $o .= '
                     <div data-role="header">
                         <a href="javascript: history.go(-1);" data-icon="arrow-l" data-rel="back" data-direction="reverse">Back</a>
-                        <h1>'.$header['title'].'</h1>
+                        <h1>'.$meta['title'].'</h1>
                         <a href="index.php" data-icon="home" data-iconpos="notext" data-transition="flip">Home</a>
                     </div>
                     <div data-role="content">
                         '.$body.'
                     </div>
                     <div data-role="footer">
-                        <h4>'.$footer.'</h4>
-                    </div>
+                        '.$footer.'
+                    </div>';
+                    break;
+            }
+            // Some debugging & closing the tags
+            $o .= print_r($this->action,true).'
                 </div>
             </body>
             </html>';
+            
+            return $o;
         }
         
 
-    public function processor(array $options = array(),&$modx) {
-        $processor = isset($options['processors_path']) && !empty($options['processors_path']) ? $options['processors_path'] : MODX_PROCESSORS_PATH;
-        if (isset($options['location']) && !empty($options['location'])) $processor .= $options['location'] . '/';
-        $processor .= str_replace('../', '', $options['action']) . '.php';
-        if (file_exists($processor)) {
-            if (!isset($modx->lexicon)) $modx->getService('lexicon', 'modLexicon');
-            if (!isset($modx->error)) $modx->getService('error','error.modError');
+        public function processor(array $options = array(),&$modx) {
+            $processor = isset($options['processors_path']) && !empty($options['processors_path']) ? $options['processors_path'] : MODX_PROCESSORS_PATH;
+            if (isset($options['location']) && !empty($options['location'])) $processor .= $options['location'] . '/';
+            $processor .= str_replace('../', '', $options['action']) . '.php';
+            if (file_exists($processor)) {
+                if (!isset($modx->lexicon)) $modx->getService('lexicon', 'modLexicon');
+                if (!isset($modx->error)) $modx->getService('error','error.modError');
 
-            /* create scriptProperties array from HTTP GPC vars */
-            if (!isset($_POST)) $_POST = array();
-            if (!isset($_GET)) $_GET = array();
-            $scriptProperties = array_merge($_GET,$_POST,$options);
-            if (isset($_FILES) && !empty($_FILES)) {
-                $scriptProperties = array_merge($scriptProperties,$_FILES);
-            }
-            $result = include $processor;
-        } else {
-            //$this->modx->error->failure(modX::LOG_LEVEL_ERROR, "Processor {$processor} does not exist; " . print_r($options, true));
-            $result = 'Processor not found: '.$processor;
-        }
-        return $result;
-    }
-    
-    
-    public function processActions($actionMap) {
-        $ret = '';
-        foreach ($actionMap as $a) {
-            if (isset($a['dialog'])) {
-                $dialog = ' data-rel="dialog"';
-                $transition = ($a['transition']) ? $a['transition'] : 'pop';
-            } else {
-                $transition = ($a['transition']) ? $a['transition'] : 'slide';
-            }
-            $icon = ($a['icon']) ? $a['icon'] : 'arrow-r';
-            $ajaxreset = ($a['reset']) ? ' data-ajax="false"' : '';
-            if (count($a['linkparams']) > 0) { 
-                $lps = '';
-                foreach ($a['linkparams'] as $lp => $lpv) { 
-                    $lps .= '&'.$lp.'='.$lpv; 
+                /* create scriptProperties array from HTTP GPC vars */
+                if (!isset($_POST)) $_POST = array();
+                if (!isset($_GET)) $_GET = array();
+                $scriptProperties = array_merge($_GET,$_POST,$options);
+                if (isset($_FILES) && !empty($_FILES)) {
+                    $scriptProperties = array_merge($scriptProperties,$_FILES);
                 }
+                $result = include $processor;
+            } else {
+                //$this->modx->error->failure(modX::LOG_LEVEL_ERROR, "Processor {$processor} does not exist; " . print_r($options, true));
+                $result = 'Processor not found: '.$processor;
             }
-            $link = $this->webroot.'index.php?hma='.$a['action'].$lps;
-            if ((isset($a['count'])) && ($a['count'] > 0)) { $count = '<p class="ui-li-count">'.$a['count'].'</p>'; }
-            if (isset($a['aside'])) { $aside = '<p>'.$a['aside'].'</p>'; }
-            $ret .= '<li data-icon="'.$icon.'">
-                <a href="'.$link.'" data-transition="'.$transition.'"'.$ajaxreset.$dialog.'>
-                    <h3>'.$a['linktext'].'</h3>'.
-                    $aside.
-                    $count.
-                    '</a>
-                </li>';
-            unset ($lps,$lp,$link,$count,$aside);
+            return $result;
         }
-        return $ret;
-    }
+    
+    
+        public function processActions($actionMap) {
+            $ret = '';
+            foreach ($actionMap as $a) {
+                if (isset($a['dialog'])) {
+                    $dialog = ' data-rel="dialog"';
+                    $transition = ($a['transition']) ? $a['transition'] : 'pop';
+                } else {
+                    $transition = ($a['transition']) ? $a['transition'] : 'slide';
+                }
+                $icon = ($a['icon']) ? $a['icon'] : 'arrow-r';
+                $ajaxreset = ($a['reset']) ? ' data-ajax="false"' : '';
+                if (count($a['linkparams']) > 0) {
+                    $lps = '';
+                    foreach ($a['linkparams'] as $lp => $lpv) {
+                        $lps .= '&'.$lp.'='.$lpv;
+                    }
+                }
+                $link = $this->webroot.'index.php?hma='.$a['action'].$lps;
+                if ((isset($a['count'])) && ($a['count'] > 0)) { $count = '<p class="ui-li-count">'.$a['count'].'</p>'; }
+                if (isset($a['aside'])) { $aside = '<p>'.$a['aside'].'</p>'; }
+                $ret .= '<li data-icon="'.$icon.'">
+                    <a href="'.$link.'" data-transition="'.$transition.'"'.$ajaxreset.$dialog.'>
+                        <h3>'.$a['linktext'].'</h3>'.
+                        $aside.
+                        $count.
+                        '</a>
+                    </li>';
+                unset ($lps,$lp,$link,$count,$aside);
+            }
+            return $ret;
+        }
+
+        public function getLicense() {
+            return true;
+        }
+
+        public function getLicenseName() {
+            return 'Early Contributors';
+        }
+
 } // End of class HandyMan
 ?>

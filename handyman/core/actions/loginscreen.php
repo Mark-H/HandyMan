@@ -28,7 +28,7 @@
         function __construct() {
 
         }
-        public function run($options = array()) {
+        public function run($options = array(),&$modx) {
             $o = '';
             if ($options['message']) { $o .= '<p>'.$options['message'].'</p>'; }
             $o .= '<p>Please login to access your MODX Mobile Manager, powered by HandyMan.</p>';

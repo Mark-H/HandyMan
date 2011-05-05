@@ -23,7 +23,8 @@
 
     class res_publish extends HandyMan {
         public $meta = array(
-            'title' => 'Publish resource'
+            'title' => 'Publish resource',
+            'view' => 'dialog'
         );
         function __construct() {
 
