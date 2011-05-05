@@ -33,7 +33,7 @@
                 ),
                 array(
                     'action' => 'res_create',
-                    'linktext' => 'Create resource',
+                    'linktext' => 'Create resource (coming soon!)',
                     'icon' => 'plus'
                 ),
                 array(
