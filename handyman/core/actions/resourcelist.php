@@ -98,7 +98,8 @@
                                 'ctx' => $ctx,
                                 'rid' => $parent
                             ),
-                            'icon' => 'delete'
+                            'icon' => 'delete',
+                            'dialog' => true
                         ),
                         array(
                             'action' => 'res_create',
