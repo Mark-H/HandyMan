@@ -172,7 +172,7 @@
                 <link rel="stylesheet" href="assets/jqm/jquery.mobile-1.0a4.1.min.css" />
                 <script src="assets/jqm/jquery-1.5.2.min.js"></script>
                 <script src="assets/jqm/jquery.mobile-1.0a4.1.min.js"></script>
-                <link href="assets/css/override.css" rel="stylesheet" type="text/css" />
+                <link href="assets/css/handyman.css" rel="stylesheet" type="text/css" />
             </head>
             <body>
                 <div data-role="page" id="'.$id.'">';
@@ -189,7 +189,8 @@
                         <a href="#" data-icon="delete" data-rel="back" data-transition="pop"
                             data-role="button" data-inline="true">Close window</a>
                     </div>
-                    <div data-role="footer">
+
+					<div data-role="footer">
                         '.$footer.'
                     </div>';
                     break;
@@ -197,7 +198,7 @@
                 case 'page':
                 default:
                     $o .= '
-                    <div data-role="header">
+                    <div data-role="header" class="redGradient">
                         <a href="javascript: history.go(-1);" data-icon="arrow-l" data-rel="back" data-direction="reverse">Back</a>
                         <h1>'.$meta['title'].'</h1>
                         <a href="index.php" data-icon="home" data-iconpos="notext" data-transition="flip">Home</a>
@@ -205,9 +206,26 @@
                     <div data-role="content">
                         '.$body.'
                     </div>
-                    <div data-role="footer">
+                    <!--<div data-role="footer">
                         '.$footer.'
-                    </div>';
+                    </div>-->
+					
+								<!-- new footer fixed nav -->
+					
+					
+					<div data-role="footer" data-position="fixed">
+    <div data-role="navbar">
+    <ul>
+        <li><a href="' . $this->webroot . 'index.php?hma=res_create" id="create" data-icon="custom">Create Resource</a></li>
+        <li><a href="' . $this->webroot . 'index.php?hma=resourcelist" id="manage" data-icon="custom">Manage Resource</a></li>
+        <li><a href="' . $this->webroot . 'index.php?hma=logout" id="logout" data-icon="custom">Logout</a></li>
+    </ul>
+    </div>
+</div>
+
+<!-- end fixed nav -->
+					
+					';
                     break;
             }
             // Some debugging & closing the tags

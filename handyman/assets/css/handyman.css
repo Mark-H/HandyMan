@@ -1,0 +1,64 @@
+@charset "utf-8";
+/* CSS Document */
+
+li a{
+	display:block;
+	}
+.ui-li-heading {
+    margin: .2em 0;
+}
+.ui-footer p.license {
+    font-size: 85%;
+    text-align: center;
+}
+/*---------------- fixed Nav background color ------------------*/
+#create, #manage, #logout, .redGradient {
+    background: #f85032; /* Old browsers */
+    background: -moz-linear-gradient(top, #f85032 0%, #f16f5c 50%, #f6290c 51%, #f02f17 71%, #e73827 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f85032), color-stop(50%,#f16f5c), color-stop(51%,#f6290c), color-stop(71%,#f02f17), color-stop(100%,#e73827)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #f85032 0%,#f16f5c 50%,#f6290c 51%,#f02f17 71%,#e73827 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #f85032 0%,#f16f5c 50%,#f6290c 51%,#f02f17 71%,#e73827 100%); /* Opera11.10+ */
+    background: -ms-linear-gradient(top, #f85032 0%,#f16f5c 50%,#f6290c 51%,#f02f17 71%,#e73827 100%); /* IE10+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f85032', endColorstr='#e73827',GradientType=0 ); /* IE6-9 */
+    background: linear-gradient(top, #f85032 0%,#f16f5c 50%,#f6290c 51%,#f02f17 71%,#e73827 100%); /* W3C */
+    font-size: 10px;
+}
+/*---------------- fixed Nav background color on hover ------------------*/
+#create:hover, #manage:hover, #logout:hover {
+    background: #d12b2b; /* Old browsers */
+    background: -moz-linear-gradient(top, #d12b2b 0%, #d15151 50%, #990707 52%, #990707 70%, #990707 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#d12b2b), color-stop(50%,#d15151), color-stop(52%,#990707), color-stop(70%,#990707), color-stop(100%,#990707)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #d12b2b 0%,#d15151 50%,#990707 52%,#990707 70%,#990707 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #d12b2b 0%,#d15151 50%,#990707 52%,#990707 70%,#990707 100%); /* Opera11.10+ */
+    background: -ms-linear-gradient(top, #d12b2b 0%,#d15151 50%,#990707 52%,#990707 70%,#990707 100%); /* IE10+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d12b2b', endColorstr='#990707',GradientType=0 ); /* IE6-9 */
+    background: linear-gradient(top, #d12b2b 0%,#d15151 50%,#990707 52%,#990707 70%,#990707 100%); /* W3C */
+}
+/*---------------- fixed Nav button custom icons ------------------*/
+#create .ui-icon {
+    background: url(../images/create_icon.png) 50% 50% no-repeat;
+    background-size: 20px 25px;
+}
+#manage .ui-icon {
+    background: url(../images/manage_icon.png) 50% 50% no-repeat;
+    background-size: 20px 25px;
+}
+#logout .ui-icon {
+    background: url(../images/logout_icon.png)50% 50% no-repeat;
+    background-size: 20px 25px;
+}
+#create.ui-btn .ui-btn-inner, #manage.ui-btn .ui-btn-inner, #logout.ui-btn .ui-btn-inner {
+    padding-top: 40px !important
+}
+#create.ui-btn .ui-icon, #manage.ui-btn .ui-icon, #logout.ui-btn .ui-icon {
+    width: 30px!important;
+    height: 30px!important;
+    margin-left: -15px !important;
+    box-shadow: none!important;
+    -moz-box-shadow: none!important;
+    -webkit-box-shadow: none!important;
+    -webkit-border-radius: none !important;
+    border-radius: none !important;
+}
+
+
