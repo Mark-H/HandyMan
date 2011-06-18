@@ -167,15 +167,17 @@
                 if ($res->get('deleted')) { $aside[] = 'Deleted'; }
                 if ($res->get('hidemenu')) { $aside[] = 'Hidden from menu'; }
                 $aside = implode(", ",$aside);
+
+                $count = $res->hasChildren();
+
                 $resources[] = array(
                     'action' => 'resourcelist',
                     'linktext' => $res->get('pagetitle').' ('.$res->get('id').')',
                     'aside' => $aside,
                     'linkparams' => array('ctx' => $ctx, 'parent' => $res->get('id')),
                     'object' => $ctx,
-                    'count' => count($res->getMany('Children'))
+                    'count' => $count
                 );
-                //if ($res->getMany('Children')) { $resources['count'] = count($res->getMany('Children')); }
             }
             return $resources;
         }
