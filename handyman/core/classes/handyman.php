@@ -180,7 +180,7 @@
             switch ($meta['view']) {
                 // First "view" is a dialog window, which doesn't need as many buttons and stuff. We do add a "Close window" button here.
                 case 'dialog':
-                    $o .= '<div data-role="header">
+                    $o .= '<div data-role="header" class="redGradient">
                         <h1>'.$meta['title'].'</h1>
                     </div>
                     <div data-role="content">
