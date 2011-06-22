@@ -62,3 +62,14 @@ li a{
 }
 
 
+/*----------------------- overrid list items ellipses -------------------------------*/
+
+p.ui-li-desc{
+font-size: 12px;
+font-weight: normal;
+display: block;
+margin: .5em 0 .6em;
+text-overflow:none;
+overflow:visible;
+white-space:normal;
+}
