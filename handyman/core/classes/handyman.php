@@ -206,26 +206,16 @@
                     <div data-role="content">
                         '.$body.'
                     </div>
-                    <!--<div data-role="footer">
-                        '.$footer.'
-                    </div>-->
-					
-								<!-- new footer fixed nav -->
-					
-					
-					<div data-role="footer" data-position="fixed">
-    <div data-role="navbar">
-    <ul>
-        <li><a href="' . $this->webroot . 'index.php?hma=res_create" id="create" data-icon="custom">Create Resource</a></li>
-        <li><a href="' . $this->webroot . 'index.php?hma=resourcelist" id="manage" data-icon="custom">Manage Resource</a></li>
-        <li><a href="' . $this->webroot . 'index.php?hma=logout" id="logout" data-icon="custom">Logout</a></li>
-    </ul>
-    </div>
-</div>
 
-<!-- end fixed nav -->
-					
-					';
+                    <div data-role="footer" data-position="fixed">
+                        <div data-role="navbar">
+                        <ul>
+                            <li><a href="' . $this->webroot . 'index.php?hma=res_create" id="create" data-icon="custom">Create Resource</a></li>
+                            <li><a href="' . $this->webroot . 'index.php?hma=resourcelist" id="manage" data-icon="custom">Manage Resources</a></li>
+                            <li><a href="' . $this->webroot . 'index.php?hma=logout" id="logout" data-icon="custom">Logout</a></li>
+                        </ul>
+                        </div>
+                    </div>';
                     break;
             }
             // Some debugging & closing the tags
