@@ -86,8 +86,8 @@
                             'dialog' => true
                         ),
                         array(
-                            'action' => 'res_modify',
-                            'linktext' => 'Modify (coming soon!)',
+                            'action' => 'res_update',
+                            'linktext' => 'Update',
                             'linkparams' => array(
                                 'ctx' => $ctx,
                                 'rid' => $parent

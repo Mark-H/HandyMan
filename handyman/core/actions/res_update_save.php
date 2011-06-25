@@ -21,11 +21,11 @@
      * @package HandyMan
      ***/
 
-    class res_publish extends HandyMan {
+    class res_update_save extends HandyMan {
         public $meta = array(
-            'title' => 'Publish resource',
+            'title' => 'Update Resource',
             'view' => 'dialog',
-            'cache' => false,
+            'cache' => false
         );
         function __construct() {
 
@@ -33,30 +33,20 @@
         public function run($options = array(),&$modx) {
             $o = '';
 
-            if (is_numeric($options['get']['rid'])) {
-                $rid = $options['get']['rid'];
+            if (is_numeric($options['get']['id'])) {
+                $rid = $options['get']['id'];
             } else {
                 return 'No valid resource id passed.';
             }
 
-            $resource = $modx->getObject('modResource',$rid);
-
-            if (empty($resource)) {
-                return 'Resource not found.';
+            $res = $modx->getObject('modResource',$rid);
+            if (!($res instanceof modResource)) { return 'Invalid resource.'; }
+            else {
+                $res->fromArray($options['get']);
             }
+            $result = $res->save();
 
-            $action = ($resource->get('published')) ? 'unpublish' : 'publish';
-            $return = $this->processor(array(
-                'action' => 'resource/'.$action,
-                'id' => $rid),$modx);
-            if ($return['success'] == 1) {
-                if ($action == 'unpublish') {
-                    return 'Succesfully unpublished resource '.$rid.'.';
-                } else {
-                    return 'Succesfully published resource '.$rid.'.';
-                }
-            }
-            else { return 'Something went wrong. '.$return['message']; }
+            return ($result !== true) ? $result : 'Updated to '.print_r($options['get'],true);
         }
 
     }
