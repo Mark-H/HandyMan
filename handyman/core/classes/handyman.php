@@ -125,7 +125,7 @@
                 $actionOptions = $action['options'];
             }
             // @TODO: $_GET[] validation, sanitation
-            $actionOptions['get'] = $_GET;
+            $actionOptions['get'] = array_merge($_GET,$_POST);
             
             if (file_exists($this->basedir.'core/actions/'.$actionname.'.php')) {
                 include_once ($this->basedir.'core/actions/'.$actionname.'.php');
@@ -251,7 +251,7 @@
                 if (isset($_FILES) && !empty($_FILES)) {
                     $scriptProperties = array_merge($scriptProperties,$_FILES);
                 }
-                $result = include $processor;
+                $result .= include $processor;
             } else {
                 //$this->modx->error->failure(modX::LOG_LEVEL_ERROR, "Processor {$processor} does not exist; " . print_r($options, true));
                 $result = 'Processor not found: '.$processor;
