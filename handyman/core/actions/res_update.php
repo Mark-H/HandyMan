@@ -115,6 +115,8 @@ EOD;
                 'deleted' => array('name' => 'Deleted','type' => 'flipswitch'),
             );
 
+            // This little workaround will make sure the cache gets cleared
+            $r['clearCache'] = 1;
             $fields = array();
             foreach ($fld as $cf => $cfarr) {
                 $fields[$cf] = $this->createFieldMarkup($cf, $cfarr, $r);
