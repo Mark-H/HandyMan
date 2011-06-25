@@ -168,7 +168,7 @@
             <html lang="en-US">
             <head>
             	<meta charset="UTF-8">
-            	<title>'.$meta['title'].'</title>
+            	<title>'.$meta['title'].' - HandyMan Mobile Manager</title>
                 <link rel="stylesheet" href="assets/jqm/jquery.mobile-1.0a4.1.min.css" />
                 <script src="assets/jqm/jquery-1.5.2.min.js"></script>
                 <script src="assets/jqm/jquery.mobile-1.0a4.1.min.js"></script>
