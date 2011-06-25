@@ -209,7 +209,7 @@
                     <div data-role="header" class="redGradient">
                         <a href="javascript: history.go(-1);" data-icon="arrow-l" data-rel="back" data-direction="reverse">Back</a>
                         <h1>' . $meta['title'] . '</h1>
-                        <a href="index.php" data-icon="home" data-iconpos="notext" data-transition="flip">Home</a>
+                        <a href="index.php" data-icon="home" data-transition="flip">Home</a>
                     </div>
                     <div data-role="content">
                         ' . $body . '
