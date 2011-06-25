@@ -169,14 +169,14 @@
             <head>
             	<meta charset="UTF-8">
             	<title>'.$meta['title'].' - HandyMan Mobile Manager</title>
-                <link rel="stylesheet" href="assets/jqm/jquery.mobile-1.0a4.1.min.css" />
-                <script src="assets/jqm/jquery-1.5.2.min.js"></script>
-                <script src="assets/jqm/jquery.mobile-1.0a4.1.min.js"></script>
+                <link rel="stylesheet" href="assets/jqm/jquery.mobile-1.0b1.min.css" />
+                <script src="assets/jqm/jquery-1.6.1.min.js"></script>
+                <script src="assets/jqm/jquery.mobile-1.0b1.min.js"></script>
                 <link href="assets/css/handyman.css" rel="stylesheet" type="text/css" />
             </head>
             <body>
                 <div data-role="page" id="'.$id.'">';
-            // Depending on the type of page (determined by the $meta['page'] option) we'll output something here.
+            // Depending on the type of page (determined by the $meta['view'] option) we'll output something here.
             switch ($meta['view']) {
                 // First "view" is a dialog window, which doesn't need as many buttons and stuff. We do add a "Close window" button here.
                 case 'dialog':
