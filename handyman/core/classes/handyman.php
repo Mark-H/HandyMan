@@ -251,7 +251,7 @@
                 if (isset($_FILES) && !empty($_FILES)) {
                     $scriptProperties = array_merge($scriptProperties,$_FILES);
                 }
-                $result .= include $processor;
+                $result = include $processor;
             } else {
                 //$this->modx->error->failure(modX::LOG_LEVEL_ERROR, "Processor {$processor} does not exist; " . print_r($options, true));
                 $result = 'Processor not found: '.$processor;
@@ -268,6 +268,7 @@
                     $transition = ($a['transition']) ? $a['transition'] : 'pop';
                 } else {
                     $transition = ($a['transition']) ? $a['transition'] : 'slide';
+                    $dialog = '';
                 }
                 $icon = ($a['icon']) ? $a['icon'] : 'arrow-r';
                 $ajaxreset = ($a['reset']) ? ' data-ajax="false"' : '';
