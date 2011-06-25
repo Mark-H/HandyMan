@@ -164,6 +164,7 @@
         
         function parseMarkup($meta = array('title' => 'HandyMan'), $body, $footer = '',$id = '') {
             $id = ($id != '') ? $id : $this->action['hma'];
+            $cache = ($meta['cache'] === false) ? ' data-cache="false" ' : '';
             $o = '<!DOCTYPE HTML>
             <html lang="en-US">
             <head>
@@ -173,38 +174,45 @@
                 <script src="assets/jqm/jquery-1.6.1.min.js"></script>
                 <script src="assets/jqm/jquery.mobile-1.0b1.min.js"></script>
                 <link href="assets/css/handyman.css" rel="stylesheet" type="text/css" />
+                <script type="text/javascript">
+                $(document).ready(function() {
+                    $( ":jqmData(role=\'page\'):jqmData(cache=\'false\')" ).live( "pagehide", function(){  $(this).remove(); });
+                });
+                </script>
             </head>
             <body>
-                <div data-role="page" id="'.$id.'">';
+                <div data-role="page" id="' . $id . '"' . $cache . '>';
+
             // Depending on the type of page (determined by the $meta['view'] option) we'll output something here.
             switch ($meta['view']) {
                 // First "view" is a dialog window, which doesn't need as many buttons and stuff. We do add a "Close window" button here.
                 case 'dialog':
                     $o .= '<div data-role="header" class="redGradient">
-                        <h1>'.$meta['title'].'</h1>
+                        <h1>' . $meta['title'] . '</h1>
                     </div>
                     <div data-role="content">
-                        '.$body.'
+                        ' . $body . '
                         <br />
                         <a href="#" data-icon="delete" data-rel="back" data-transition="pop"
                             data-role="button" data-inline="true">Close window</a>
                     </div>
 
 					<div data-role="footer">
-                        '.$footer.'
+                        ' . $footer . '
                     </div>';
                     break;
+
                 // The default view is the "page" one, which has a back & home button and just the main content after that.
                 case 'page':
                 default:
                     $o .= '
                     <div data-role="header" class="redGradient">
                         <a href="javascript: history.go(-1);" data-icon="arrow-l" data-rel="back" data-direction="reverse">Back</a>
-                        <h1>'.$meta['title'].'</h1>
+                        <h1>' . $meta['title'] . '</h1>
                         <a href="index.php" data-icon="home" data-iconpos="notext" data-transition="flip">Home</a>
                     </div>
                     <div data-role="content">
-                        '.$body.'
+                        ' . $body . '
                     </div>
 
                     <div data-role="footer" data-position="fixed">
@@ -216,7 +224,7 @@
                         </ul>
                         </div>
                     </div>';
-                    break;
+                break;
             }
             // Some debugging & closing the tags
             $o .= print_r($this->action,true).'

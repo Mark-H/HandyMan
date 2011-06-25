@@ -24,7 +24,8 @@
     class res_publish extends HandyMan {
         public $meta = array(
             'title' => 'Publish resource',
-            'view' => 'dialog'
+            'view' => 'dialog',
+            'cache' => false
         );
         function __construct() {
 

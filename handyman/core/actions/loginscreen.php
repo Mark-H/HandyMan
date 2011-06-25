@@ -23,8 +23,9 @@
     
     class loginscreen extends HandyMan {
         public $meta = array(
-                'title' => 'Please login'
-            ); 
+            'title' => 'Please login',
+            'cache' => false
+        );
         function __construct() {
 
         }

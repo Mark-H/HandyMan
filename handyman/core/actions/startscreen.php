@@ -23,7 +23,8 @@
 
     class startscreen extends HandyMan {
         public $meta = array(
-            'title' => 'Welcome to HandyMan'
+            'title' => 'Welcome to HandyMan',
+            'cache' => true
         );
         public $actionMap;
         
@@ -43,9 +44,6 @@
                     'action' => 'logout',
                     'linktext' => 'Logout',
                     'reset' => true,
-                    // 'icon' => 'arrow-r',
-                    // 'linkparams' => array ('session' => 'logout'),
-                    // 'transition' => 'pop',
                 )
             );
         }

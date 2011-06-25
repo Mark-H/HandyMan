@@ -24,7 +24,8 @@
      
     class resourcelist extends HandyMan {
         public $meta = array(
-            'title' => 'Listing Resources'
+            'title' => 'Listing Resources',
+            'cache' => false
         );
         public $parent;
         public $context;
@@ -72,8 +73,7 @@
                                 'ctx' => $ctx,
                                 'rid' => $parent
                             ),
-                            'icon' => 'grid',
-                            'reset' => true
+                            'icon' => 'grid'
                         ),
                         array(
                             'action' => 'res_publish',

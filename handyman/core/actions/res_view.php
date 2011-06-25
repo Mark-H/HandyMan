@@ -23,7 +23,8 @@
      
     class res_view extends HandyMan {
         public $meta = array(
-            'title' => 'Resource Details'
+            'title' => 'Resource Details',
+            'cache' => false
         );
         function __construct() {
             
