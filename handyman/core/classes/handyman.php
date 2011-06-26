@@ -170,6 +170,7 @@
             <head>
             	<meta charset="UTF-8">
             	<title>'.$meta['title'].' - HandyMan Mobile Manager</title>
+                <meta name="viewport" content="width=device-width, initial-scale=1">
                 <link rel="stylesheet" href="assets/jqm/jquery.mobile-1.0b1.min.css" />
                 <script src="assets/jqm/jquery-1.6.1.min.js"></script>
                 <script src="assets/jqm/jquery.mobile-1.0b1.min.js"></script>
