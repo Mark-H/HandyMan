@@ -56,8 +56,7 @@
             $o .= '<form action="'. $this->webroot . 'index.php?hma=res_update_save" method="post" data-transition="pop">
                 <input type="hidden" name="id" value="' . $rid .'" />
                 <input type="hidden" name="context_key" value="' . $r['context_key'] . '" />
-                <div data-role="collapsible-set">
-                <div data-role="collapsible"><h3>Resource Fields</h3>';
+                <div data-role="collapsible" data-collapsed="true"><h3>Resource Fields</h3>';
 
             $fields = array();
 
@@ -95,7 +94,7 @@
             unset ($fld,$fields);
             $o .= '</div>';
 
-            $o .= '<div data-role="collapsible"><h3>Content</h3>';
+            $o .= '<div data-role="collapsible" data-collapsed="true"><h3>Content</h3>';
             $o .= <<<EOD
 <div data-role="fieldcontain">
     <textarea name="content" id="upd_content" rows="20" cols="40">$r[content]</textarea>
@@ -104,18 +103,16 @@ EOD;
 
             $o .= '</div>'; // Close collapsible
 
-            $o .= '<div data-role="collapsible"><h3>Resource Settings</h3>';
+            $o .= '<div data-role="collapsible" data-collapsed="true"><h3>Resource Settings</h3>';
             $fld = array(
                 'isfolder' => array('name' => 'Container','type' => 'flipswitch'),
                 'pub_date' => array('name' => 'Publish date','type' => 'text'),
                 'unpub_date' => array('name' => 'Unpublish date','type' => 'text'),
                 'searchable' => array('name' => 'Searchable','type' => 'flipswitch'),
                 'cacheable' => array('name' => 'Cacheable','type' => 'flipswitch'),
-                'clearCache' => array('name' => 'Empty Cache','type' => 'flipswitch'),
                 'deleted' => array('name' => 'Deleted','type' => 'flipswitch'),
             );
 
-            // This little workaround will make sure the cache gets cleared
             $fields = array();
             foreach ($fld as $cf => $cfarr) {
                 $fields[$cf] = $this->createFieldMarkup($cf, $cfarr, $r);
@@ -125,8 +122,8 @@ EOD;
 
             $o .= '</div>'; // Close collapsible
 
-            $o .= '</div>'; // Close collapsible set
-
+            // Add a flipswitch
+            $o .= $this->createFieldMarkup('clearcache',array('name' => 'Clear cache on save','type' => 'flipswitch'),array('clearcache' => 1));
             $o .= '<button type="submit" name="submit" id="upd_submit" value="Save" data-rel="dialog"></button>';
 
             $o .= '</form>'; // Close form
