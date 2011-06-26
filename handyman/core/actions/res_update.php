@@ -157,6 +157,7 @@ EOD;
                     $o .= '<div data-role="collapsible" '.$collapsed.'><h5>' . $catname .  '</h5>';
                     foreach ($category as $tv) {
                         $o .= $this->createTemplateVarFieldMarkup($tv);
+                        $o .= print_r($tv,true);
                     }
                     $o .= '</div>';
                     $notfirst = true;
@@ -177,6 +178,7 @@ EOD;
         }
 
         public function createTemplateVarFieldMarkup(array $tv) {
+            $options = array();
             switch($tv['display']) {
                 default: 
                 case 'default':
@@ -184,17 +186,47 @@ EOD;
                     break;
             }
             switch ($tv['type']) {
+                case 'checkbox':
+                    $type = "checkbox";
+                    if (strlen($tv['elements']) > 0) {
+                        $kvps = explode('||',$tv['elements']);
+                        foreach ($kvps as $v) {
+                            $kvp = explode('==',$v);
+                            $options[$kvp[0]] = ($kvp[1]) ? $kvp[1] : $kvp[0];
+                        }
+                    }
+                    $value = $tv['value'];
+                    break;
+
                 default:
                 case 'text':
                     $type = 'text';
+                    break;
             }
 
-            $options = array();
             return $this->createFieldMarkup('tv'.$tv['id'],$tv['caption'],$type,$value,$options);
         }
 
         public function createFieldMarkup(string $fieldname, string $displayname, $type = 'text', string $value, $options = array()) {
             switch ($type) {
+                // @TODO Actually save the checkboxes
+                case 'checkbox':
+                    $opts = '';
+                    $activeOpts = explode('||',$value);
+                    foreach ($options as $name => $value) {
+                        $active = (in_array($value,$activeOpts)) ? ' checked="checked"' : '';
+                        $opts .= '<input type="checkbox" name="'.$fieldname.'_'.$value.'" id="upd_'.$fieldname.'_'.$value.'" '.$active.' />
+                         <label for="upd_'.$fieldname.'_'.$value.'">'.$name.'</label>';
+                    }
+                    return <<<EOD
+                    <div data-role="fieldcontain">
+                        <fieldset data-role="controlgroup">
+                            <legend>$displayname</legend>
+                            $opts
+                        </fieldset>
+                    </div>
+EOD;
+                    break;
                 case 'flipswitch':
                     $yes = ($value == 1) ? ' selected="selected" ' : '';
                     $no = ($value == 1) ? '' : ' selected="selected" ';
