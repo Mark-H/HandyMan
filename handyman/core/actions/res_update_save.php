@@ -45,7 +45,13 @@
                 $res->fromArray($options['get']);
             }
             $result = $res->save();
-
+            // Clear the cache
+            $modx->cacheManager->refresh(array(
+                'db' => array(),
+                'auto_publish' => array('contexts' => array($res->get('context_key'))),
+                'context_settings' => array('contexts' => array($res->get('context_key'))),
+                'resource' => array('contexts' => array($res->get('context_key'))),
+            ));
             return ($result !== true) ? $result : 'Updated to '.print_r($options['get'],true);
         }
 
