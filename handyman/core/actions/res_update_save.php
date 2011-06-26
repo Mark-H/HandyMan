@@ -44,6 +44,14 @@
             else {
                 $res->fromArray($options['get']);
             }
+
+            // Find & parse any submitted TVs
+            foreach ($options['get'] as $key => $value) {
+                if (substr($key,0,2) == 'tv') {
+                    if (!$res->setTVValue((int)substr($key,2),$value)) { return 'Error saving Template Variable '.substr($key,2); }
+                }
+            }
+
             $result = $res->save();
             // Clear the cache
 
@@ -56,7 +64,7 @@
                 ));
             }
             
-            return ($result !== true) ? $result : 'Updated to '.print_r($options['get'],true);
+            return ($result !== true) ? $result : 'Updated to ';//.print_r($options['get'],true);
         }
 
     }

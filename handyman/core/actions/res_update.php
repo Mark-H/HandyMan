@@ -87,7 +87,7 @@
             );
 
             foreach ($fld as $cf => $cfarr) {
-                $fields[$cf] = $this->createFieldMarkup($cf, $cfarr, $r);
+                $fields[$cf] = $this->createFieldMarkup($cf,$cfarr['name'],$cfarr['type'],$r[$cf],$cfarr['options']);
             }
 
             $o .= implode("\n",$fields);
@@ -111,19 +111,64 @@ EOD;
                 'searchable' => array('name' => 'Searchable','type' => 'flipswitch'),
                 'cacheable' => array('name' => 'Cacheable','type' => 'flipswitch'),
                 'deleted' => array('name' => 'Deleted','type' => 'flipswitch'),
+                // This does not included: publishedon, empty cache (done seperately later on), content type,
+                //      content disposition, class key and freeze_uri (2.1+). Don't think it's needed.
             );
 
             $fields = array();
             foreach ($fld as $cf => $cfarr) {
-                $fields[$cf] = $this->createFieldMarkup($cf, $cfarr, $r);
+                $fields[$cf] = $this->createFieldMarkup($cf,$cfarr['name'],$cfarr['type'],$r[$cf],$cfarr['options']);
             }
             $o .= implode("\n",$fields);
             unset ($fld,$fields);
 
             $o .= '</div>'; // Close collapsible
 
-            // Add a flipswitch
-            $o .= $this->createFieldMarkup('clearcache',array('name' => 'Clear cache on save','type' => 'flipswitch'),array('clearcache' => 1));
+            /* Template Variables */
+            $tvObjs = $resource->getTemplateVarCollection($resource);
+            $tvs = array();
+            $categories = array();
+            foreach ($tvObjs as $tv) {
+                if ($tv instanceof modTemplateVar) {
+                    $tvArray = $tv->toArray();
+                    if (!empty($categories[$tvArray['category']]))
+                        $tvs[$categories[$tvArray['category']]][] = $tvArray;
+                    else {
+                        if ($tvArray['category'] == 0) {
+                            $tvs['Uncategorized'][] = $tvArray;
+                        }
+                        else {
+                            $cat = $tv->getOne('Category');
+                            if ($cat instanceof modCategory) {
+                                $categories[$tvArray['category']] = $cat->get('category');
+                                $tvs[$categories[$tvArray['category']]][] = $tvArray;
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (count($tvs) > 0) {
+                $o .= '<div data-role="collapsible" data-collapsed="true"><h3>Template Variables</h3>
+                    <div data-role="collapsible-set">';
+                foreach ($tvs as $catname => $category) {
+                    // This makes sure the first section is opened if there are > 1 sections
+                    $collapsed = (!isset($notfirst) && count($tvs != 1)) ? 'data-collapsed="false"' : 'data-collapsed="true"';
+                    $o .= '<div data-role="collapsible" '.$collapsed.'><h5>' . $catname .  '</h5>';
+                    foreach ($category as $tv) {
+                        $o .= $this->createTemplateVarFieldMarkup($tv);
+                    }
+                    $o .= '</div>';
+                    $notfirst = true;
+                }
+                unset ($notfirst);
+                $o .= '</div>';
+            }
+
+            $o .= '</div>';
+
+            // Add a flipswitch to decide whether or not the cache should be cleared.
+            $o .= $this->createFieldMarkup('clearcache','Clear cache on save?','flipswitch',1);
             $o .= '<button type="submit" name="submit" id="upd_submit" value="Save" data-rel="dialog"></button>';
 
             $o .= '</form>'; // Close form
@@ -131,16 +176,32 @@ EOD;
             
         }
 
-        public function createFieldMarkup(string $cf, array $cfarr, $r = array()) {
-            $cfname = $cfarr['name'];
-            switch ($cfarr['type']) {
+        public function createTemplateVarFieldMarkup(array $tv) {
+            switch($tv['display']) {
+                default: 
+                case 'default':
+                    $value = $tv['value'];
+                    break;
+            }
+            switch ($tv['type']) {
+                default:
+                case 'text':
+                    $type = 'text';
+            }
+
+            $options = array();
+            return $this->createFieldMarkup('tv'.$tv['id'],$tv['caption'],$type,$value,$options);
+        }
+
+        public function createFieldMarkup(string $fieldname, string $displayname, $type = 'text', string $value, $options = array()) {
+            switch ($type) {
                 case 'flipswitch':
-                    $yes = ($r[$cf] == 1) ? ' selected="selected" ' : '';
-                    $no = ($r[$cf] == 1) ? '' : ' selected="selected" ';
+                    $yes = ($value == 1) ? ' selected="selected" ' : '';
+                    $no = ($value == 1) ? '' : ' selected="selected" ';
                     return <<<EOD
                     <div data-role="fieldcontain">
-                        <label for="upd_$cf">$cfname</label>
-                        <select name="$cf" id="upd_$cf" data-role="slider">
+                        <label for="upd_$fieldname">$displayname</label>
+                        <select name="$fieldname" id="upd_$fieldname" data-role="slider">
                             <option value="0"$no>No</option>
                             <option value="1"$yes>Yes</option>
                         </select>
@@ -149,16 +210,16 @@ EOD;
                     break;
                 case 'select':
                     $opts = '';
-                    if (is_array($cfarr['options'])) {
-                        foreach ($cfarr['options'] as $opt) {
-                            $sel = ($opt['value'] == $cfarr['active']) ? ' selected="selected" ' : '';
+                    if (is_array($options)) {
+                        foreach ($options as $opt) {
+                            $sel = ($opt['value'] == $value) ? ' selected="selected" ' : '';
                             $opts .= '<option value="' . $opt['value'] . '"' . $sel . '>' . $opt['name'] . '</option>';
                         }
                     }
                     return <<<EOD
                     <div data-role="fieldcontain">
-                        <label for="upd_$cf">$cfname</label>
-                        <select name="$cf" id="upd_$cf">
+                        <label for="upd_$fieldname">$displayname</label>
+                        <select name="$fieldname" id="upd_$fieldname">
                             $opts
                         </select>
                     </div>
@@ -167,8 +228,8 @@ EOD;
                 case 'textarea':
                     return <<<EOD
                     <div data-role="fieldcontain">
-                        <label for="upd_$cf">$cfname</label>
-                        <textarea id="upd_$cf" name="$cf" rows="8" cols="40">$r[$cf]</textarea>
+                        <label for="upd_$fieldname">$displayname</label>
+                        <textarea id="upd_$fieldname" name="$fieldname" rows="8" cols="40">$value</textarea>
                     </div>
 EOD;
                     break;
@@ -176,8 +237,8 @@ EOD;
                 default:
                     return <<<EOD
                     <div data-role="fieldcontain">
-                        <label for="upd_$cf">$cfname</label>
-                        <input type="text" value="$r[$cf]" id="upd_$cf" name="$cf" />
+                        <label for="upd_$fieldname">$displayname</label>
+                        <input type="text" value="$value" id="upd_$fieldname" name="$fieldname" />
                     </div>
 EOD;
                     break;
