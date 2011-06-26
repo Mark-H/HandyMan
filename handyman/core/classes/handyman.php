@@ -181,14 +181,15 @@
                 });
                 </script>
             </head>
-            <body>
-                <div data-role="page" id="' . $id . '"' . $cache . '>';
+            <body>';
 
             // Depending on the type of page (determined by the $meta['view'] option) we'll output something here.
             switch ($meta['view']) {
                 // First "view" is a dialog window, which doesn't need as many buttons and stuff. We do add a "Close window" button here.
                 case 'dialog':
-                    $o .= '<div data-role="header" class="redGradient">
+                    $o .= '
+                    <div data-role="dialog" id="' . $id . '"' . $cache . '>
+                    <div data-role="header" class="redGradient">
                         <h1>' . $meta['title'] . '</h1>
                     </div>
                     <div data-role="content">
@@ -207,6 +208,7 @@
                 case 'page':
                 default:
                     $o .= '
+                    <div data-role="page" id="' . $id . '"' . $cache . '>
                     <div data-role="header" class="redGradient">
                         <a href="javascript: history.go(-1);" data-icon="arrow-l" data-rel="back" data-direction="reverse">Back</a>
                         <h1>' . $meta['title'] . '</h1>

@@ -53,7 +53,7 @@
              * fashion using collapsible sets.
              ***/
 
-            $o .= '<form action="'. $this->webroot . 'index.php?hma=res_update_save" method="post" data-rel="dialog">
+            $o .= '<form action="'. $this->webroot . 'index.php?hma=res_update_save" method="post" data-transition="pop">
                 <input type="hidden" name="id" value="' . $rid .'" />
                 <input type="hidden" name="context_key" value="' . $r['context_key'] . '" />
                 <div data-role="collapsible-set">
@@ -127,7 +127,7 @@ EOD;
 
             $o .= '</div>'; // Close collapsible set
 
-            $o .= '<button type="submit" name="submit" id="upd_submit" value="Save"></button>';
+            $o .= '<button type="submit" name="submit" id="upd_submit" value="Save" data-rel="dialog"></button>';
 
             $o .= '</form>'; // Close form
             return $o;
