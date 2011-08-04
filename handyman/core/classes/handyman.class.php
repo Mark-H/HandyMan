@@ -72,11 +72,16 @@ class HandyMan {
         $this->config = array_merge(array(
             'basePath' => $basePath,
             'corePath' => $basePath.'core/',
+            'modelPath' => $basePath.'core/classes/',
             'controllersPath' => $basePath.'core/controllers/',
             'templatesPath' => $basePath.'core/templates/',
             'assetsPath' => $basePath.'assets/',
             'tplSuffix' => '.tpl',
         ),$config);
+
+        $this->modx->setLogTarget('ECHO');
+        $this->modx->setLogLevel(modX::LOG_LEVEL_ERROR);
+        error_reporting(E_ALL); ini_set('display_errors',true);
     } // End of method __construct()
 
     /**

@@ -9,6 +9,9 @@ class hmcResourceUpdate extends hmController {
     /** @var modTemplate $template */
     public $template;
 
+    /** @var hmInputRenderer $renderer */
+    public $renderer;
+
     public function getPageTitle() {
         return $this->resource->get('pagetitle');
     }
@@ -31,13 +34,17 @@ class hmcResourceUpdate extends hmController {
     public function process() {
         $this->setPlaceholders($this->resource->toArray());
 
+        $this->modx->loadClass('hmInputRenderer',$this->hm->config['modelPath'],true,true);
+        $this->renderer = new hmInputRenderer($this->hm);
+        
+        $clearCache = array('type' => 'boolean','name' => 'clearcache','title' => 'Clear cache on save?','value' => true);
+        $clearCache = $this->renderer->render('boolean',$clearCache);
+        $this->setPlaceholder('clearCache',$clearCache);
+        
         $this->getResourceFields();
         $this->getResourceSettings();
         $this->getTemplateVariables();
 
-
-        $clearCache = $this->createField('boolean','clearcache','Clear cache on save?',1);
-        $this->setPlaceholder('clearCache',$clearCache);
 
     }
 
@@ -65,7 +72,9 @@ class hmcResourceUpdate extends hmController {
 
         $list = array();
         foreach ($fields as $name => $details) {
-            $list[$name] = $this->createField($details['type'],$name,$details['title'],$this->resource->get($name),$details['options']);
+            $details['name'] = $name;
+            $details['value'] = $this->resource->get($name);
+            $list[$name] = $this->renderer->render($details['type'],$details);
         }
         $this->setPlaceholder('fields',implode("\n",$list));
     }
@@ -75,16 +84,18 @@ class hmcResourceUpdate extends hmController {
             'isfolder' => array('title' => 'Container','type' => 'flipswitch'),
             'pub_date' => array('title' => 'Publish date','type' => 'text'),
             'unpub_date' => array('title' => 'Unpublish date','type' => 'text'),
-            'searchable' => array('title' => 'Searchable','type' => 'flipswitch'),
-            'cacheable' => array('title' => 'Cacheable','type' => 'flipswitch'),
-            'deleted' => array('title' => 'Deleted','type' => 'flipswitch'),
-            // This does not included: publishedon, empty cache (done seperately later on), content type,
+            'searchable' => array('title' => 'Searchable','type' => 'boolean'),
+            'cacheable' => array('title' => 'Cacheable','type' => 'boolean'),
+            'deleted' => array('title' => 'Deleted','type' => 'boolean'),
+            // This does not included: publishedon, empty cache (done separately later on), content type,
             //      content disposition, class key and freeze_uri (2.1+). Don't think it's needed.
         );
 
         $list = array();
         foreach ($fields as $name => $details) {
-            $list[$name] = $this->createField($details['type'],$name,$details['title'],$this->resource->get($name),$details['options']);
+            $details['name'] = $name;
+            $details['value'] = $this->resource->get($name);
+            $list[$name] = $this->renderer->render($details['type'],$details);
         }
         $this->setPlaceholder('settings',implode("\n",$list));
     }
@@ -102,16 +113,16 @@ class hmcResourceUpdate extends hmController {
             if ($tv instanceof modTemplateVar) {
                 $tvArray = $tv->toArray();
                 if (!empty($categories[$tvArray['category']]))
-                    $tvs[$categories[$tvArray['category']]][] = $tvArray;
+                    $tvs[$categories[$tvArray['category']]][] = $tv;
                 else {
                     if ($tvArray['category'] == 0) {
-                        $tvs['Uncategorized'][] = $tvArray;
+                        $tvs['Uncategorized'][] = $tv;
                     }
                     else {
                         $cat = $tv->getOne('Category');
                         if ($cat instanceof modCategory) {
                             $categories[$tvArray['category']] = $cat->get('category');
-                            $tvs[$categories[$tvArray['category']]][] = $tvArray;
+                            $tvs[$categories[$tvArray['category']]][] = $tv;
                         }
                     }
                 }
@@ -120,10 +131,14 @@ class hmcResourceUpdate extends hmController {
 
         $list = array();
         if (count($tvs) > 0) {
+            $this->modx->loadClass('hmTvInputRenderer',$this->hm->config['modelPath'],true,true);
+            $renderer = new hmTvInputRenderer($this->hm);
+
             foreach ($tvs as $categoryName => $categoryTemplateVariables) {
                 $tvList = array();
+                /** @var modTemplateVar $tv */
                 foreach ($categoryTemplateVariables as $tv) {
-                    $tvList[] = $this->createTemplateVarField($tv);
+                    $tvList[] = $renderer->render($tv->get('display'),$tv);
                 }
                 $list[] = $this->hm->getTpl('fields/tvs/category',array(
                     'name' => $categoryName,
@@ -142,25 +157,28 @@ class hmcResourceUpdate extends hmController {
 
     /**
      * Create a field for a TV type
-     * @param array $tv
+     * @param modTemplateVar $tv
      * @return string
      */
-    public function createTemplateVarField(array $tv) {
-        $value = $tv['value'];
-        switch($tv['display']) {
+    public function createTemplateVarField(modTemplateVar $tv) {
+        $value = $tv->get('value');
+        switch($tv->get('display')) {
             default:
             case 'default':
                 break;
         }
         $type = 'text';
-        switch ($tv['type']) {
+        switch ($tv->get('type')) {
+            case 'checkbox':
+                
             default:
             case 'text':
                 break;
         }
 
         $options = array();
-        return $this->createField($type,'tv'.$tv['id'],$tv['caption'],$value,$options);
+        $tvArray = $tv->toArray();
+        return $this->createField($type,'tv'.$tvArray['id'],$tvArray['caption'],$value,$options);
     }
 
 
