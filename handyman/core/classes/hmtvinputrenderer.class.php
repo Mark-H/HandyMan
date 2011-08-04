@@ -27,6 +27,8 @@ class hmTvInputRenderer extends hmInputRenderer {
             case 'select':
                 $type = 'select';
             break;
+            case 'option':
+                $type = 'radio'; break;
             case 'default':
                 $type = 'text';
                 break;
@@ -60,7 +62,6 @@ class hmTvInputRenderer extends hmInputRenderer {
         $i = 0;
         foreach ($options as $option) {
             $opt = explode("==",$option);
-            $checked = false;
             if (!isset($opt[1])) $opt[1] = $opt[0];
 
             /* set checked status */
@@ -85,6 +86,51 @@ class hmTvInputRenderer extends hmInputRenderer {
             $list[] = $this->hm->getTpl('fields/checkbox.option',$item);
         }
 
+        $tv->set('options',implode("\n",$list));
+        return $tv;
+    }
+    /**
+     * @param modTemplateVar $tv
+     * @return modTemplateVar
+     */
+    public function prepareRadio($tv) {
+
+        $value = $tv->get('value');
+        $default = $tv->get('default_text');
+
+        // handles radio buttons
+        $options = $tv->parseInputOptions($tv->processBindings($tv->get('elements'),$tv->get('name')));
+        $items = array();
+        $defaultIndex = '';
+        $i = 0;
+        foreach ($options as $option) {
+            $opt = explode("==",$option);
+            if (!isset($opt[1])) $opt[1] = $opt[0];
+            
+            /* set checked status */
+            $checked = strcmp($opt[1],$value) == 0 ? ' checked="checked"' : '';
+            
+            /* set default value */
+            if (strcmp($opt[1],$default) == 0) {
+                $defaultIndex = 'tv'.$tv->get('id').'-'.$i;
+                $tv->set('default_text',$defaultIndex);
+            }
+
+            $items[] = array(
+                'text' => htmlspecialchars($opt[0],ENT_COMPAT,'UTF-8'),
+                'name' => 'tv'.$tv->get('id'),
+                'value' => $opt[1],
+                'checked' => $checked,
+                'idx' => $i,
+            );
+
+            $i++;
+        }
+
+        $list = array();
+        foreach ($items as $item) {
+            $list[] = $this->hm->getTpl('fields/radio.option',$item);
+        }
         $tv->set('options',implode("\n",$list));
         return $tv;
     }
