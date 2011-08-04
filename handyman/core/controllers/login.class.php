@@ -25,21 +25,16 @@ class hmcLogin extends hmController {
     protected $templateFile = 'login';
     protected $cache = false;
 
-    public function setup() {}
+    public function setup() {
+        return true;
+    }
     public function getPageTitle() {
         return 'Please login';
     }
 
     public function process() {
-        $o = '';
-        $placeholders = array();
-        if ($this->config['message']) { $placeholders['message'] = $this->config['message']; }
-
-        return $placeholders;
-    }
-
-    public function displayForm($options) {
-        $df = '';
-        return $df;
+        if ($this->config['message']) {
+            $this->setPlaceholder('message',$this->config['message']);
+        }
     }
 }

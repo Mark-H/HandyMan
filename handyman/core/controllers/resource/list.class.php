@@ -18,19 +18,20 @@ class hmcResourceList extends hmController {
         } else {
             $this->context = $_REQUEST['ctx'];
         }
+        return true;
     }
 
     public function process() {
-        $placeholders = array();
-
         $parent = (isset($this->config['get']['parent'])) ? (int)$this->config['get']['parent'] : 0;
         $start = (isset($this->config['get']['start'])) ? $this->config['get']['start'] : null;
         $limit = (isset($this->config['get']['limit'])) ? $this->config['get']['limit'] : null;
         $list = (isset($this->config['get']['list'])) ? $this->config['get']['list'] : null;
 
         if ($parent > 0) {
+            /** @var modResource $current */
             $current = $this->modx->getObject('modResource',$parent);
-            $placeholders = array_merge($placeholders,$current->toArray());
+            $this->setPlaceholders($current->toArray());
+            
             $pubstate = (boolean)$current->get('published');
             $deleted = (boolean)$current->get('deleted');
             $resEditMap = array(
@@ -82,21 +83,19 @@ class hmcResourceList extends hmController {
                     'icon' => 'plus'
                 )
             );
-            $placeholders['actions'] = $this->processActions($resEditMap);
-            $placeholders['view'] = $this->hm->getTpl('resource/list.view',$placeholders);
+            $this->setPlaceholder('actions',$this->processActions($resEditMap));
+            $this->setPlaceholder('view',$this->hm->getTpl('resource/list.view',$this->getPlaceholders()));
         } else {
             $parent = 0;
-            $placeholders['view'] = '';
+            $this->setPlaceholder('view','');
         }
 
         $subResources = $this->listResources($parent);
+        $resources = '';
         if (count($subResources) > 0) {
-            $placeholders['resources'] = $this->processActions($subResources);
-        } else {
-            $placeholders['resources'] = '';
+            $resources = $this->processActions($subResources);
         }
-
-        return $placeholders;
+        $this->setPlaceholder('resources',$resources);
     }
     
     public function listResources($parent = 0) {

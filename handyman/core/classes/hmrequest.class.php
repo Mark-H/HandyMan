@@ -1,9 +1,17 @@
 <?php
+/**
+ * @package handyman
+ */
 class hmRequest {
+    /** @var boolean $authorized */
     public $authorized;
+    /** @var HandyMan $hm */
     public $hm;
+    /** @var modX $modx */
     public $modx;
+    /** @var string $action */
     public $action = 'home';
+    /** @var hmController $controller */
     public $controller;
 
     function __construct(HandyMan &$hm,array $config = array()) {
@@ -68,7 +76,7 @@ class hmRequest {
         $actionName = $this->action['hma'];
         $actionPath = $actionName;
         if (strlen($actionPath) < 1) { return 'Oops, hma failure.'; }
-        $actionName = 'hmc'.str_replace('/','',$actionName);
+        $actionName = 'hmc'.str_replace(array('/','.'),'',$actionName);
 
         if (count($this->action['options']) > 0) {
             $actionOptions = $this->action['options'];
@@ -78,50 +86,40 @@ class hmRequest {
 
         $output = '';
         $this->modx->loadClass('hmController',$this->hm->config['controllersPath'],true,true);
-        if (!$this->modx->loadClass($actionPath,$this->hm->config['controllersPath'],true,true)) {
+        $included = include_once $this->hm->config['controllersPath'].$actionPath.'.class.php';
+        if (!$included) {
             $this->modx->loadClass('empty',$this->hm->config['controllersPath'],true,true);
             $actionName = 'hmcEmpty';
         }
         $this->action['actionName'] = $actionName;
         $this->action['actionPath'] = $actionPath;
         $this->controller = new $actionName($this->hm,$this->action);
-        $this->controller->initialize();
-
-        if ($this->controller->meta) {
-            $this->action['meta'] = $this->controller->meta;
+        /* attempt to initialize (setup) the page */
+        $initialized = $this->controller->initialize();
+        /* assuming all went well, process and render the page */
+        if ($initialized === true) {
+            if ($this->controller->meta) {
+                $this->action['meta'] = $this->controller->meta;
+            } else {
+                $this->action['meta'] = array(
+                    'title' => 'HandyMan'
+                );
+            }
+            $output = $this->controller->render($actionOptions);
         } else {
-            $this->action['meta'] = array(
-                'title' => 'HandyMan'
-            );
+            /* simulate a page for the error by wrapping with header/footer */
+            $output = $this->controller->wrap($initialized);
         }
-        $output = $this->controller->render($actionOptions);
 
-        $this->modx->parser->processElementTags('', $output, true, true, '[[', ']]', array(), 10);
+        $output = $this->stripMODXTags($output);
         return $output;
     }
 
-
-    public function processor(array $options = array(),&$modx) {
-        $processor = isset($options['processors_path']) && !empty($options['processors_path']) ? $options['processors_path'] : MODX_PROCESSORS_PATH;
-        if (isset($options['location']) && !empty($options['location'])) $processor .= $options['location'] . '/';
-        $processor .= str_replace('../', '', $options['action']) . '.php';
-        if (file_exists($processor)) {
-            if (!isset($modx->lexicon)) $modx->getService('lexicon', 'modLexicon');
-            if (!isset($modx->error)) $modx->getService('error','error.modError');
-
-            /* create scriptProperties array from HTTP GPC vars */
-            if (!isset($_POST)) $_POST = array();
-            if (!isset($_GET)) $_GET = array();
-            $scriptProperties = array_merge($_GET,$_POST,$options);
-            if (isset($_FILES) && !empty($_FILES)) {
-                $scriptProperties = array_merge($scriptProperties,$_FILES);
-            }
-            $result = include $processor;
-        } else {
-            //$this->modx->error->failure(modX::LOG_LEVEL_ERROR, "Processor {$processor} does not exist; " . print_r($options, true));
-            $result = 'Processor not found: '.$processor;
-        }
-        return $result;
+    public function stripMODXTags($string) {
+        $targets = array($string);
+        $targets = modX::sanitize($targets,array(
+            '@\[\[(.[^\[\[]*?)\]\]@si',
+        ));
+        return $targets[0];
     }
-
 }

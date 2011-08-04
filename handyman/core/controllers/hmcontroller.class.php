@@ -3,40 +3,95 @@
  * Base abstract class for HandyMan action pages
  */
 abstract class hmController {
+    const VIEW_DIALOG = 'dialog';
+    const VIEW_PAGE = 'page';
     protected $templateFile = 'empty';
-    protected $viewType = 'page';
+    protected $viewType = self::VIEW_PAGE;
     protected $cache = true;
+
+    /** @var HandyMan $hm */
+    public $hm;
+    /** @var modX $modx */
+    public $modx;
+    /** @var array $config */
+    public $config = array();
+    /** @var array $placeholders */
+    protected $placeholders = array();
 
     function __construct(HandyMan &$hm,array $config = array()) {
         $this->hm =& $hm;
         $this->modx =& $hm->modx;
-        $this->config = array_merge(array(),$config);
+        $this->config = array_merge($this->config,$config);
     }
 
+    /**
+     * Setup the page. Used for grabbing, say, the Resource being edited/viewed. Return true to proceed;
+     * anything other than true will be interpreted as an error message (such as "Resource not found!" and will be
+     * outputted.
+     *
+     * @abstract
+     * @return boolean
+     */
     abstract public function setup();
+    /**
+     * Put the logic of your page here.
+     * @abstract
+     * @return void
+     */
     abstract public function process();
 
-    public function getPageId() {}
+    public final function initialize() {
+        return $this->setup();
+    }
+
+    /**
+     * Set the page title of your page by overriding this method
+     * @return string
+     */
     public function getPageTitle() {
         return 'HandyMan';
     }
-
-    public function initialize() {
-        $this->setup();
-    }
     
-    public function render(array $options = array()) {
-        $this->config = array_merge($this->config,$options);
-        $placeholders = $this->process();
-        if (empty($placeholders)) $placeholders = array();
+    public function getPageId() {}
 
-        $output = $this->hm->getTpl($this->templateFile,$placeholders);
-        $output = $this->_wrap($output);
+    /**
+     * Render the page.
+     * 
+     * @final
+     * @param array $options An array of page-specific options, including details about the page
+     * @return string
+     */
+    public final function render(array $options = array()) {
+        $this->config = array_merge($this->config,$options);
+        $this->process();
+        $output = $this->hm->getTpl($this->templateFile,$this->placeholders);
+        $output = $this->wrap($output);
 
         return $output;
     }
 
-    private function _wrap($body = '') {
+    public function setPlaceholder($k,$v) {
+        $this->placeholders[$k] = $v;
+    }
+    public function setPlaceholders(array $array = array()) {
+        foreach ($array as $k => $v) {
+            $this->setPlaceholder($k,$v);
+        }
+    }
+    public function getPlaceholder($k,$default = null) {
+        return isset($this->placeholders[$k]) ? $this->placeholders[$k] : $default;
+    }
+    public function getPlaceholders() {
+        return $this->placeholders;
+    }
+
+    /**
+     * Wrap the page in the header and footer.
+     * 
+     * @param string $body
+     * @return string
+     */
+    public function wrap($body = '') {
         $output = $this->renderPageType($body);
         return $this->getHeader().$output.$this->getFooter();
     }
@@ -116,6 +171,68 @@ abstract class hmController {
         $params['action'] = $action;
         $url = $this->hm->webroot.'index.php?'.http_build_query($params);
         $this->modx->sendRedirect($url);
+    }
+
+
+
+    public function runProcessor(array $options = array()) {
+        $processor = isset($options['processors_path']) && !empty($options['processors_path']) ? $options['processors_path'] : MODX_PROCESSORS_PATH;
+        if (isset($options['location']) && !empty($options['location'])) $processor .= $options['location'] . '/';
+        $processor .= str_replace('../', '', $options['action']) . '.php';
+        if (file_exists($processor)) {
+            if (empty($this->modx->lexicon)) $this->modx->getService('lexicon', 'modLexicon');
+            if (empty($this->modx->error)) $this->modx->getService('error','error.modError');
+
+            $modx =& $this->modx;
+
+            /* create scriptProperties array from HTTP GPC vars */
+            if (!isset($_POST)) $_POST = array();
+            if (!isset($_GET)) $_GET = array();
+            $scriptProperties = array_merge($_GET,$_POST,$options);
+            if (isset($_FILES) && !empty($_FILES)) {
+                $scriptProperties = array_merge($scriptProperties,$_FILES);
+            }
+            $result = include $processor;
+        } else {
+            $result = 'Processor not found: '.$processor;
+        }
+        return $result;
+    }
+
+
+    public function createField($type,$name,$title,$value,array $options = array()) {
+        $placeholders = array(
+            'name' => $name,
+            'title' => $title,
+            'value' => $value,
+        );
+        switch ($type) {
+            case 'flipswitch':
+                $type = 'boolean';
+            case 'boolean':
+                $placeholders['yes'] = ($value == 1) ? ' selected="selected" ' : '';
+                $placeholders['no'] = ($value == 1) ? '' : ' selected="selected" ';
+                break;
+            case 'options':
+            case 'dropdown':
+                $type = 'select';
+            case 'select':
+                $optionList = array();
+                if (is_array($options)) {
+                    foreach ($options as $opt) {
+                        $sel = ($opt['value'] == $value) ? ' selected="selected" ' : '';
+                        $optionList[] = $this->hm->getTpl('fields/select.option',array(
+                            'value' => $opt['value'],
+                            'name' => $opt['name'],
+                            'selected' => $sel,
+                        ));
+                    }
+                }
+                $placeholders['options'] = implode("\n",$optionList);
+                break;
+            default: break;
+        }
+        return $this->hm->getTpl('fields/'.$type,$placeholders);
     }
 
 /*

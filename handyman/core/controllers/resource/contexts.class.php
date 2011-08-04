@@ -8,22 +8,22 @@ class hmcResourceContexts extends hmController {
         return 'Listing Contexts';
     }
 
-    public function setup() {}
+    public function setup() {
+        return true;
+    }
 
     public function process() {
-        $placeholders = array();
-
         $this->contexts = $this->listContexts();
         if (count($this->contexts) > 1) {
-            $placeholders['contexts'] = $this->processActions($this->contexts);
+            $this->setPlaceholder('contexts',$this->processActions($this->contexts));
+            
         } elseif (count($this->contexts) == 1) {
             $this->redirect('resource/list',array(
                 'ctx' => $this->contexts[0]['object']->get('key'),
             ));
         } else {
-            $placeholders['contexts'] = 'Your contexts are messed up.';
+            $this->setPlaceholder('contexts','Your contexts are messed up.');
         }
-        return $placeholders;
     }
 
     public function listContexts() {

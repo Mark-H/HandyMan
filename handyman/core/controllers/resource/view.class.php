@@ -24,115 +24,143 @@
 class hmcResourceView extends hmController {
     protected $cache = false;
     protected $templateFile = 'resource/view';
+
+    /** @var modResource $resource */
+    public $resource;
+    /** @var modTemplate $template */
+    public $template;
     
     public function getPageTitle() {
         return 'Resource Details';
     }
-    public function setup() {}
-
-    public function process() {
-        $placeholders = array();
-        $o = '';
-
+    public function setup() {
         if (empty($_REQUEST['rid'])) {
-            $this->hm->end('No valid resource id passed.');
-        } else {
-            $rid = $_REQUEST['rid'];
+            return 'No valid resource id passed.';
+        }
+        $this->resource = $this->modx->getObject('modResource',intval($_REQUEST['rid']));
+        if (empty($this->resource)) {
+            return 'Resource not found.';
+        }
+        return true;
+    }
+
+    /**
+     * Process this page, load the resource, and present its values
+     * @return void
+     */
+    public function process() {
+        $this->setPlaceholders($this->resource->toArray());
+
+        $this->template = $this->resource->getOne('Template');
+        if ($this->template) {
+            $this->setPlaceholder('template',$this->template->get('templatename'));
         }
 
-        $resource = $this->modx->getObject('modResource',$rid);
-        if (empty($resource)) {
-            $this->hm->end('Resource not found.');
+        $this->getContent();
+        $this->getResourceFields();
+        $this->getResourceSettings();
+        
+        if ($this->template) {
+            $this->getTemplateVariables();
         }
-        $r = $resource->toArray();
-        $placeholders = array_merge($placeholders,$r);
-        $r['tplObj'] = $resource->getOne('Template');
-        if ($r['tplObj']) {
-            $r['template'] = $r['tplObj']->get('templatename');
-        }
+    }
 
-        /* Will use three sections: resource fields, resource settings
-         * and template variables. These will be styled in an accordeon-ish
-         * fashion using collapsible sets.
-         ***/
+    /**
+     * Get, process and encode the content of this Resource
+     * @return void
+     */
+    public function getContent() {
+        $content = $this->resource->getContent();
+        $this->setPlaceholder('content',$this->hm->getTpl('widgets/simpleli',array(
+            'text' => $this->safe($content),
+        )));
+    }
 
-        // Content
-
-        $content = $resource->getContent();
-        $placeholders['content'] = $this->hm->getTpl('widgets/simpleli',array(
-            'text' => htmlentities($content),
-        ));
-
-        // Resource Fields
+    /**
+     * Get all the main Resource Fields for this Resource
+     * @return void
+     */
+    public function getResourceFields() {
         $fields = array();
         $rfields = array('id', 'template', 'pagetitle', 'longtitle', 'description', 'alias', 'link_attributes', 'introtext', 'parent', 'menutitle', 'menuindex', 'hidemenu');
-        foreach ($rfields as $rf) {
+        foreach ($rfields as $fieldName) {
             $text = '';
-            if (!empty($r[$rf])) {
-                $text = $r[$rf];
-            } elseif (!empty($r[$rf])) {
-                $text = $rf.': '.$r[$rf];
+            $fieldValue = $this->getPlaceholder($fieldName);
+            if (!empty($fieldValue)) {
+                $text = ucfirst($fieldName).': '.$fieldValue;
             }
             if (!empty($text)) {
                 $fields[] = $this->hm->getTpl('widgets/simpleli',array(
-                    'text' => htmlentities($text),
+                    'text' => $this->safe($text),
                 ));
             }
         }
-        $placeholders['resourceFields'] = implode("\n",$fields);
+        $this->setPlaceholder('resourceFields',implode("\n",$fields));
+    }
 
-        // Resource Settings
+    /**
+     * Make MODX/HTML safe a string of content
+     * @param string $string
+     * @return mixed
+     */
+    public function safe($string) {
+        return str_replace(array('[',']'),array('&#91;','&#93;'),htmlentities($string));
+    }
+
+    /**
+     * Get all the Resource Settings for this Resource
+     * @return void
+     */
+    public function getResourceSettings() {
         $rfields = array('container', 'richtext', 'publishedon', 'pub_date', 'unpub_date', 'searchable', 'cacheable', 'deleted', 'content_type', 'content_dispo', 'class_key');
         $settings = array();
-        foreach ($rfields as $rf) {
+        foreach ($rfields as $fieldName) {
             $text = '';
-            if (!empty($r[$rf])) {
-                $text = $r[$rf];
-            } elseif (!empty($r[$rf])) {
-                $text = $rf.': '.$r[$rf];
+            $fieldValue = $this->getPlaceholder($fieldName);
+            if (!empty($fieldValue)) {
+                $text = ucfirst($fieldName).': '.$fieldValue;
             }
             if (!empty($text)) {
                 $settings[] = $this->hm->getTpl('widgets/simpleli',array(
-                    'text' => $text,
+                    'text' => $this->safe($text),
                 ));
             }
         }
-        $placeholders['pageSettings'] = implode("\n",$settings);
-
-        /* TVs! */
-        $placeholders['tvs'] = '';
-        if ($r['tplObj']) {
-            $c = $this->modx->newQuery('modTemplateVar');
-            $c->query['distinct'] = 'DISTINCT';
-            $c->select($this->modx->getSelectColumns('modTemplateVar', 'modTemplateVar'));
-            $c->select($this->modx->getSelectColumns('modCategory', 'Category', 'cat_', array('category')));
-            $c->select($this->modx->getSelectColumns('modTemplateVarResource', 'TemplateVarResource', '', array('value')));
-            $c->select($this->modx->getSelectColumns('modTemplateVarTemplate', 'TemplateVarTemplate', '', array('rank')));
-            $c->leftJoin('modCategory','Category');
-            $c->innerJoin('modTemplateVarTemplate','TemplateVarTemplate',array(
-                'TemplateVarTemplate.tmplvarid = modTemplateVar.id',
-                'TemplateVarTemplate.templateid' => $r['tplObj']->id,
-            ));
-            $c->leftJoin('modTemplateVarResource','TemplateVarResource',array(
-                'TemplateVarResource.tmplvarid = modTemplateVar.id',
-                'TemplateVarResource.contentid' => $resource->id,
-            ));
-            $c->sortby('cat_category,TemplateVarTemplate.rank,modTemplateVar.rank','ASC');
-            $tvs = $this->modx->getCollection('modTemplateVar',$c);
-
-            if (count($tvs) > 0) {
-                $templateVariables = array();
-                foreach ($tvs as $tv) {
-                    $templateVariables[] = $this->hm->getTpl('widgets/simpleli',array(
-                        'text' => $tv->get('caption').': '.$tv->get('value'),
-                    ));
-                }
-                $placeholders['tvs'] = implode("\n",$templateVariables);
-            }
-        }
-
-        return $placeholders;
-
+        $this->setPlaceholder('pageSettings',implode("\n",$settings));
     }
 
+    /**
+     * Get all Template Variables for this Resource
+     * @return void
+     */
+    public function getTemplateVariables() {
+        $c = $this->modx->newQuery('modTemplateVar');
+        $c->query['distinct'] = 'DISTINCT';
+        $c->select($this->modx->getSelectColumns('modTemplateVar', 'modTemplateVar'));
+        $c->select($this->modx->getSelectColumns('modCategory', 'Category', 'cat_', array('category')));
+        $c->select($this->modx->getSelectColumns('modTemplateVarResource', 'TemplateVarResource', '', array('value')));
+        $c->select($this->modx->getSelectColumns('modTemplateVarTemplate', 'TemplateVarTemplate', '', array('rank')));
+        $c->leftJoin('modCategory','Category');
+        $c->innerJoin('modTemplateVarTemplate','TemplateVarTemplate',array(
+            'TemplateVarTemplate.tmplvarid = modTemplateVar.id',
+            'TemplateVarTemplate.templateid' => $this->template->id,
+        ));
+        $c->leftJoin('modTemplateVarResource','TemplateVarResource',array(
+            'TemplateVarResource.tmplvarid = modTemplateVar.id',
+            'TemplateVarResource.contentid' => $this->resource->id,
+        ));
+        $c->sortby('cat_category,TemplateVarTemplate.rank,modTemplateVar.rank','ASC');
+        $tvs = $this->modx->getCollection('modTemplateVar',$c);
+
+        if (count($tvs) > 0) {
+            $templateVariables = array();
+            /** @var modTemplateVar $tv */
+            foreach ($tvs as $tv) {
+                $templateVariables[] = $this->hm->getTpl('widgets/simpleli',array(
+                    'text' => $tv->get('caption').': '.$this->safe($tv->get('value')),
+                ));
+            }
+            $this->setPlaceholder('tvs',implode("\n",$templateVariables));
+        }
+    }
 }

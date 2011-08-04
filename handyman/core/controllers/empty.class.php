@@ -29,13 +29,13 @@ class hmcEmpty extends hmController {
         return 'An Error Occurred';
     }
 
-    public function setup() {}
+    public function setup() {
+        return true;
+    }
 
     public function process() {
-        $placeholders = array();
-        $placeholders['actionName'] = $this->config['actionName'];
-        $placeholders['actionPath'] = $this->config['actionPath'];
-        return $placeholders;
+        $this->setPlaceholder('actionName',$this->config['actionName']);
+        $this->setPlaceholder('actionPath',$this->config['actionPath']);
     }
 
 }

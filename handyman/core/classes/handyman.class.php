@@ -41,6 +41,7 @@ class HandyMan {
     public $errors = array();
     public $config = array();
     public $templates = array();
+    /** @var hmRequest $request */
     public $request;
 
     /* The construct method is called when the class is instantiated, so we

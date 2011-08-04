@@ -29,11 +29,11 @@ class hmcHome extends hmController {
         return 'Welcome to HandyMan';
     }
 
-    public function setup() {}
+    public function setup() {
+        return true;
+    }
 
     public function process() {
-        $placeholders = array();
-
         $actions = array(array(
             'action' => 'resource/contexts',
             'text' => 'List Resources',
@@ -48,8 +48,7 @@ class hmcHome extends hmController {
             'icon' => '',
             'reset' => true,
         ));
-        $placeholders['actions'] = $this->processActions($actions);
-        return $placeholders;
+        $this->setPlaceholder('actions',$this->processActions($actions));
     }
 
 }
