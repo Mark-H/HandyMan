@@ -72,6 +72,10 @@ class hmTvInputRenderer extends hmInputRenderer {
                 $defaults[] = 'tv'.$tv->get('id').'-'.$i;
             }
 
+            if (is_string($opt[1])) {
+                $opt[1] = str_replace('"','&quot;',$opt[1]);
+            }
+
             $items[] = array(
                 'text' => htmlspecialchars($opt[0],ENT_COMPAT,'UTF-8'),
                 'name' => 'tv'.$tv->get('id'),
@@ -114,6 +118,10 @@ class hmTvInputRenderer extends hmInputRenderer {
             if (strcmp($opt[1],$default) == 0) {
                 $defaultIndex = 'tv'.$tv->get('id').'-'.$i;
                 $tv->set('default_text',$defaultIndex);
+            }
+
+            if (is_string($opt[1])) {
+                $opt[1] = str_replace('"','&quot;',$opt[1]);
             }
 
             $items[] = array(

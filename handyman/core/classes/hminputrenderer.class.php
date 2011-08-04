@@ -45,6 +45,10 @@ class hmInputRenderer {
      * @return string
      */
     protected function output($type,array $field) {
+        /* ensure that quotes are escaped for field values */
+        if (is_string($field['value'])) {
+            $field['value'] = str_replace('"','&quot;',$field['value']);
+        }
         return $this->hm->getTpl('fields/'.$type,$field);
     }
 

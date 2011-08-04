@@ -44,8 +44,6 @@ class hmcResourceUpdate extends hmController {
         $this->getResourceFields();
         $this->getResourceSettings();
         $this->getTemplateVariables();
-
-
     }
 
     /**
