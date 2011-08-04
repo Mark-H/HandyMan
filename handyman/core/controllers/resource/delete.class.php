@@ -46,7 +46,7 @@ class hmcResourceDelete extends hmController {
     public function process() {
         $action = $this->resource->get('deleted') ? 'undelete' : 'delete';
 
-        $return = $this->runProcessor(array(
+        $return = $this->hm->runProcessor(array(
             'action' => 'resource/'.$action,
             'id' => $this->resource->get('id'),
         ));

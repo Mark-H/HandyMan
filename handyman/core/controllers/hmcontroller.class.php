@@ -173,33 +173,6 @@ abstract class hmController {
         $this->modx->sendRedirect($url);
     }
 
-
-
-    public function runProcessor(array $options = array()) {
-        $processor = isset($options['processors_path']) && !empty($options['processors_path']) ? $options['processors_path'] : MODX_PROCESSORS_PATH;
-        if (isset($options['location']) && !empty($options['location'])) $processor .= $options['location'] . '/';
-        $processor .= str_replace('../', '', $options['action']) . '.php';
-        if (file_exists($processor)) {
-            if (empty($this->modx->lexicon)) $this->modx->getService('lexicon', 'modLexicon');
-            if (empty($this->modx->error)) $this->modx->getService('error','error.modError');
-
-            $modx =& $this->modx;
-
-            /* create scriptProperties array from HTTP GPC vars */
-            if (!isset($_POST)) $_POST = array();
-            if (!isset($_GET)) $_GET = array();
-            $scriptProperties = array_merge($_GET,$_POST,$options);
-            if (isset($_FILES) && !empty($_FILES)) {
-                $scriptProperties = array_merge($scriptProperties,$_FILES);
-            }
-            $result = include $processor;
-        } else {
-            $result = 'Processor not found: '.$processor;
-        }
-        return $result;
-    }
-
-
     public function createField($type,$name,$title,$value,array $options = array()) {
         $placeholders = array(
             'name' => $name,

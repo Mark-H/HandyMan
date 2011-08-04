@@ -28,7 +28,7 @@ class hmRequest {
         if ($this->authorized) {
             // Check if it needs to log out
             if ($_GET['hma'] == 'logout') {
-                $return = $this->processor(array(
+                $return = $this->hm->runProcessor(array(
                     'action' => 'logout',
                     'location' => 'security'),
                 $this->modx);
@@ -51,7 +51,7 @@ class hmRequest {
         else if (!$this->authorized) {
             // Check if there is a login attempt, and if so validate it
             if ($_POST['hm_action'] == 'login') {
-                $return = $this->processor(array(
+                $return = $this->hm->runProcessor(array(
                     'action' =>'login',
                     'location' => 'security'),
                 $this->modx);
