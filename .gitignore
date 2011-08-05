@@ -1,2 +1,4 @@
-/config.core.php 
-/.idea 
+config.core.php
+.idea
+nbproject
+.DS_Store
