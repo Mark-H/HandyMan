@@ -24,6 +24,7 @@ class hmcResourceUpdate extends hmController {
             return 'Resource not found.';
         }
         $this->template = $this->resource->getOne('Template');
+        $this->modx->lexicon->load('default','resource');
         return true;
     }
 
@@ -54,22 +55,23 @@ class hmcResourceUpdate extends hmController {
         $tplOptions = $this->getTemplateList();
 
         $fields = array(
-            'published' => array('title' => 'Published','type' => 'boolean'),
-            'template' => array('title' => 'Template', 'type' => 'select', 'options' => $tplOptions),
-            'pagetitle' => array('title' => 'Title','type' => 'text'),
-            'longtitle' => array('title' => 'Long Title','type' => 'text'),
-            'description' => array('title' => 'Description','type' => 'text'),
-            'alias' => array('title' => 'Resource Alias','type' => 'text'),
-            'link_attributes' => array('title' => 'Link Attributes','type' => 'text'),
-            'introtext' => array('title' => 'Summary (introtext)','type' => 'textarea'),
-            'parent' => array('title' => 'Parent Resource','type' => 'text'),
-            'menutitle' => array('title' => 'Menu Title','type' => 'text'),
-            'menuindex' => array('title' => 'Menu Index','type' => 'text'),
-            'hidemenu' => array('title' => 'Hide From Menus','type' => 'boolean'),
+            'published' => array('type' => 'boolean'),
+            'template' => array('type' => 'select', 'options' => $tplOptions),
+            'pagetitle' => array('type' => 'text'),
+            'longtitle' => array('type' => 'text'),
+            'description' => array('type' => 'text'),
+            'alias' => array('type' => 'text'),
+            'link_attributes' => array('type' => 'text'),
+            'introtext' => array('type' => 'textarea'),
+            'parent' => array('type' => 'text'),
+            'menutitle' => array('type' => 'text'),
+            'menuindex' => array('type' => 'text'),
+            'hidemenu' => array('type' => 'boolean'),
         );
 
         $list = array();
         foreach ($fields as $name => $details) {
+            $details['title'] = ($this->modx->lexicon->exists($name)) ? $this->modx->lexicon($name) : $this->modx->lexicon('resource_'.$name);
             $details['name'] = $name;
             $details['value'] = $this->resource->get($name);
             $list[$name] = $this->renderer->render($details['type'],$details);
@@ -79,18 +81,19 @@ class hmcResourceUpdate extends hmController {
 
     public function getResourceSettings() {
         $fields = array(
-            'isfolder' => array('title' => 'Container','type' => 'flipswitch'),
-            'pub_date' => array('title' => 'Publish date','type' => 'text'),
-            'unpub_date' => array('title' => 'Unpublish date','type' => 'text'),
-            'searchable' => array('title' => 'Searchable','type' => 'boolean'),
-            'cacheable' => array('title' => 'Cacheable','type' => 'boolean'),
-            'deleted' => array('title' => 'Deleted','type' => 'boolean'),
+            'isfolder' => array('type' => 'flipswitch'),
+            'pub_date' => array('type' => 'text'),
+            'unpub_date' => array('type' => 'text'),
+            'searchable' => array('type' => 'boolean'),
+            'cacheable' => array('type' => 'boolean'),
+            'deleted' => array('type' => 'boolean'),
             // This does not included: publishedon, empty cache (done separately later on), content type,
             //      content disposition, class key and freeze_uri (2.1+). Don't think it's needed.
         );
 
         $list = array();
         foreach ($fields as $name => $details) {
+            $details['title'] = ($this->modx->lexicon->exists($name)) ? $this->modx->lexicon($name) : $this->modx->lexicon('resource_'.$name);
             $details['name'] = $name;
             $details['value'] = $this->resource->get($name);
             $list[$name] = $this->renderer->render($details['type'],$details);

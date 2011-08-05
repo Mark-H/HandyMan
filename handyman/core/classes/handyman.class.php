@@ -62,6 +62,7 @@ class HandyMan {
         $this->modx = new modX;
         $this->modx->initialize('mgr');
         $this->modx->getParser();
+        $this->modx->getService('lexicon','modLexicon');
 
         /* Set some paths to use throughout HandyMan
          ***/

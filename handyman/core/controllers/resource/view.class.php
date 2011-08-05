@@ -41,6 +41,7 @@ class hmcResourceView extends hmController {
         if (empty($this->resource)) {
             return 'Resource not found.';
         }
+        $this->modx->lexicon->load('default','resource');
         return true;
     }
 
@@ -87,7 +88,8 @@ class hmcResourceView extends hmController {
             $text = '';
             $fieldValue = $this->getPlaceholder($fieldName);
             if (!empty($fieldValue)) {
-                $text = ucfirst($fieldName).': '.$fieldValue;
+                $lexstring = ($this->modx->lexicon->exists($fieldName)) ? $this->modx->lexicon($fieldName) : $this->modx->lexicon('resource_'.$fieldName);
+                $text = $lexstring.': '.$fieldValue;
             }
             if (!empty($text)) {
                 $fields[] = $this->hm->getTpl('widgets/simpleli',array(
@@ -117,8 +119,9 @@ class hmcResourceView extends hmController {
         foreach ($rfields as $fieldName) {
             $text = '';
             $fieldValue = $this->getPlaceholder($fieldName);
-            if (!empty($fieldValue)) {
-                $text = ucfirst($fieldName).': '.$fieldValue;
+            if ($fieldValue !== null) {
+                $lexstring = ($this->modx->lexicon->exists($fieldName)) ? $this->modx->lexicon($fieldName) : $this->modx->lexicon('resource_'.$fieldName);
+                $text = $lexstring.': '.$fieldValue;
             }
             if (!empty($text)) {
                 $settings[] = $this->hm->getTpl('widgets/simpleli',array(
