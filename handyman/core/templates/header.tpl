@@ -8,6 +8,5 @@
     <script src="assets/jqm/jquery-1.6.1.min.js"></script>
     <script src="assets/jqm/jquery.mobile-1.0b2.min.js"></script>
     <link href="assets/css/handyman.css" rel="stylesheet" type="text/css" />
-    <script type="text/javascript">$(document).ready(function() {$(":jqmData(role=\'page\'):jqmData(cache=\'false\')" ).live( "pagehide", function(){ $(this).remove(); });});</script>
 </head>
 <body>

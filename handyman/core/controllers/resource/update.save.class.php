@@ -35,6 +35,9 @@ class hmcResourceUpdateSave extends hmController {
         // Find & parse any submitted TVs
         foreach ($_REQUEST as $key => $value) {
             if (substr($key,0,2) == 'tv') {
+                if (is_array($value)) {
+                    $value = implode('||',$value);
+                }
                 if (!$this->resource->setTVValue((int)substr($key,2),$value)) {
                     //return 'Error saving Template Variable '.substr($key,2);
                 }

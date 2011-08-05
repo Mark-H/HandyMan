@@ -151,13 +151,13 @@ class hmcResourceView extends hmController {
         ));
         $c->sortby('cat_category,TemplateVarTemplate.rank,modTemplateVar.rank','ASC');
         $tvs = $this->modx->getCollection('modTemplateVar',$c);
-
         if (count($tvs) > 0) {
             $templateVariables = array();
             /** @var modTemplateVar $tv */
             foreach ($tvs as $tv) {
+                $this->setPlaceholder('tvs',print_r($tv->toArray()));
                 $templateVariables[] = $this->hm->getTpl('widgets/simpleli',array(
-                    'text' => $tv->get('caption').': '.$this->safe($tv->get('value')),
+                    'text' => $tv->get('caption').': '.$tv->get('value'),
                 ));
             }
             $this->setPlaceholder('tvs',implode("\n",$templateVariables));

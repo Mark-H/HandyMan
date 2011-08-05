@@ -87,7 +87,6 @@ class hmcResourceList extends hmController {
             $this->setPlaceholder('view',$this->hm->getTpl('resource/list.view',$this->getPlaceholders()));
         } else {
             $parent = 0;
-            $this->setPlaceholder('view','');
         }
 
         $subResources = $this->listResources($parent);

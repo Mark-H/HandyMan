@@ -115,7 +115,7 @@ abstract class hmController {
     protected function renderPageType($body = '') {
         $id = $this->getPageId();
         $id = !empty($id) ? $id : $this->config['hma'];
-        $cache = $this->cache === false ? ' data-cache="false" ' : '';
+        $cache = $this->cache === false ? '' : ' data-dom-cache="true"';
 
         $output = '';
         $placeholders = array(
@@ -126,7 +126,7 @@ abstract class hmController {
             'license' => $this->getLicense(),
             'baseUrl' => $this->hm->webroot,
         );
-        // Depending on the type of page (determined by the $meta['view'] option) we'll output something here.
+        // Depending on the type of page (determined by the $this->viewType constant) we'll output something here.
         switch ($this->viewType) {
             // First "view" is a dialog window, which doesn't need as many buttons and stuff. We do add a "Close window" button here.
             case 'dialog':
@@ -153,7 +153,6 @@ abstract class hmController {
                 $action['dialog'] = '';
             }
             $action['icon'] = $action['icon'] ? $action['icon'] : 'arrow-r';
-            $action['ajaxreset'] = ($action['reset']) ? ' data-ajax="false"' : '';
             $lps = '';
             if (count($action['linkparams']) > 0) {
                 foreach ($action['linkparams'] as $lp => $lpv) {
