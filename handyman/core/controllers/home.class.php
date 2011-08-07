@@ -35,7 +35,7 @@ class hmcHome extends hmController {
 
     public function process() {
         $actions = array(array(
-            'action' => 'resource/contexts',
+            'action' => 'resource/list',
             'text' => 'List Resources',
             'icon' => 'grid',
         ),array(

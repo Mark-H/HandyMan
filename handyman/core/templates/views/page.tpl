@@ -12,7 +12,7 @@
     <div data-role="navbar">
     <ul>
         <li><a href="[[+baseUrl]]index.php?hma=resource/create" id="create" data-icon="custom">Create Resource</a></li>
-        <li><a href="[[+baseUrl]]index.php?hma=resource/contexts" id="manage" data-icon="custom">Manage Resources</a></li>
+        <li><a href="[[+baseUrl]]index.php?hma=resource/list" id="manage" data-icon="custom">Manage Resources</a></li>
         <li><a href="[[+baseUrl]]index.php?hma=logout" id="logout" data-icon="custom">Logout</a></li>
     </ul>
     </div>

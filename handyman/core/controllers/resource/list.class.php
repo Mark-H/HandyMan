@@ -4,6 +4,7 @@ class hmcResourceList extends hmController {
     protected $templateFile = 'resource/list';
     public $parent;
     public $context;
+    public $contexts = array();
     public $start;
     public $limit;
     public $list;
@@ -14,7 +15,7 @@ class hmcResourceList extends hmController {
 
     public function setup() {
         if (empty($_REQUEST['ctx'])) {
-            $this->redirect('resource/contexts');
+            $this->context = null;
         } else {
             $this->context = $_REQUEST['ctx'];
         }
@@ -27,6 +28,21 @@ class hmcResourceList extends hmController {
         $limit = (isset($this->config['get']['limit'])) ? $this->config['get']['limit'] : null;
         $list = (isset($this->config['get']['list'])) ? $this->config['get']['list'] : null;
 
+        /* First make sure we got a context to load from. */
+        if ($this->context === null) {
+            $this->contexts = $this->listContexts();
+            // If we have multiple contexts show the contexts listing and halt the processing here.
+            if (count($this->contexts) > 1) {
+                $this->setPlaceholder('contexts',$this->processActions($this->contexts));
+                $this->templateFile = 'resource/contexts';
+                return;
+            // If we have exactly one context let's just go with that one and skip a click.
+            } elseif (count($this->contexts) == 1) {
+                $this->context = $this->contexts[0]['text'];
+            }
+        }
+
+        
         if ($parent > 0) {
             /** @var modResource $current */
             $current = $this->modx->getObject('modResource',$parent);
@@ -125,5 +141,23 @@ class hmcResourceList extends hmController {
             );
         }
         return $resources;
+    }
+    
+    public function listContexts() {
+        $c = $this->modx->newQuery('modContext');
+        $c->where(array(
+            'key:!=' => 'mgr',
+        ));
+        $contexts = array();
+        $contextobjects = $this->modx->getCollection('modContext',$c);
+        foreach ($contextobjects as $ctx) {
+            $contexts[] = array(
+                'action' => 'resource/list',
+                'text' => $ctx->get('key'),
+                'linkparams' => array('ctx' => $ctx->get('key')),
+                'object' => $ctx
+            );
+        }
+        return $contexts;
     }
 }
