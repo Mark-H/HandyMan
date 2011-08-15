@@ -7,10 +7,12 @@ class hmInputRenderer {
     public $hm;
     /** @var modX $modx */
     public $modx;
+    public $data;
 
-    function __construct(HandyMan &$hm) {
+    function __construct(HandyMan &$hm, $data = array()) {
         $this->hm =& $hm;
-        $this->modx =& $modx;
+        $this->modx =& $hm->modx;
+        $this->data = $data;
     }
 
     /**
@@ -28,6 +30,9 @@ class hmInputRenderer {
             case 'dropdown':
             case 'select':
                 $type = 'select';
+            break;
+            case 'richtext':
+                $type = 'textarea';
             break;
             default: break;
         }
@@ -47,7 +52,7 @@ class hmInputRenderer {
     protected function output($type,array $field) {
         /* ensure that quotes are escaped for field values */
         if (is_string($field['value'])) {
-            $field['value'] = str_replace('"','&quot;',$field['value']);
+            $field['value'] = str_replace(array('"','[',']'),array('&quot;','&#91;','&#93;'),$field['value']);
         }
         return $this->hm->getTpl('fields/'.$type,$field);
     }
