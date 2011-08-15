@@ -137,6 +137,8 @@ class HandyMan {
      * @return string The processed content of the Chunk
      */
     public function getTpl($name,array $properties = array()) {
+        if (!$properties['webroot']) $properties['webroot'] = $this->webroot;
+        if (!$properties['basedir']) $properties['basedir'] = $this->basedir;
         $chunk = null;
         if (!isset($this->templates[$name])) {
             $chunk = $this->modx->getObject('modChunk',array('name' => $name),true);
