@@ -13,11 +13,13 @@ class hmcResourceUpdate extends hmController {
     public $renderer;
 
     public function getPageTitle() {
-        return $this->resource->get('pagetitle');
+        if ($this->resource instanceof modResource)
+            return $this->resource->get('pagetitle');
+        return 'Resource not found';
     }
     public function setup() {
         if (empty($_REQUEST['rid'])) {
-            return 'No valid resource id passed.';
+            return 'No valid resource ID passed.';
         }
         $this->resource = $this->modx->getObject('modResource',intval($_REQUEST['rid']));
         if (empty($this->resource)) {
@@ -36,12 +38,16 @@ class hmcResourceUpdate extends hmController {
         $this->setPlaceholders($this->resource->toArray());
 
         $this->modx->loadClass('hmInputRenderer',$this->hm->config['modelPath'],true,true);
-        $this->renderer = new hmInputRenderer($this->hm);
+        $this->renderer = new hmInputRenderer($this->hm,$this->resource->toArray());
         
         $clearCache = array('type' => 'boolean','name' => 'clearcache','title' => 'Clear cache on save?','value' => true);
         $clearCache = $this->renderer->render('boolean',$clearCache);
         $this->setPlaceholder('clearCache',$clearCache);
-        
+
+        $content = array('type' => 'richtext', 'name' => 'content', 'value' => $this->resource->get('content'));
+        $content = $this->renderer->render('richtext',$content);
+        $this->setPlaceholder('content',$content);
+
         $this->getResourceFields();
         $this->getResourceSettings();
         $this->getTemplateVariables();
@@ -81,6 +87,7 @@ class hmcResourceUpdate extends hmController {
 
     public function getResourceSettings() {
         $fields = array(
+            'richtext' => array('type' => 'flipswitch'),
             'isfolder' => array('type' => 'flipswitch'),
             'pub_date' => array('type' => 'text'),
             'unpub_date' => array('type' => 'text'),
