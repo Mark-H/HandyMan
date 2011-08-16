@@ -1,5 +1,5 @@
 <div data-role="page" id="[[+id]]"[[+cache]]>
-<div data-role="header" class="redGradient">
+<div data-role="header" data-position="fixed">
     <a href="javascript: history.go(-1);" data-icon="arrow-l" data-rel="back" data-direction="reverse">Back</a>
     <h1>[[+title]]</h1>
     <a href="index.php" data-icon="home" data-transition="flip">Home</a>
