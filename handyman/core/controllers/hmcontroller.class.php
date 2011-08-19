@@ -125,6 +125,7 @@ abstract class hmController {
             'content' => $body,
             'license' => $this->getLicense(),
             'baseUrl' => $this->hm->webroot,
+            'userid' => $this->modx->user->get('id')
         );
         // Depending on the type of page (determined by the $this->viewType constant) we'll output something here.
         switch ($this->viewType) {
