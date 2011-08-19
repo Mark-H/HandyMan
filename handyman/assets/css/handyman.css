@@ -6,8 +6,8 @@ div.ui-header {
     border-bottom: 1px solid #94BF4C;
 }
 div.ui-navbar {
-    /*border-top: 1px solid #94BF4C;*/
-    /*background: #373737 url('../images/headers_rv.jpg') repeat-x top center;*/
+    border-top: 1px solid #94BF4C;
+    background: #373737 url('../images/headers_rv.jpg') repeat-x top center;
 }
 
 
@@ -64,12 +64,12 @@ li a{
 /*---------------- fixed Nav background color ------------------*/
 #create, #manage, #logout, .redGradient {
     background: transparent;
-    background-image: -webkit-gradient(linear, left top, left bottom, from(#666666), to(#777777));
+    /*background-image: -webkit-gradient(linear, left top, left bottom, from(#666666), to(#777777));
 	background-image: -webkit-linear-gradient(top, #666666, #777777);
 	background-image:    -moz-linear-gradient(top, #666666, #777777);
 	background-image:     -ms-linear-gradient(top, #666666, #777777);
 	background-image:      -o-linear-gradient(top, #666666, #777777);
-	background-image:         linear-gradient(top, #666666, #777777);
+	background-image:         linear-gradient(top, #666666, #777777);*/
     font-size: 12px;
 }
 /*---------------- fixed Nav background color on hover ------------------*/
