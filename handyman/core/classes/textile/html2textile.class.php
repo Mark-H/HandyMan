@@ -22,6 +22,7 @@ class html2textile {
         $text = $this->detextile_process_glyphs($text);
         $text = $this->detextile_process_lists($text);
         $text = preg_replace('/^\t* *p\. /m','',$text);
+        //return $text;
         return str_replace(array("#\\","/#"),
                     array(">","<"),
                     strip_tags($this->decode_high($text), '<pre>')); //strip_tags($text);
@@ -49,26 +50,26 @@ class html2textile {
         $list = false;
         $text = preg_split("/(<.*>)/U",$text,-1,PREG_SPLIT_DELIM_CAPTURE);
         foreach($text as $line){
-            if ($list == false && preg_match('/<ol /',$line)){
+            if ($list == false && preg_match('/<ol/',$line)){
                 $line = "";
                 $list = "o";
             } else if (preg_match('/<\/ol/',$line)){
-                $line = "";
+                $line = PHP_EOL.PHP_EOL;
                 $list = false;
             } else if ($list == false && preg_match('/<ul/',$line)){
                 $line = "";
                 $list = "u";
             } else if (preg_match('/<\/ul/',$line)){
-                $line = "";
+                $line = PHP_EOL.PHP_EOL;
                 $list = false;
             } else if ($list == 'o'){
-                $line = preg_replace('/<li.*>/U','# ', $line);
+                $line = preg_replace('/<li.*>/U',PHP_EOL.'# ', trim($line));
             } else if ($list == 'u'){
-                $line = preg_replace('/<li .*>/U','* ', $line);
+                $line = preg_replace('/<li.*>/U',PHP_EOL.'* ', trim($line));
             }
             $glyph_out[] = $line;
         }
-        return $text = implode('',$glyph_out);
+        return implode('',$glyph_out);
     }
     function processTag($matches) {
         list($all,$tag,$atts,$content) = $matches;
@@ -95,7 +96,7 @@ class html2textile {
         } elseif($tag=='center') {
             return 'p=.'.$this->sci($a).' '.$content;
         } elseif(in_array($tag,$blk)) {
-            return $tag.$this->sci($a).'. '.$content;
+            return $tag.$this->sci($a).'. '.$content.PHP_EOL;
         } elseif ($tag=='a') {
             $t = $this->filterAtts($a,array('href','title'));
             $out = '"'.$content;
