@@ -409,14 +409,14 @@ class Textile
 		extract( $this->regex_snippets );
 
 		$this->glyph_search = array(
-			'/('.$wrd.')\'('.$wrd.')/'.$mod,        // I'm an apostrophe
-			'/(\s)\'(\d+'.$wrd.'?)\b(?![.]?['.$wrd.']*?\')/'.$mod,	// back in '88/the '90s but not in his '90s', '1', '1.' '10m' or '5.png'
-			'/(\S)\'(?=\s|'.$pnc.'|<|$)/',          // single closing
-			'/\'/',                                 // single opening
-			'/(\S)\"(?=\s|'.$pnc.'|<|$)/',          // double closing
-			'/"/',                                  // double opening
+			//'/('.$wrd.')\'('.$wrd.')/'.$mod,        // I'm an apostrophe
+			//'/(\s)\'(\d+'.$wrd.'?)\b(?![.]?['.$wrd.']*?\')/'.$mod,	// back in '88/the '90s but not in his '90s', '1', '1.' '10m' or '5.png'
+			//'/(\S)\'(?=\s|'.$pnc.'|<|$)/',          // single closing
+			//'/\'/',                                 // single opening
+			//'/(\S)\"(?=\s|'.$pnc.'|<|$)/',          // double closing
+			//'/"/',                                  // double opening
 			'/\b(['.$abr.']['.$acr.']{2,})\b(?:[(]([^)]*)[)])/'.$mod,  // 3+ uppercase acronym
-			'/(?<=\s|^|[>(;-])(['.$abr.']{3,})(['.$nab.']*)(?=\s|'.$pnc.'|<|$)(?=[^">]*?(<|$))/'.$mod,  // 3+ uppercase
+			//'/(?<=\s|^|[>(;-])(['.$abr.']{3,})(['.$nab.']*)(?=\s|'.$pnc.'|<|$)(?=[^">]*?(<|$))/'.$mod,  // 3+ uppercase
 			'/([^.]?)\.{3}/',                       // ellipsis
 			'/(\s?)--(\s?)/',                       // em dash
 			'/\s-(?:\s|$)/',                        // en dash
@@ -432,14 +432,14 @@ class Textile
 		);
 
 		$this->glyph_replace = array(
-			'$1'.txt_apostrophe.'$2',              // I'm an apostrophe
-			'$1'.txt_apostrophe.'$2',              // back in '88
-			'$1'.txt_quote_single_close,           // single closing
-			txt_quote_single_open,                 // single opening
-			'$1'.txt_quote_double_close,           // double closing
-			txt_quote_double_open,                 // double opening
+			//'$1'.txt_apostrophe.'$2',              // I'm an apostrophe
+			//'$1'.txt_apostrophe.'$2',              // back in '88
+			//'$1'.txt_quote_single_close,           // single closing
+			//txt_quote_single_open,                 // single opening
+			//'$1'.txt_quote_double_close,           // double closing
+			//txt_quote_double_open,                 // double opening
 			'<acronym title="$2">$1</acronym>',     // 3+ uppercase acronym
-			'<span class="caps">glyph:$1</span>$2', // 3+ uppercase
+			//'<span class="caps">glyph:$1</span>$2', // 3+ uppercase
 			'$1'.txt_ellipsis,                     // ellipsis
 			'$1'.txt_emdash.'$2',                  // em dash
 			' '.txt_endash.' ',                    // en dash
