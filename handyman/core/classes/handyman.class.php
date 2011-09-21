@@ -35,6 +35,7 @@ require_once(dirname(dirname(dirname(dirname(__FILE__))))).'/config.core.php';
 class HandyMan {
     public $basedir;
     public $webroot;
+    /* @var modX $modx */
     public $modx;
     public $user_fullname;
     public $action = array('hma' => 'startscreen','options' => array('source' => 'default'));

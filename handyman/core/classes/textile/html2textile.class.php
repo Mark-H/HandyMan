@@ -48,24 +48,24 @@ class html2textile {
     }
     function detextile_process_lists($text) {
         $list = false;
-        $text = preg_split("/(<.*>)/U",$text,-1,PREG_SPLIT_DELIM_CAPTURE);
+        $text = preg_split("/(<.*>)/U",$text,null,PREG_SPLIT_DELIM_CAPTURE);
         foreach($text as $line){
             if ($list == false && preg_match('/<ol/',$line)){
                 $line = "";
                 $list = "o";
             } else if (preg_match('/<\/ol/',$line)){
-                $line = PHP_EOL.PHP_EOL;
+                $line = '';
                 $list = false;
             } else if ($list == false && preg_match('/<ul/',$line)){
                 $line = "";
                 $list = "u";
             } else if (preg_match('/<\/ul/',$line)){
-                $line = PHP_EOL.PHP_EOL;
+                $line = '';
                 $list = false;
             } else if ($list == 'o'){
-                $line = preg_replace('/<li.*>/U',PHP_EOL.'# ', trim($line));
+                $line = preg_replace('/<li.*>/U',PHP_EOL.'# ', rtrim($line));
             } else if ($list == 'u'){
-                $line = preg_replace('/<li.*>/U',PHP_EOL.'* ', trim($line));
+                $line = preg_replace('/<li.*>/U',PHP_EOL.'* ', rtrim($line));
             }
             $glyph_out[] = $line;
         }

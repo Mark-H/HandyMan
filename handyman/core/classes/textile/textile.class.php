@@ -364,10 +364,10 @@ class Textile
                 $matched = str_replace($sty[0], '', $matched);
             }
 
-            if (preg_match("/\[([^]]+)\]/U", $matched, $lng)) {
+            /*if (preg_match("/\[([^]]+)\]/U", $matched, $lng)) {
                 $lang = $lng[1];
                 $matched = str_replace($lng[0], '', $matched);
-            }
+            }*/
 
             if (preg_match("/\(([^()]+)\)/U", $matched, $cls)) {
                 $class = $cls[1];
@@ -468,7 +468,7 @@ class Textile
         $text = explode("\n", $m[0]);
         foreach($text as $line) {
             $nextline = next($text);
-            if (preg_match("/^([#*]+)($this->a$this->c) (.*)$/s", $line, $m)) {
+            if (preg_match("/^([#*]+)($this->a$this->c) (.*)$(?![^#*])/smU", $line, $m)) {
                 list(, $tl, $atts, $content) = $m;
                 $nl = '';
                 if (preg_match("/^([#*]+)\s.*/", $nextline, $nm))
@@ -493,7 +493,7 @@ class Textile
             }
             $out[] = $line;
         }
-        return join("\n", $out);
+        return implode("\n", $out);
     }
 
 // -------------------------------------------------------------
@@ -720,11 +720,15 @@ class Textile
             \s?
             (?:\(([^)]+)\)(?="))?        # $title
             ":
-            (('.$this->urlch.'+)|(\[\[~\d+\]\]))          # $url
+            (\[\[~\d+\]\]|'.$this->urlch.'+)          # $url
             (\/)?                        # $slash
             ([^\w\/;]*)                  # $post
             (?:([\]}])|(?=\s|$|\)))
         /Ux', array(&$this, "fLink"), $text);
+        //(('.$this->urlch.'+)|(\[\[~\d+\]\]))          # $url  Doule everything
+        //((\[\[~\d+\]\])|('.$this->urlch.'+))          # $url  Functional but double MODX tags
+        //(\[\[~\d+\]\]|('.$this->urlch.')+)          # $url Adds an "e" to the link, but works beyond that.. wut?
+        //(\[\[~\d+\]\]|'.$this->urlch.'+)  Seems to work!
     }
 
 // -------------------------------------------------------------
