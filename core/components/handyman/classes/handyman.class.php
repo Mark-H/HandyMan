@@ -61,6 +61,7 @@ class HandyMan {
         $corePath = $this->modx->getOption('handyman.core_path',null,dirname(dirname(__FILE__)));
         $path = $this->modx->getOption('handyman.path',null,$this->modx->getOption('base_path').'handyman/');
         $url = $this->modx->getOption('handyman.url','',$this->modx->getOption('base_url').'handyman/');
+        $templates = $this->modx->getOption('handyman.templates',null,'default');
 
         $this->url = $url;
         $this->path = $path;
@@ -75,8 +76,8 @@ class HandyMan {
             'assetsPath' => $path,
             'assetsUrl' => $url,
             'tplSuffix' => '.tpl',
+            'templates' => $templates,
         ),$config);
-
         /**
          * Echo errors with a level of ERROR or higher.
          */
@@ -161,7 +162,10 @@ class HandyMan {
      */
     private function _getTpl($name,$suffix = '.tpl') {
         $chunk = false;
-        $f = $this->config['templatesPath'].strtolower($name).$suffix;
+        $f = $this->config['templatesPath'] . $this->config['templates'] . '/' . strtolower($name).$suffix;
+        if (($this->config['templates'] != 'default') && !file_exists($f)) {
+            $f = $this->config['templatesPath'] . 'default/' . strtolower($name).$suffix;
+        }
         if (file_exists($f)) {
             $o = file_get_contents($f);
             /* @var modChunk $chunk */
