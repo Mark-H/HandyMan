@@ -142,4 +142,8 @@ class hmTvInputRenderer extends hmInputRenderer {
         $tv->set('options',implode("\n",$list));
         return $tv;
     }
+
+    public function prepareRichtext($field) {
+        return parent::prepareRichtext($field);
+    }
 }

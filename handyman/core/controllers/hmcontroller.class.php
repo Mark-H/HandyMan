@@ -21,7 +21,7 @@ abstract class hmController {
     function __construct(HandyMan &$hm,array $config = array()) {
         $this->hm =& $hm;
         $this->modx =& $hm->modx;
-        $this->config = array_merge($this->config,$config);
+        $this->config = array_merge($this->hm->config,$this->config,$config);
     }
 
     /**
@@ -97,9 +97,13 @@ abstract class hmController {
     }
 
     protected function getHeader() {
-        return $this->hm->getTpl('header',array(
-            'title' => $this->getPageTitle(),
-        ));
+        return $this->hm->getTpl('header',array_merge(
+            array(
+                'title' => $this->getPageTitle(),
+                'config'
+            ),
+            $this->config)
+        );
     }
 
     protected function getFooter() {

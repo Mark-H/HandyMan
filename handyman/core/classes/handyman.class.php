@@ -72,6 +72,7 @@ class HandyMan {
 
         $basePath = dirname(dirname(dirname(__FILE__))).'/';
         $this->config = array_merge(array(
+            'baseUrl' => $this->webroot,
             'basePath' => $basePath,
             'corePath' => $basePath.'core/',
             'modelPath' => $basePath.'core/classes/',

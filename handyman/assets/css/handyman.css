@@ -10,6 +10,10 @@ div.ui-navbar {
     background: #373737 url('../images/headers_rv.jpg') repeat-x top center;
 }
 
+.smallnote {
+    font-size: 80%;
+    font-style: italic;
+}
 
 div.ui-content {
     border-top: 1px solid #1e1e1e;

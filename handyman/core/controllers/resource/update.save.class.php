@@ -30,10 +30,11 @@ class hmcResourceUpdateSave extends hmController {
      * @return void
      */
     public function process() {
-        $this->resource->fromArray($_REQUEST);
+        $data = $this->processInput($_REQUEST);
+        $this->resource->fromArray($data);
 
         // Find & parse any submitted TVs
-        foreach ($_REQUEST as $key => $value) {
+        foreach ($data as $key => $value) {
             if (substr($key,0,2) == 'tv') {
                 if (is_array($value)) {
                     $value = implode('||',$value);
@@ -60,5 +61,24 @@ class hmcResourceUpdateSave extends hmController {
         } else {
             $this->setPlaceholder('message','An error occurred while saving the Resource.');
         }
+    }
+
+    /**
+     * Process POSTed data for richtext.
+     * @param array $data
+     * @return array
+     */
+    public function processInput($data) {
+        foreach ($data as $key => $value) {
+
+            /* If richtext, parse using textile */
+            if (substr($key,-9) == '-richtext') {
+                $this->hm->modx->getService('t2h','textile',$this->hm->config['corePath'].'classes/textile/');
+                $data[substr($key,0,-9)] = $this->hm->modx->t2h->TextileThis($value);
+                unset ($data[$key]);
+            }
+
+        }
+        return $data;
     }
 }

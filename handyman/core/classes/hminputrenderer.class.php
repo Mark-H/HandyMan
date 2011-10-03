@@ -32,7 +32,7 @@ class hmInputRenderer {
                 $type = 'select';
             break;
             case 'richtext':
-                $type = 'textarea';
+                $type = 'richtext';
             break;
             default: break;
         }
@@ -57,6 +57,12 @@ class hmInputRenderer {
         return $this->hm->getTpl('fields/'.$type,$field);
     }
 
+    /**
+     * Checks if a method exists in this class.
+     * 
+     * @param $type
+     * @return bool|string
+     */
     protected function _exists($type) {
         $method = 'prepare'.ucfirst($type);
         return method_exists($this,$method) ? $method : false;
@@ -99,6 +105,19 @@ class hmInputRenderer {
             }
         }
         $field['options'] = implode("\n",$optionList);
+        return $field;
+    }
+
+    /**
+     * Prepares richtext fields.
+     *
+     * @param $field
+     * @return array
+     */
+    public function prepareRichtext($field) {
+        $field = is_object($field) ? $field->toArray() : $field;
+        $this->hm->modx->getService('h2t','html2textile',$this->hm->config['corePath'].'classes/textile/');
+        $field['value'] = $this->hm->modx->h2t->detextile($field['value']);
         return $field;
     }
 }
