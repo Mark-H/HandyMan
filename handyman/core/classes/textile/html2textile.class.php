@@ -54,13 +54,13 @@ class html2textile {
                 $line = "";
                 $list = "o";
             } else if (preg_match('/<\/ol/',$line)){
-                $line = '';
+                $line = PHP_EOL;
                 $list = false;
             } else if ($list == false && preg_match('/<ul/',$line)){
                 $line = "";
                 $list = "u";
             } else if (preg_match('/<\/ul/',$line)){
-                $line = '';
+                $line = PHP_EOL;
                 $list = false;
             } else if ($list == 'o'){
                 $line = preg_replace('/<li.*>/U',PHP_EOL.'# ', rtrim($line));
