@@ -23,8 +23,8 @@ class html2textile {
         $text = $this->detextile_process_lists($text);
         $text = preg_replace('/^\t* *p\. /m','',$text);
         //return $text;
-        return str_replace(array("#\\","/#"),
-                    array(">","<"),
+        return str_replace(array("#\\","/#",'</pre>'),
+                    array(">","<",PHP_EOL),
                     strip_tags($this->decode_high($text), '<pre>')); //strip_tags($text);
     }
     function detextile_process_glyphs($text) {

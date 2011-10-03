@@ -1475,7 +1475,7 @@ class Textile
 	function fCode($m)
 	{
 		@list(, $before, $text, $after) = $m;
-		return $before.$this->shelve('<code>'.$this->r_encode_html($text).'</code>').$after;
+		return $before.$this->shelve('<code>'.$text.'</code>').$after;
 	}
 
 // -------------------------------------------------------------
