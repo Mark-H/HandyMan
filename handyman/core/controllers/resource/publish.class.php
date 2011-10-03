@@ -30,7 +30,7 @@ class hmcResourcePublish extends hmController {
     public $resource;
 
     public function getPageTitle() {
-        return 'Publish Resource';
+        return 'Publishing: '.$this->resource->get('pagetitle');
     }
     public function setup() {
         if (empty($_REQUEST['rid'])) {

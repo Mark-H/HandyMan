@@ -5,6 +5,7 @@
 abstract class hmController {
     const VIEW_DIALOG = 'dialog';
     const VIEW_PAGE = 'page';
+    const VIEW_PAGE_LOGGEDOUT = 'page_loggedout';
     protected $templateFile = 'empty';
     protected $viewType = self::VIEW_PAGE;
     protected $cache = true;
@@ -134,12 +135,16 @@ abstract class hmController {
         // Depending on the type of page (determined by the $this->viewType constant) we'll output something here.
         switch ($this->viewType) {
             // First "view" is a dialog window, which doesn't need as many buttons and stuff. We do add a "Close window" button here.
-            case 'dialog':
+            case hmController::VIEW_DIALOG:
                 $output .= $this->hm->getTpl('views/dialog',$placeholders);
-                break;
+            break;
+
+            case hmController::VIEW_PAGE_LOGGEDOUT:
+                $output .= $this->hm->getTpl('views/page_loggedout',$placeholders);
+            break;
 
             // The default view is the "page" one, which has a back & home button and just the main content after that.
-            case 'page':
+            case hmController::VIEW_PAGE:
             default:
                 $output .= $this->hm->getTpl('views/page',$placeholders);
             break;

@@ -26,7 +26,7 @@ class hmcEmpty extends hmController {
     protected $cache = true;
 
     public function getPageTitle() {
-        return 'An Error Occurred';
+        return 'An Error Occurred - HandyMan';
     }
 
     public function setup() {

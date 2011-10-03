@@ -11,7 +11,7 @@ class hmcResourceUpdateSave extends hmController {
     public $template;
 
     public function getPageTitle() {
-        return $this->resource->get('pagetitle');
+        return 'Saving: '.$this->resource->get('pagetitle');
     }
     public function setup() {
         if (empty($_REQUEST['id'])) {

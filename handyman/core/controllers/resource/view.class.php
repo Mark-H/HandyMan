@@ -31,7 +31,7 @@ class hmcResourceView extends hmController {
     public $template;
     
     public function getPageTitle() {
-        return 'Resource Details';
+        return 'Resource Details - HandyMan';
     }
     public function setup() {
         if (empty($_REQUEST['rid'])) {

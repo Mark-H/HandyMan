@@ -24,12 +24,13 @@
 class hmcLogin extends hmController {
     protected $templateFile = 'login';
     protected $cache = false;
+    protected $viewType = hmController::VIEW_PAGE_LOGGEDOUT;
 
     public function setup() {
         return true;
     }
     public function getPageTitle() {
-        return 'Please login';
+        return 'Please login - HandyMan';
     }
 
     public function process() {

@@ -14,7 +14,7 @@ class hmcResourceUpdate extends hmController {
 
     public function getPageTitle() {
         if ($this->resource instanceof modResource)
-            return $this->resource->get('pagetitle');
+            return 'Updating: '.$this->resource->get('pagetitle');
         return 'Resource not found';
     }
     public function setup() {

@@ -30,7 +30,7 @@ class hmcResourceDelete extends hmController {
     public $resource;
 
     public function getPageTitle() {
-        return 'Delete Resource';
+        return 'Deleting: '.$this->resource->get('pagetitle');
     }
     public function setup() {
         if (empty($_REQUEST['rid'])) {
