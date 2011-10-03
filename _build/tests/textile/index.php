@@ -11,7 +11,7 @@ $hmo = '';
  *
  * After inclusion, set up the $hm variable as the main object.
  **/
-include_once dirname(dirname(dirname(dirname(__FILE__)))).'/handyman/core/classes/handyman.class.php';
+include_once dirname(dirname(dirname(dirname(__FILE__)))) . '/handyman/core/classes/handyman.class.php';
 $hm = new HandyMan;
 $hm->initialize();
 

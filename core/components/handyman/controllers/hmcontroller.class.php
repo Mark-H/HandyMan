@@ -189,7 +189,7 @@ abstract class hmController {
             'title' => $this->getPageTitle(),
             'content' => $body,
             'license' => $this->getLicense(),
-            'baseUrl' => $this->hm->webroot,
+            'baseUrl' => $this->hm->url,
             'userid' => $this->modx->user->get('id')
         );
 
@@ -233,7 +233,7 @@ abstract class hmController {
                     $lps .= '&'.$lp.'='.$lpv;
                 }
             }
-            $action['link'] = $this->hm->webroot.'index.php?hma='.$action['action'].$lps;
+            $action['link'] = $this->hm->url.'index.php?hma='.$action['action'].$lps;
             
             $output[] = $this->hm->getTpl('widgets/rowAction',$action);
         }
@@ -248,7 +248,7 @@ abstract class hmController {
      */
     public function redirect($action,array $params = array()) {
         $params['action'] = $action;
-        $url = $this->hm->webroot.'index.php?'.http_build_query($params);
+        $url = $this->hm->url.'index.php?'.http_build_query($params);
         $this->modx->sendRedirect($url);
     }
 }

@@ -21,21 +21,17 @@
  * @package HandyMan
  ***/
 
-/* Check against direct access (which we don't want).
+/* Check against direct access just in case.
  ***/
 if (!defined('HANDYMAN')) { die ('Do not access this file directly.'); }
-
-/* Include the MODX core config file.
- ***/
-require_once(dirname(dirname(dirname(dirname(__FILE__))))).'/config.core.php';
 
 /**
  * HandyMan main class
  */
 class HandyMan {
-    public $basedir;
+    public $path;
     /* @var string $webroot The web accessible URL to HandyMan. */
-    public $webroot;
+    public $url;
     /* @var modX $modx */
     public $modx;
     /* @var array $action Contains a hma key with the requested controller, and an option key. */
@@ -44,48 +40,40 @@ class HandyMan {
     public $errors = array();
     /* @var array $config An array with configuration options for HandyMan */
     public $config = array();
-    /** @var hmRequest $request */
+    /* @var hmRequest $request */
     public $request;
+    /* @var array $templates */
+    public $templates;
 
     /**
      * The construct method is called when the class is instantiated, so we
      * can use that to set some variables to the appropriate values and check
      * authorization.
+     * @param modX $modx
      * @param array $config
      * @return \HandyMan
      */
-    function __construct(array $config = array()) {
-        /** Attempt to include the main MODX class to get access to xPDO
-         * and the required MODX information. If this fails, halt the process.
-         */
-        if (!(include_once MODX_CORE_PATH . 'model/modx/modx.class.php')) {
-            include MODX_CORE_PATH . 'error/unavailable.include.php';
-            die('Site temporarily unavailable!');
-        }
-
+    function __construct(modX $modx,array $config = array()) {
+        $this->modx =& $modx;
         /**
-         * Instantiate the main MODX class for the manager context, load the parser and the lexicon service.
+         * Calculated & Set some paths to use throughout HandyMan
          */
-        $this->modx = new modX;
-        $this->modx->initialize('mgr');
-        $this->modx->getParser();
-        $this->modx->getService('lexicon','modLexicon');
+        $corePath = $this->modx->getOption('handyman.core_path',null,dirname(dirname(__FILE__)));
+        $path = $this->modx->getOption('handyman.path',null,$this->modx->getOption('base_path').'handyman/');
+        $url = $this->modx->getOption('handyman.url','',$this->modx->getOption('base_url').'handyman/');
 
-        /**
-         * Set some paths to use throughout HandyMan
-         */
-        $this->basedir = realpath('.').'/';
-        $this->webroot = $this->modx->getOption('handyman.webroot','',MODX_SITE_URL.'handyman/');
+        $this->url = $url;
+        $this->path = $path;
 
-        $basePath = dirname(dirname(dirname(__FILE__))).'/';
         $this->config = array_merge(array(
-            'baseUrl' => $this->webroot,
-            'basePath' => $basePath,
-            'corePath' => $basePath.'core/',
-            'modelPath' => $basePath.'core/classes/',
-            'controllersPath' => $basePath.'core/controllers/',
-            'templatesPath' => $basePath.'core/templates/',
-            'assetsPath' => $basePath.'assets/',
+            'baseUrl' => $url,
+            'basePath' => $path,
+            'corePath' => $corePath,
+            'controllersPath' => $corePath.'controllers/',
+            'templatesPath' => $corePath.'templates/',
+            'classesPath' => $corePath.'classes/',
+            'assetsPath' => $path,
+            'assetsUrl' => $url,
             'tplSuffix' => '.tpl',
         ),$config);
 
@@ -117,7 +105,7 @@ class HandyMan {
      */
     public function loadRequest() {
         if (empty($this->request)) {
-            if ($this->modx->loadClass('hmRequest',$this->config['corePath'].'classes/',true,true)) {
+            if ($this->modx->loadClass('hmRequest',$this->config['classesPath'],true,true)) {
                 $this->request = new hmRequest($this);
             } else {
                 $this->modx->log(modX::LOG_LEVEL_ERROR,'[HandyMan] Could not load request class from: '.$this->config['corePath'].'classes/');
@@ -136,24 +124,6 @@ class HandyMan {
     }
 
     /**
-     * Load a class from core/classes.
-     * @param string $classname
-     * @return bool
-     */
-    public function loadClass($classname = '') {
-        if ($classname == '') { return false; }
-
-        if (file_exists($this->basedir.'core/classes/'.$classname.'.php')) {
-            include_once ($this->basedir.'core/classes/'.$classname.'.php');
-            $this->$classname = new $classname;
-        } else {
-            return false;
-        }
-        return true;
-    }
-
-
-    /**
      * Gets a Template and caches it; also falls back to file-based templates.
      *
      * @access public
@@ -162,8 +132,8 @@ class HandyMan {
      * @return string The processed content of the Chunk
      */
     public function getTpl($name,array $properties = array()) {
-        if (!$properties['webroot']) $properties['webroot'] = $this->webroot;
-        if (!$properties['basedir']) $properties['basedir'] = $this->basedir;
+        if (!$properties['webroot']) $properties['webroot'] = $this->url;
+        if (!$properties['basedir']) $properties['basedir'] = $this->path;
         $chunk = null;
         if (!isset($this->templates[$name])) {
             $chunk = $this->modx->getObject('modChunk',array('name' => $name),true);
@@ -194,6 +164,7 @@ class HandyMan {
         $f = $this->config['templatesPath'].strtolower($name).$suffix;
         if (file_exists($f)) {
             $o = file_get_contents($f);
+            /* @var modChunk $chunk */
             $chunk = $this->modx->newObject('modChunk');
             $chunk->set('name',$name);
             $chunk->setContent($o);

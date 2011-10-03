@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__FILE__).'/hminputrenderer.class.php';
+require_once dirname(__FILE__) . '/hminputrenderer.class.php';
 
 /**
  * TV Input Renderer

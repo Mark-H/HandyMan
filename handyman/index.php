@@ -25,19 +25,34 @@
  * class and loads other classes depending on the specific request.
  ***/
 
-/* Instantiate constants and variables for later use.
- ***/
-define('HANDYMAN', true);
-$hmo = '';
+/**
+ * Include the main MODX Class
+ */
+require_once(dirname(dirname(__FILE__))).'/config.core.php';
+if (!(include_once MODX_CORE_PATH . 'model/modx/modx.class.php')) {
+    include MODX_CORE_PATH . 'error/unavailable.include.php';
+    die('Site temporarily unavailable!');
+}
+
+/**
+ * Instantiate the main MODX class for the manager context, load the parser and the lexicon service.
+ */
+$modx = new modX;
+$modx->initialize('mgr');
+$modx->getParser();
+$modx->getService('lexicon','modLexicon');
 
 /* Include the main HandyMan class.
- * This class takes care of authentification and provides the extension
+ * This class takes care of authentication and provides the extension
  * with functions to execute the requests.
  *
  * After inclusion, set up the $hm variable as the main object.
  **/
-include_once 'core/classes/handyman.class.php';
-$hm = new HandyMan;
+define('HANDYMAN', true);
+
+$hmPath = $modx->getOption('handyman.core_path',null,MODX_CORE_PATH.'components/handyman/');
+require_once $hmPath.'classes/handyman.class.php';
+$hm = new HandyMan($modx);
 $hm->initialize();
 
 /* The $hm->action variable is an array set with the request and additional

@@ -37,7 +37,7 @@ class hmcResourceUpdate extends hmController {
     public function process() {
         $this->setPlaceholders($this->resource->toArray());
 
-        $this->modx->loadClass('hmInputRenderer',$this->hm->config['modelPath'],true,true);
+        $this->modx->loadClass('hmInputRenderer',$this->hm->config['classesPath'],true,true);
         $this->renderer = new hmInputRenderer($this->hm,$this->resource->toArray());
         
         $clearCache = array('type' => 'boolean','name' => 'clearcache','title' => 'Clear cache on save?','value' => true);
@@ -139,7 +139,7 @@ class hmcResourceUpdate extends hmController {
 
         $list = array();
         if (count($tvs) > 0) {
-            $this->modx->loadClass('hmTvInputRenderer',$this->hm->config['modelPath'],true,true);
+            $this->modx->loadClass('hmTvInputRenderer',$this->hm->config['classesPath'],true,true);
             $renderer = new hmTvInputRenderer($this->hm);
 
             foreach ($tvs as $categoryName => $categoryTemplateVariables) {
