@@ -1,0 +1,24 @@
+<p>Heck, I could write a long post about Zen Coding - but why not just let you see a vid that explains it, and shows some of its amazing features?</p>
+<p>Check it out at <a href="http://vimeo.com/7405114" title="Zen Coding v0.5 on Vimeo">Vimeo - Zen Coding v0.5</a>.</p>
+<p>As my xHTML writing tool of choice is Notepad++ (due to it having syntax highlighting for like, everything) I did a few googles to find a <a href="http://code.google.com/p/zen-coding/downloads/detail?name=Zen.Coding-Notepad%2B%2B.v0.6.zip" title="Zen.Coding plugin for Notepad++">Zen Coding plugin for Notepad++</a>. Chances are that your favorite editor also supports it, or that a <a href="http://code.google.com/p/zen-coding/downloads/list" title="Download list for Zen Coding">plugin is available</a> from the Google Code project. </p>
+<h2>How it works</h2>
+<p>Simply type in a string such as this one, which <code>reflects</code> the hierarchy of html tags:</p>
+<pre>
+&lt;!DOCTYPE HTML&gt;
+&lt;html lang=&quot;en-US&quot;&gt;
+&lt;head&gt;
+	&lt;meta charset=&quot;UTF-8&quot;&gt;
+	&lt;title&gt;&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+<p>Then use the shortcut your editor uses to expand the Zen Code into xHTML (for the Notepad++ plugin that is Ctrl+E) and watch how, magically, you end up with full blown, indented markup.</p>
+<pre>[[showChunk?sc_name=`ex.17.first`]]</pre>
+<p>But that's not it! There's more! Do you also have the same markup layout structure of a container div, containing an inner container, then a header and content div? Does your header div have a logo img? No biggy!</p>
+<pre>body>div#container>div#inner>(div#header>img.logo)+div#content</pre>
+<p>transforms into</p>
+<pre>[[showChunk?sc_name=`ex.17.second`]]</pre>
+<p>You could literally build a whole page's basic structure with this in minutes... I'm in love.</p>
