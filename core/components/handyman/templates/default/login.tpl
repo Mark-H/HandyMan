@@ -1,7 +1,7 @@
 <p>Please login to access your MODX Mobile Manager, powered by HandyMan.</p>
 
 [[+message:notempty=`<p>[[+message]]</p>`]]
-<form action="index.php" method="post">
+<form action="[[+baseUrl]]" method="post">
     <fieldset>
     <div data-role="fieldcontain">
         <label for="login_username">Username</label>

@@ -1,2 +1,2 @@
-<p>Uh oh, unable to find the requested action! (Requested: [[+actionPath]])
-<br /><br />During development, some actions may not have been included yet and this error may show up.</p>
+<p>Uh oh, unable to find the requested action! (Requested: [[+actionPath]])</p>
+<p>Either you typed in an invalid action, or the system has a bug. If the latter, would you <a href="http://bugs.modx.com/projects/handyman/issues">mind reporting this to the developers so it can be fixed</a>?</p>

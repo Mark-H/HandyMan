@@ -29,12 +29,13 @@ if (!defined('HANDYMAN')) { die ('Do not access this file directly.'); }
  * HandyMan main class
  */
 class HandyMan {
+    /* @var string $path The absolute path to HandyMan */
     public $path;
-    /* @var string $webroot The web accessible URL to HandyMan. */
+    /* @var string $url The web accessible URL to HandyMan */
     public $url;
     /* @var modX $modx */
     public $modx;
-    /* @var array $action Contains a hma key with the requested controller, and an option key. */
+    /* @var array $action Contains a hma key with the requested controller, and an option key */
     public $action = array('hma' => 'home','options' => array('source' => 'default'));
     /* @var array $errors */
     public $errors = array();
@@ -62,6 +63,7 @@ class HandyMan {
         $path = $this->modx->getOption('handyman.path',null,$this->modx->getOption('base_path').'handyman/');
         $url = $this->modx->getOption('handyman.url','',$this->modx->getOption('base_url').'handyman/');
         $templates = $this->modx->getOption('handyman.templates',null,'default');
+        $theme = $this->modx->getOption('handyman.theme',null,'default');
 
         $this->url = $url;
         $this->path = $path;
@@ -73,11 +75,12 @@ class HandyMan {
             'controllersPath' => $corePath.'controllers/',
             'templatesPath' => $corePath.'templates/',
             'classesPath' => $corePath.'classes/',
-            'assetsPath' => $path,
-            'assetsUrl' => $url,
+            'assets' => $url.$theme.'/',
             'tplSuffix' => '.tpl',
             'templates' => $templates,
+            'theme' => $theme
         ),$config);
+
         /**
          * Echo errors with a level of ERROR or higher.
          */
@@ -133,8 +136,6 @@ class HandyMan {
      * @return string The processed content of the Chunk
      */
     public function getTpl($name,array $properties = array()) {
-        if (!$properties['webroot']) $properties['webroot'] = $this->url;
-        if (!$properties['basedir']) $properties['basedir'] = $this->path;
         $chunk = null;
         if (!isset($this->templates[$name])) {
             $chunk = $this->modx->getObject('modChunk',array('name' => $name),true);

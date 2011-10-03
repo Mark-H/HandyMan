@@ -24,4 +24,4 @@
     <li>Anne Sallee</li>
     <li>Frank Los</li>
 </ul>
-<p>But there's more individuals that contributed, <a href="http://www.modxmobile.com/">click here to find out!</a></p>
+<p>But there's more individuals that contributed, <a href="http://www.modxmobile.com/">browse the site to find out!</a></p>
