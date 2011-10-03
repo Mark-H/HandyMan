@@ -47,7 +47,24 @@ class hmcResourceList extends hmController {
             /** @var modResource $current */
             $current = $this->modx->getObject('modResource',$parent);
             $this->setPlaceholders($current->toArray());
-            
+
+            /* Set up a breadcrumbs trail */
+            $parents = $this->modx->getParentIds($parent, 10, array('context' => $this->context));
+            $trail = array();
+            foreach ($parents as $p) {
+                if ($p > 0) {
+                    $obj = $this->modx->getObject('modResource',$p);
+                    if ($obj instanceof modResource) {
+                        $phs = array_merge($this->placeholders,array('resid' => $p, 'ctx' => $this->context, 'title' => $obj->get('pagetitle')));
+                        $trail[] = $this->hm->getTpl('widgets/crumbsli',$phs);
+                    }
+                }
+            }
+            $trail[] = $this->hm->getTpl('widgets/crumbsli',array_merge($this->placeholders,array('ctx' => $this->context, 'title' => $this->context)));
+            $trail = implode("\n",array_reverse($trail));
+            $trail = $this->hm->getTpl('widgets/crumbsouter',array('wrapper' => $trail));
+            $this->setPlaceholder('crumbs',$trail);
+
             $pubstate = (boolean)$current->get('published');
             $deleted = (boolean)$current->get('deleted');
             $resEditMap = array(

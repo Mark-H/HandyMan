@@ -1,0 +1,1 @@
+<li><a href="[[+baseUrl]]?hma=resource/list&ctx=[[+ctx]][[+resid:notempty=`&rid=[[+resid]]`]]" data-role="button" data-icon="arrow-r" data-iconpos="right">[[+title]]</a></li>

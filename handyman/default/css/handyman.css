@@ -15,6 +15,20 @@ div.ui-navbar {
     font-style: italic;
 }
 
+.smallgroup {
+    margin: 0 0 65px 0;
+}
+.smallgroup li {
+    float: left;
+}
+.smallgroup .ui-btn-inner {
+    padding: .6em 35px .6em 10px;
+    font-size: 80%;
+}
+.smallgroup .smallpadding .ui-btn-inner {
+    padding: .6em 15px .6em 10px;
+}
+
 div.ui-content {
     border-top: 1px solid #1e1e1e;
 }
