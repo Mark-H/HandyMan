@@ -233,7 +233,7 @@ abstract class hmController {
                     $lps .= '&'.$lp.'='.$lpv;
                 }
             }
-            $action['link'] = $this->hm->url.'index.php?hma='.$action['action'].$lps;
+            $action['link'] = $this->hm->url.'?hma='.$action['action'].$lps;
             
             $output[] = $this->hm->getTpl('widgets/rowAction',$action);
         }
@@ -242,7 +242,7 @@ abstract class hmController {
 
     /**
      * Send a redirect.
-     * 
+     *
      * @param $action
      * @param array $params
      */

@@ -56,7 +56,7 @@ class hmcResourceList extends hmController {
                     'text' => 'Show Details',
                     'linkparams' => array(
                         'ctx' => $this->context,
-                        'rid' => $parent
+                        'rid' => $parent,
                     ),
                     'icon' => 'grid'
                 ),
@@ -65,7 +65,7 @@ class hmcResourceList extends hmController {
                     'text' => ($pubstate) ? 'Unpublish' : 'Publish',
                     'linkparams' => array(
                         'ctx' => $this->context,
-                        'rid' => $parent
+                        'rid' => $parent,
                     ),
                     'icon' => 'star',
                     'dialog' => true
@@ -75,7 +75,7 @@ class hmcResourceList extends hmController {
                     'text' => 'Update',
                     'linkparams' => array(
                         'ctx' => $this->context,
-                        'rid' => $parent
+                        'rid' => $parent,
                     ),
                     'icon' => 'gear'
                 ),
@@ -87,16 +87,25 @@ class hmcResourceList extends hmController {
                         'rid' => $parent
                     ),
                     'icon' => 'delete',
-                    'dialog' => true
+                    'dialog' => true,
                 ),
                 array(
                     'action' => 'resource/create',
                     'text' => 'Create Resource Here',
                     'linkparams' => array(
                         'ctx' => $this->context,
-                        'parent' => $parent
+                        'parent' => $parent,
                     ),
                     'icon' => 'plus'
+                ),
+                array(
+                    'action' => 'resource/preview',
+                    'text' => 'Preview Resource',
+                    'linkparams' => array(
+                        'rid' => $parent,
+                    ),
+                    'icon' => 'arrow-r',
+                    'target' => '_blank'
                 )
             );
             $this->setPlaceholder('actions',$this->processActions($resEditMap));
