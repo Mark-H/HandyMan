@@ -1,3 +1,1 @@
-This changelog shows an overview of what changed throughout releases.
-
-#5456 Fixed auto selecting of context if there is just one
+This changelog shows an overview of what changed throughout releases, starting at the first distributed release.

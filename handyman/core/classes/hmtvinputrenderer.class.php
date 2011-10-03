@@ -1,14 +1,24 @@
 <?php
 require_once dirname(__FILE__).'/hminputrenderer.class.php';
 
+/**
+ * TV Input Renderer
+ */
 class hmTvInputRenderer extends hmInputRenderer {
 
+    /**
+     * Constructor.
+     * @param \HandyMan $hm
+     * @return \hmTvInputRenderer
+     */
     function __construct(HandyMan &$hm) {
         $this->hm =& $hm;
         $this->modx =& $modx;
     }
 
     /**
+     * Prepare & Render a TV input field.
+     *
      * @param string $type
      * @param modTemplateVar $tv
      * @return string
@@ -47,6 +57,8 @@ class hmTvInputRenderer extends hmInputRenderer {
     }
 
     /**
+     * Prepares checkbox TV values.
+     *
      * @param modTemplateVar $tv
      * @return modTemplateVar
      */
@@ -94,6 +106,8 @@ class hmTvInputRenderer extends hmInputRenderer {
         return $tv;
     }
     /**
+     * Prepare radio boxes.
+     *
      * @param modTemplateVar $tv
      * @return modTemplateVar
      */
@@ -143,6 +157,11 @@ class hmTvInputRenderer extends hmInputRenderer {
         return $tv;
     }
 
+    /**
+     * Prepare richtext (inherits)
+     * @param $field
+     * @return hmInputRenderer.prepareRichtext
+     */
     public function prepareRichtext($field) {
         return parent::prepareRichtext($field);
     }

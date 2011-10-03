@@ -25,48 +25,55 @@
  ***/
 if (!defined('HANDYMAN')) { die ('Do not access this file directly.'); }
 
-/* Next, define the necessary mode for MODX to work, and define the core path.
- * @TO-DO: Set it somewhere instead of hardcode in the main class.
+/* Include the MODX core config file.
  ***/
 require_once(dirname(dirname(dirname(dirname(__FILE__))))).'/config.core.php';
 
-/* Start defining the main HandyMan class.
- ***/
+/**
+ * HandyMan main class
+ */
 class HandyMan {
     public $basedir;
+    /* @var string $webroot The web accessible URL to HandyMan. */
     public $webroot;
     /* @var modX $modx */
     public $modx;
-    public $user_fullname;
-    public $action = array('hma' => 'startscreen','options' => array('source' => 'default'));
+    /* @var array $action Contains a hma key with the requested controller, and an option key. */
+    public $action = array('hma' => 'home','options' => array('source' => 'default'));
+    /* @var array $errors */
     public $errors = array();
+    /* @var array $config An array with configuration options for HandyMan */
     public $config = array();
-    public $templates = array();
     /** @var hmRequest $request */
     public $request;
 
-    /* The construct method is called when the class is instantiated, so we
+    /**
+     * The construct method is called when the class is instantiated, so we
      * can use that to set some variables to the appropriate values and check
      * authorization.
-     ***/
+     * @param array $config
+     * @return \HandyMan
+     */
     function __construct(array $config = array()) {
-        /* Attempt to include the main MODX class to get access to xPDO
+        /** Attempt to include the main MODX class to get access to xPDO
          * and the required MODX information. If this fails, halt the process.
-         ***/
+         */
         if (!(include_once MODX_CORE_PATH . 'model/modx/modx.class.php')) {
             include MODX_CORE_PATH . 'error/unavailable.include.php';
             die('Site temporarily unavailable!');
         }
 
-        /* Instantiate the main MODX class for the manager context.
-         ***/
+        /**
+         * Instantiate the main MODX class for the manager context, load the parser and the lexicon service.
+         */
         $this->modx = new modX;
         $this->modx->initialize('mgr');
         $this->modx->getParser();
         $this->modx->getService('lexicon','modLexicon');
 
-        /* Set some paths to use throughout HandyMan
-         ***/
+        /**
+         * Set some paths to use throughout HandyMan
+         */
         $this->basedir = realpath('.').'/';
         $this->webroot = $this->modx->getOption('handyman.webroot','',MODX_SITE_URL.'handyman/');
 
@@ -82,6 +89,9 @@ class HandyMan {
             'tplSuffix' => '.tpl',
         ),$config);
 
+        /**
+         * Echo errors with a level of ERROR or higher.
+         */
         $this->modx->setLogTarget('ECHO');
         $this->modx->setLogLevel(modX::LOG_LEVEL_ERROR);
         error_reporting(E_ALL); ini_set('display_errors',true);
@@ -89,6 +99,7 @@ class HandyMan {
 
     /**
      * Separate out initialization methods for better abstraction.
+     * Loads the request handler and checks authentication.
      * 
      * @return void
      */
@@ -100,6 +111,10 @@ class HandyMan {
         $this->request->checkAuthentication();
     }
 
+    /**
+     * Load the hmRequest class into {$hm::request}
+     * @return \hmRequest
+     */
     public function loadRequest() {
         if (empty($this->request)) {
             if ($this->modx->loadClass('hmRequest',$this->config['corePath'].'classes/',true,true)) {
@@ -111,11 +126,20 @@ class HandyMan {
         return $this->request;
     }
 
+    /**
+     * Close session and die processing
+     * @param string $message
+     */
     public function end($message = '') {
         @session_write_close();
         die($message);
     }
 
+    /**
+     * Load a class from core/classes.
+     * @param string $classname
+     * @return bool
+     */
     public function loadClass($classname = '') {
         if ($classname == '') { return false; }
 
@@ -126,12 +150,11 @@ class HandyMan {
             return false;
         }
         return true;
-    } // End of function loadClass($classname)
+    }
 
 
     /**
-     * Gets a Template and caches it; also falls back to file-based templates
-     * for easier debugging.
+     * Gets a Template and caches it; also falls back to file-based templates.
      *
      * @access public
      * @param string $name The name of the Chunk
@@ -178,10 +201,22 @@ class HandyMan {
         return $chunk;
     }
 
+    /**
+     * Returns the name of the license.
+     * Due to be refactored in a later release.
+     *
+     * @return string
+     */
     public function getLicenseName() {
         return 'Early Contributors';
     }
 
+    /**
+     * Runs a processor.
+     *
+     * @param array $options
+     * @return mixed|string
+     */
     public function runProcessor(array $options = array()) {
         $processor = isset($options['processors_path']) && !empty($options['processors_path']) ? $options['processors_path'] : MODX_PROCESSORS_PATH;
         if (isset($options['location']) && !empty($options['location'])) $processor .= $options['location'] . '/';
@@ -207,3 +242,4 @@ class HandyMan {
     }
 
 } // End of class HandyMan
+?>

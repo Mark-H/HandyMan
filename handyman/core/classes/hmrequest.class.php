@@ -14,12 +14,22 @@ class hmRequest {
     /** @var hmController $controller */
     public $controller;
 
+    /**
+     * @param \HandyMan $hm
+     * @param array $config
+     * @return \hmRequest
+     */
     function __construct(HandyMan &$hm,array $config = array()) {
         $this->hm =& $hm;
         $this->modx =& $hm->modx;
         $this->config = array_merge(array(),$config);
     }
 
+    /**
+     * Checks authentication for the current MODX User / Session.
+     * Sets hmRequest::authorized with a boolean value indicating authentication status.
+     * Also processes logout and login.
+     */
     public function checkAuthentication() {
         $this->authorized = $this->modx->user && $this->modx->user->hasSessionContext('mgr');
         
@@ -68,9 +78,14 @@ class hmRequest {
         }
     }
 
+
+    /**
+     * Handle the request.
+     * @return bool|string
+     */
     public function handle() {
         if ((!is_array($this->action)) OR (count($this->action) < 1)) {
-            return 'Oops. Failure.';
+            return false;
         }
 
         $actionName = $this->action['hma'];
@@ -115,6 +130,12 @@ class hmRequest {
         return $output;
     }
 
+    /**
+     * Sanitizes MODX tags from $string.
+     * 
+     * @param $string
+     * @return string
+     */
     public function stripMODXTags($string) {
         $targets = array($string);
         $targets = modX::sanitize($targets,array(

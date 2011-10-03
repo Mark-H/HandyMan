@@ -9,6 +9,11 @@ class hmInputRenderer {
     public $modx;
     public $data;
 
+    /**
+     * @param \HandyMan $hm
+     * @param array $data
+     * @return \hmInputRenderer
+     */
     function __construct(HandyMan &$hm, $data = array()) {
         $this->hm =& $hm;
         $this->modx =& $hm->modx;
