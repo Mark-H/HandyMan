@@ -53,7 +53,7 @@ class hmcResourceList extends hmController {
             $resEditMap = array(
                 array (
                     'action' => 'resource/view',
-                    'text' => 'Show details',
+                    'text' => 'Show Details',
                     'linkparams' => array(
                         'ctx' => $this->context,
                         'rid' => $parent
@@ -91,7 +91,7 @@ class hmcResourceList extends hmController {
                 ),
                 array(
                     'action' => 'resource/create',
-                    'text' => 'Create resource here (coming soon!)',
+                    'text' => 'Create Resource Here',
                     'linkparams' => array(
                         'ctx' => $this->context,
                         'parent' => $parent

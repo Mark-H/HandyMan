@@ -52,9 +52,9 @@ class hmcResourcePublish extends hmController {
         ));
         if ($return['success'] == 1) {
             if ($action == 'unpublish') {
-                $message = 'Successfully unpublished resource '.$this->resource->get('id').'.';
+                $message = 'Successfully unpublished resource '.$this->resource->get('pagetitle').'.';
             } else {
-                $message = 'Successfully published resource '.$this->resource->get('id').'.';
+                $message = 'Successfully published resource '.$this->resource->get('pagetitle').'.';
             }
         } else {
             $message = 'Something went wrong. '.$return['message'];

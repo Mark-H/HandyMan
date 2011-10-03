@@ -52,9 +52,9 @@ class hmcResourceDelete extends hmController {
         ));
         if ($return['success'] == 1) {
             if ($action == 'undelete') {
-                $message = 'Successfully undeleted resource '.$this->resource->get('id').'.';
+                $message = 'Successfully undeleted resource '.$this->resource->get('pagetitle').'.';
             } else {
-                $message = 'Successfully deleted resource '.$this->resource->get('id').'.';
+                $message = 'Successfully deleted resource '.$this->resource->get('pagetitle').'.';
             }
         } else {
             $message = 'Something went wrong. '.$return['message'];

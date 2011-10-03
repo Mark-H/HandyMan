@@ -1,8 +1,8 @@
 <?php
-class hmcResourceUpdateSave extends hmController {
+class hmcResourceCreateSave extends hmController {
 
     protected $cache = false;
-    protected $templateFile = 'resource/update.save';
+    protected $templateFile = 'resource/create.save';
     protected $viewType = hmController::VIEW_DIALOG;
 
     /** @var modResource $resource */
@@ -11,17 +11,12 @@ class hmcResourceUpdateSave extends hmController {
     public $template;
 
     public function getPageTitle() {
-        return 'Saving: '.$this->resource->get('pagetitle');
+        return 'Creating new Resource';
     }
     public function setup() {
-        if (empty($_REQUEST['id'])) {
-            return 'No valid resource id passed.';
-        }
-        $this->resource = $this->modx->getObject('modResource',intval($_REQUEST['id']));
-        if (empty($this->resource)) {
-            return 'Resource not found.';
-        }
-        $this->template = $this->resource->getOne('Template');
+        $this->resource = $this->modx->newObject('modResource');
+        $this->template = $this->modx->getObject('modTemplate',$_REQUEST['template']);
+        $this->resource->set('template',$_REQUEST['template']);
         return true;
     }
 
@@ -46,7 +41,6 @@ class hmcResourceUpdateSave extends hmController {
         }
         $saved = $this->resource->save();
 
-
         if ($_REQUEST['clearcache'] == 1) {
             $this->modx->cacheManager->refresh(array(
                 'db' => array(),
@@ -59,7 +53,7 @@ class hmcResourceUpdateSave extends hmController {
         if ($saved) {
             $this->setPlaceholders(
                 array(
-                    'message' => 'Resource Updated.',
+                    'message' => 'Resource created.',
                     'resid' => $this->resource->get('id'),
                     'ctx' => $this->resource->get('context_key'),
                 )
@@ -85,6 +79,9 @@ class hmcResourceUpdateSave extends hmController {
             }
 
         }
+        /* If no context_key passed, default to web. */
+        if (empty($data['context_key'])) { $data['context_key'] = 'web'; $this->modx->log(MODX_LOG_LEVEL_ERROR,'Defaulting to web'); }
+
         return $data;
     }
 }

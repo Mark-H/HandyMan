@@ -40,7 +40,7 @@ class hmcHome extends hmController {
             'icon' => 'grid',
         ),array(
             'action' => 'resource/create',
-            'text' => 'Create resource (coming soon!)',
+            'text' => 'Create resource',
             'icon' => 'plus',
         ),array(
             'action' => 'logout',
