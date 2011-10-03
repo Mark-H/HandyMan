@@ -5,8 +5,10 @@
 <div data-role="content">
     [[+content]]
     <br />
-    <a href="#" data-icon="delete" data-rel="back" data-transition="pop"
-        data-role="button" data-inline="true">Close window</a>
+    <div data-role="controlgroup" data-type="horizontal">
+        <a href="#" data-icon="back" data-rel="back" data-transition="pop" data-role="button">Back</a>
+        <a href="[[+baseUrl]]" data-icon="home" data-transition="flip" data-role="button">Home</a>
+    </div>
 </div>
 
 <div data-role="footer" data-position="fixed">

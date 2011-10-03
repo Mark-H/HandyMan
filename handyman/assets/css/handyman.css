@@ -18,6 +18,18 @@ div.ui-navbar {
 div.ui-content {
     border-top: 1px solid #1e1e1e;
 }
+
+div[data-role=dialog] .ui-content {
+    color: #1e1e1e;
+    background-color: #F0F0F0;
+   	-moz-border-radius-bottomleft: 		.6em;
+	-webkit-border-bottom-left-radius: 	.6em;
+	border-bottom-left-radius: 			.6em;
+   	-moz-border-radius-bottomright: 		.6em;
+	-webkit-border-bottom-right-radius: 	.6em;
+	border-bottom-right-radius: 			.6em;
+}
+
 .ui-btn-up-a {
     background: #444;
     background-image: -webkit-gradient(linear, left top, left bottom, from(#444), to(#333)); /* Saf4+, Chrome */
