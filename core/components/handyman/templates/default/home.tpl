@@ -19,6 +19,7 @@
     <li>Anselm Hannemann</li>
     <li>Martijn van Turnhout</li>
     <li>Gareth Bissland</li>
+    <li>Jared Loman</li>
     <li>Adam Smith</li>
     <li>Crawford Paul</li>
     <li>Anne Sallee</li>
