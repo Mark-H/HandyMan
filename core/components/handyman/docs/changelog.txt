@@ -1,1 +1,8 @@
 This changelog shows an overview of what changed throughout releases, starting at the first distributed release.
+
+++++++++++++++++++++++++++++++++
+++   HandyMan 0.9.0-dev1      ++
+++   Released on 2011-10-04   ++
+++++++++++++++++++++++++++++++++
+
+Initial Contributors-Only release.
