@@ -50,7 +50,8 @@ $modx->getService('lexicon','modLexicon');
  **/
 define('HANDYMAN', true);
 
-$hmPath = $modx->getOption('handyman.core_path',null,MODX_CORE_PATH.'components/handyman/');
+$hmPath = $modx->getOption('handyman.core_path');
+if (empty($hmPath)) { $hmPath = MODX_CORE_PATH.'components/handyman/'; }
 require_once $hmPath.'classes/handyman.class.php';
 $hm = new HandyMan($modx);
 $hm->initialize();

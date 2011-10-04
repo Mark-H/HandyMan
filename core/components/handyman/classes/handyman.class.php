@@ -59,9 +59,12 @@ class HandyMan {
         /**
          * Calculated & Set some paths to use throughout HandyMan
          */
-        $corePath = $this->modx->getOption('handyman.core_path',null,dirname(dirname(__FILE__)));
-        $path = $this->modx->getOption('handyman.path',null,$this->modx->getOption('base_path').'handyman/');
-        $url = $this->modx->getOption('handyman.url','',$this->modx->getOption('base_url').'handyman/');
+        $corePath = $this->modx->getOption('handyman.core_path');
+        if (empty($corePath)) { $corePath = dirname(dirname(__FILE__)); }
+        $path = $this->modx->getOption('handyman.path');
+        if (empty($path)) { $path = $this->modx->getOption('base_path').'handyman/'; }
+        $url = $this->modx->getOption('handyman.url');
+        if (empty($url)) { $url = $this->modx->getOption('base_url').'handyman/'; }
         $templates = $this->modx->getOption('handyman.templates',null,'default');
         $theme = $this->modx->getOption('handyman.theme',null,'default');
 

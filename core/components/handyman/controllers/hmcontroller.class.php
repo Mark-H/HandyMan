@@ -183,15 +183,14 @@ abstract class hmController {
         $cache = $this->cache === false ? '' : ' data-dom-cache="true"';
 
         $output = '';
-        $placeholders = array(
+        $placeholders = array_merge($this->config,array(
             'id' => $id,
             'cache' => $cache,
             'title' => $this->getPageTitle(),
             'content' => $body,
             'license' => $this->getLicense(),
-            'baseUrl' => $this->hm->url,
             'userid' => $this->modx->user->get('id')
-        );
+        ));
 
         // Depending on the type of page (determined by the $this->viewType constant) we'll output something here.
         switch ($this->viewType) {
