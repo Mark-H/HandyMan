@@ -14,6 +14,7 @@
     <li><a href="http://www.sepiariver.com" title="Construction Marketing Specialists">Sepia River, YJ Tso</a> <span class="ui-li-count">&nbsp; Marketing &amp; Copywriting &nbsp;</span></li>
     <li><a href="http://www.bmv-interactive.com/" title="BMV Interactive Media Development">BMV Interactive, Benjamin Marte</a> <span class="ui-li-count">&nbsp; jQuery Mobile Skills &nbsp;</span></li>
     <li><a href="http://cubed-media.com/" title="CubedMEDIA">CubedMEDIA, Travis Love</a> <span class="ui-li-count">&nbsp; Web Design &amp; Logo &nbsp;</span></li>
+    <li><a href="http://www.edenweb.ie/" title="EdenWeb">EdenWeb, Peter Knight</a> <span class="ui-li-count">&nbsp; Encouragement &amp; Finances &nbsp;</span></li>
     <li data-role="list-divider">And also many thanks to..</li>
     <li>Aaron Wardle</li>
     <li>Anselm Hannemann</li>
