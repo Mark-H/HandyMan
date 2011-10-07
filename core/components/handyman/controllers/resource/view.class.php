@@ -72,8 +72,8 @@ class hmcResourceView extends hmController {
      */
     public function getContent() {
         $content = $this->resource->getContent();
-        $this->setPlaceholder('content',$this->hm->getTpl('widgets/simpleli',array(
-            'text' => $this->safe($content),
+        $this->setPlaceholder('content',$this->hm->getTpl('widgets/text',array(
+            'text' => $this->safe($content,true),
         )));
     }
 
@@ -103,10 +103,12 @@ class hmcResourceView extends hmController {
     /**
      * Make MODX/HTML safe a string of content
      * @param string $string
+     * @param bool $raw
      * @return mixed
      */
-    public function safe($string) {
-        return str_replace(array('[',']'),array('&#91;','&#93;'),htmlentities($string));
+    public function safe($string, $raw = false) {
+        $string = ($raw) ? $string : htmlentities($string);
+        return str_replace(array('[',']'),array('&#91;','&#93;'),$string);
     }
 
     /**
@@ -158,8 +160,7 @@ class hmcResourceView extends hmController {
             $templateVariables = array();
             /** @var modTemplateVar $tv */
             foreach ($tvs as $tv) {
-                $this->setPlaceholder('tvs',print_r($tv->toArray()));
-                $templateVariables[] = $this->hm->getTpl('widgets/simpleli',array(
+                 $templateVariables[] = $this->hm->getTpl('widgets/simpleli',array(
                     'text' => $tv->get('caption').': '.$tv->get('value'),
                 ));
             }

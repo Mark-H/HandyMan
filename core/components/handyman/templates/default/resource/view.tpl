@@ -5,8 +5,12 @@
         <h3>Resource Fields</h3>
         <ul data-role="listview" data-inset="true">
             [[+resourceFields]]
-            [[+content]]
         </ul>
+    </div>
+
+    <div data-role="collapsible">
+        <h3>Content</h3>
+        [[+content]]
     </div>
 
     <div data-role="collapsible" data-collapsed="true">
