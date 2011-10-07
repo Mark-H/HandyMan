@@ -21,6 +21,8 @@ class hmcResourceUpdateSave extends hmController {
         if (empty($this->resource)) {
             return 'Resource not found.';
         }
+        $this->resource->set('editedby',$this->modx->user->get('id'));
+        $this->resource->set('editedon',strftime('%Y-%m-%d %H:%M:%S'));
         $this->template = $this->resource->getOne('Template');
         return true;
     }

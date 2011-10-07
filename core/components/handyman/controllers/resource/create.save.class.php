@@ -16,6 +16,8 @@ class hmcResourceCreateSave extends hmController {
     public function setup() {
         $this->resource = $this->modx->newObject('modResource');
         $this->template = $this->modx->getObject('modTemplate',$_REQUEST['template']);
+        $this->resource->set('createdby',$this->modx->user->id);
+        $this->resource->set('createdon',strftime('%Y-%m-%d %H:%M:%S'));
         $this->resource->set('template',$_REQUEST['template']);
         return true;
     }
