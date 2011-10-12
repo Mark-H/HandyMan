@@ -204,11 +204,13 @@ class hmcResourceList extends hmController {
         $contexts = array();
         $contextobjects = $this->modx->getCollection('modContext',$c);
         foreach ($contextobjects as $ctx) {
+            $count = $this->modx->getCount('modResource',array('context_key' => $ctx->get('key')));
             $contexts[] = array(
                 'action' => 'resource/list',
                 'text' => $ctx->get('key'),
                 'linkparams' => array('ctx' => $ctx->get('key')),
-                'object' => $ctx
+                'object' => $ctx,
+                'count' => $count
             );
         }
         return $contexts;
