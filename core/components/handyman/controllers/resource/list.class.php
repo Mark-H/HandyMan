@@ -74,7 +74,7 @@ class hmcResourceList extends hmController {
                 ),
                 array (
                     'action' => 'resource/view',
-                    'text' => $this->modx->lexicon('resource_overview'),
+                    'text' => $this->modx->lexicon->exists('resource_overview') ?  $this->modx->lexicon('resource_overview') :  $this->modx->lexicon('resource_view'),
                     'linkparams' => array(
                         'ctx' => $this->context,
                         'rid' => $parent,
