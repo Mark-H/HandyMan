@@ -113,7 +113,7 @@ class hmcResourceList extends hmController {
                 ),
                 array(
                     'action' => 'resource/publish',
-                    'text' => ($pubstate) ? $this->modx->lexicon('resource_publish') : $this->modx->lexicon('resource_unpublish'),
+                    'text' => ($pubstate) ? $this->modx->lexicon('resource_unpublish') : $this->modx->lexicon('resource_publish'),
                     'linkparams' => array(
                         'ctx' => $this->context,
                         'rid' => $parent,
