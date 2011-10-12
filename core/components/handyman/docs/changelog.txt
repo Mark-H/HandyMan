@@ -5,6 +5,7 @@ This changelog shows an overview of what changed throughout releases, starting a
 ++   Released on              ++
 ++++++++++++++++++++++++++++++++
 
+#5849 Add option to context root to create a new Resource in the root.
 Make sure the resource_overview lexicon key exists, if not use the < 2.1 resource_view for the resource view option item.
 #5885 Work around iPad (iOS) not resizing the screen properly on orientation change to landscape.
 Make sure the cache gets cleared when "Clear Cache?" was ticked.

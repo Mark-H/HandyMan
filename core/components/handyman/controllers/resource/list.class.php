@@ -133,9 +133,26 @@ class hmcResourceList extends hmController {
                 ),
             );
             $this->setPlaceholder('actions',$this->processActions($resEditMap));
-            $this->setPlaceholder('view',$this->hm->getTpl('resource/list.view',$this->getPlaceholders()));
+            $this->setPlaceholder('view',$this->hm->getTpl('resource/list.view.resource',$this->getPlaceholders()));
         } else {
             $parent = 0;
+            $this->setPlaceholder('context_key',$this->context);
+            $contextActionMap = array(
+                array(
+                    hmController::LIST_DIVIDER => $this->modx->lexicon('options'),
+                ),
+                array(
+                    'action' => 'resource/create',
+                    'text' => $this->modx->lexicon('document_create_here'),
+                    'linkparams' => array(
+                        'ctx' => $this->context,
+                        'parent' => 0,
+                    ),
+                    'icon' => 'plus'
+                )
+            );
+            $this->setPlaceholder('actions',$this->processActions($contextActionMap));
+            $this->setPlaceholder('view',$this->hm->getTpl('resource/list.view.context',$this->getPlaceholders()));
         }
 
         $subResources = $this->listResources($parent);
