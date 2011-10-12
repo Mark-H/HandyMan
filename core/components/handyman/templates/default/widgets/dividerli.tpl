@@ -1,0 +1,1 @@
+<li data-role="list-divider">[[+text]]</li>

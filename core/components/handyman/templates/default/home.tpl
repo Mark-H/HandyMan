@@ -1,6 +1,6 @@
-<p>Welcome to HandyMan - please choose something to do below.</p>
+<p>Welcome to HandyMan - your Mobile Manager for MODX.</p>
 <ul data-inset="true" data-role="listview">
-[[+actions]]
+    [[+actions]]
 </ul>
 
 <br />

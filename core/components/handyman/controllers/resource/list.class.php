@@ -19,6 +19,7 @@ class hmcResourceList extends hmController {
         } else {
             $this->context = $_REQUEST['ctx'];
         }
+        $this->modx->lexicon->load('default','resource');
         return true;
     }
 
@@ -42,7 +43,7 @@ class hmcResourceList extends hmController {
             }
         }
 
-        
+
         if ($parent > 0) {
             /** @var modResource $current */
             $current = $this->modx->getObject('modResource',$parent);
@@ -68,9 +69,12 @@ class hmcResourceList extends hmController {
             $pubstate = (boolean)$current->get('published');
             $deleted = (boolean)$current->get('deleted');
             $resEditMap = array(
+                array(
+                    hmController::LIST_DIVIDER => $this->modx->lexicon('options'),
+                ),
                 array (
                     'action' => 'resource/view',
-                    'text' => 'Show Details',
+                    'text' => $this->modx->lexicon('resource_overview'),
                     'linkparams' => array(
                         'ctx' => $this->context,
                         'rid' => $parent,
@@ -78,8 +82,38 @@ class hmcResourceList extends hmController {
                     'icon' => 'grid'
                 ),
                 array(
+                    'action' => 'resource/update',
+                    'text' => $this->modx->lexicon('resource_edit'),
+                    'linkparams' => array(
+                        'ctx' => $this->context,
+                        'rid' => $parent,
+                    ),
+                    'icon' => 'gear'
+                ),
+                array(
+                    'action' => 'resource/preview',
+                    'text' => $this->modx->lexicon('resource_view'),
+                    'linkparams' => array(
+                        'rid' => $parent,
+                    ),
+                    'icon' => 'arrow-r',
+                    'target' => '_blank'
+                ),
+                array(
+                    'action' => 'resource/create',
+                    'text' => $this->modx->lexicon('document_create_here'),
+                    'linkparams' => array(
+                        'ctx' => $this->context,
+                        'parent' => $parent,
+                    ),
+                    'icon' => 'plus'
+                ),
+                array(
+                    hmController::LIST_DIVIDER => 'Quick Options',
+                ),
+                array(
                     'action' => 'resource/publish',
-                    'text' => ($pubstate) ? 'Unpublish' : 'Publish',
+                    'text' => ($pubstate) ? $this->modx->lexicon('resource_publish') : $this->modx->lexicon('resource_unpublish'),
                     'linkparams' => array(
                         'ctx' => $this->context,
                         'rid' => $parent,
@@ -88,17 +122,8 @@ class hmcResourceList extends hmController {
                     'dialog' => true
                 ),
                 array(
-                    'action' => 'resource/update',
-                    'text' => 'Update',
-                    'linkparams' => array(
-                        'ctx' => $this->context,
-                        'rid' => $parent,
-                    ),
-                    'icon' => 'gear'
-                ),
-                array(
                     'action' => 'resource/delete',
-                    'text' => ($deleted) ? 'Restore' : 'Delete',
+                    'text' => ($deleted) ? $this->modx->lexicon('resource_undelete') : $this->modx->lexicon('resource_delete'),
                     'linkparams' => array(
                         'ctx' => $this->context,
                         'rid' => $parent
@@ -106,24 +131,6 @@ class hmcResourceList extends hmController {
                     'icon' => 'delete',
                     'dialog' => true,
                 ),
-                array(
-                    'action' => 'resource/create',
-                    'text' => 'Create Resource Here',
-                    'linkparams' => array(
-                        'ctx' => $this->context,
-                        'parent' => $parent,
-                    ),
-                    'icon' => 'plus'
-                ),
-                array(
-                    'action' => 'resource/preview',
-                    'text' => 'Preview Resource',
-                    'linkparams' => array(
-                        'rid' => $parent,
-                    ),
-                    'icon' => 'arrow-r',
-                    'target' => '_blank'
-                )
             );
             $this->setPlaceholder('actions',$this->processActions($resEditMap));
             $this->setPlaceholder('view',$this->hm->getTpl('resource/list.view',$this->getPlaceholders()));
@@ -134,7 +141,9 @@ class hmcResourceList extends hmController {
         $subResources = $this->listResources($parent);
         $resources = '';
         if (count($subResources) > 0) {
-            $resources = $this->processActions($subResources);
+            $parentText = ($parent > 0) ? $this->getPlaceholder('pagetitle') : $this->context;
+            $header = array(array(hmController::LIST_DIVIDER => 'Listing Resources under '.$parentText));
+            $resources = $this->processActions(array_merge($header,$subResources));
         }
         $this->setPlaceholder('resources',$resources);
     }

@@ -34,7 +34,11 @@ class hmcHome extends hmController {
     }
 
     public function process() {
-        $actions = array(array(
+        $actions = array(
+        array(
+            hmController::LIST_DIVIDER => 'Choose one of the Options',
+        ),
+        array(
             'action' => 'resource/list',
             'text' => 'List Resources',
             'icon' => 'grid',

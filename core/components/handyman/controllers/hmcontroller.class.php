@@ -6,6 +6,7 @@ abstract class hmController {
     const VIEW_DIALOG = 'dialog';
     const VIEW_PAGE = 'page';
     const VIEW_PAGE_LOGGEDOUT = 'page_loggedout';
+    const LIST_DIVIDER = 'divider';
     protected $templateFile = 'empty';
     protected $viewType = self::VIEW_PAGE;
     protected $cache = true;
@@ -218,23 +219,27 @@ abstract class hmController {
     public function processActions(array $actions = array()) {
         $output = array();
         foreach ($actions as $action) {
-            if (isset($action['dialog'])) {
-                $action['dialog'] = ' data-rel="dialog"';
-                $action['transition'] = $action['transition'] ? $action['transition'] : 'pop';
+            if (!empty($action[hmController::LIST_DIVIDER])) {
+                $output[] = $this->hm->getTpl('widgets/dividerli',array('text' => $action[hmController::LIST_DIVIDER]));
             } else {
-                $action['transition'] = $action['transition'] ? $action['transition'] : 'slide';
-                $action['dialog'] = '';
-            }
-            $action['icon'] = $action['icon'] ? $action['icon'] : 'arrow-r';
-            $lps = '';
-            if (count($action['linkparams']) > 0) {
-                foreach ($action['linkparams'] as $lp => $lpv) {
-                    $lps .= '&'.$lp.'='.$lpv;
+                if (isset($action['dialog'])) {
+                    $action['dialog'] = ' data-rel="dialog"';
+                    $action['transition'] = $action['transition'] ? $action['transition'] : 'pop';
+                } else {
+                    $action['transition'] = $action['transition'] ? $action['transition'] : 'slide';
+                    $action['dialog'] = '';
                 }
+                $action['icon'] = $action['icon'] ? $action['icon'] : 'arrow-r';
+                $lps = '';
+                if (count($action['linkparams']) > 0) {
+                    foreach ($action['linkparams'] as $lp => $lpv) {
+                        $lps .= '&'.$lp.'='.$lpv;
+                    }
+                }
+                $action['link'] = $this->hm->url.'?hma='.$action['action'].$lps;
+
+                $output[] = $this->hm->getTpl('widgets/rowAction',$action);
             }
-            $action['link'] = $this->hm->url.'?hma='.$action['action'].$lps;
-            
-            $output[] = $this->hm->getTpl('widgets/rowAction',$action);
         }
         return implode("\n",$output);
     }
