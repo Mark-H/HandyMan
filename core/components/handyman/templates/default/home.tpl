@@ -6,7 +6,7 @@
 <br />
 
 <p>HandyMan has been developed by <a href="http://www.markhamstra.nl" rel="external">Mark Hamstra</a> with both donations and time from the following awesome companies and individuals:</p>
-<ul data-inset="true" data-role="listview">
+<ul data-inset="true" data-role="listview" id="credits" data-dividertheme="a">
     <li data-role="list-divider">Top Contributing Companies &amp; Individuals</li>
     <li><a href="http://www.modx.com" title="MODX - Content Management as it should be">MODX, LLC </a> <span class="ui-li-count">&nbsp; Encouragement &amp; Dev. Support&nbsp;</span></li>
     <li><a href="http://www.butter.com.hk" title="Web Design &amp; Development in Hong Kong and Vancouver">Digital Butter, James Bodell</a> <span class="ui-li-count">&nbsp; Encouragement &amp; Finances &nbsp;</span></li>

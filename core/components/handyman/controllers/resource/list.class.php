@@ -34,7 +34,11 @@ class hmcResourceList extends hmController {
             $this->contexts = $this->listContexts();
             // If we have multiple contexts show the contexts listing and halt the processing here.
             if (count($this->contexts) > 1) {
-                $this->setPlaceholder('contexts',$this->processActions($this->contexts));
+                $headerRow = array(
+                    array(hmController::LIST_DIVIDER => 'Choose a Context')
+                );
+                $contextMap = array_merge($headerRow,$this->contexts);
+                $this->setPlaceholder('contexts',$this->processActions($contextMap));
                 $this->templateFile = 'resource/contexts';
                 return;
             // If we have exactly one context let's just go with that one and skip a click.
@@ -159,7 +163,7 @@ class hmcResourceList extends hmController {
         $resources = '';
         if (count($subResources) > 0) {
             $parentText = ($parent > 0) ? $this->getPlaceholder('pagetitle') : $this->context;
-            $header = array(array(hmController::LIST_DIVIDER => 'Listing Resources under '.$parentText));
+            $header = array(array(hmController::LIST_DIVIDER => 'Listing Resources in '.$parentText));
             $resources = $this->processActions(array_merge($header,$subResources));
         }
         $this->setPlaceholder('resources',$resources);
