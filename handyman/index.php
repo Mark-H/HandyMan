@@ -41,6 +41,7 @@ $modx = new modX;
 $modx->initialize('mgr');
 $modx->getParser();
 $modx->getService('lexicon','modLexicon');
+$modx->getRequest();
 
 /* Include the main HandyMan class.
  * This class takes care of authentication and provides the extension

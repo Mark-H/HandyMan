@@ -82,7 +82,7 @@ class hmcResourceCreateSave extends hmController {
 
         }
         /* If no context_key passed, default to web. */
-        if (empty($data['context_key'])) { $data['context_key'] = 'web'; $this->modx->log(MODX_LOG_LEVEL_ERROR,'Defaulting to web'); }
+        if (empty($data['context_key'])) { $data['context_key'] = 'web'; $this->modx->log(modX::LOG_LEVEL_ERROR,'Defaulting to web'); }
 
         return $data;
     }
