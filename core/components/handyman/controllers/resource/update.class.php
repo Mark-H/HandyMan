@@ -3,6 +3,8 @@
 class hmcResourceUpdate extends hmController {
     protected $cache = false;
     protected $templateFile = 'resource/update';
+    public $useRichtext = false;
+    public $allowRichtext = false;
 
     /** @var modResource $resource */
     public $resource;
@@ -35,6 +37,17 @@ class hmcResourceUpdate extends hmController {
      * @return void
      */
     public function process() {
+        $useRichtext = $this->modx->getOption('handyman.useRichtext',null,true);
+        if ($useRichtext && $this->resource->get('richtext')) {
+            $this->allowRichtext = true;
+            if (intval($_REQUEST['nort']))
+                $this->setPlaceholder('richtextStatus',2);
+            else
+                $this->setPlaceholder('richtextStatus',1);
+        } else {
+            $this->setPlaceholder('richtextStatus',0);
+        }
+
         $this->setPlaceholders($this->resource->toArray());
 
         $this->modx->loadClass('hmInputRenderer',$this->hm->config['classesPath'],true,true);

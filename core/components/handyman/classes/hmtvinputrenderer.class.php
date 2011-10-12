@@ -9,11 +9,11 @@ class hmTvInputRenderer extends hmInputRenderer {
     /**
      * Constructor.
      * @param \HandyMan $hm
+     * @param array $data
      * @return \hmTvInputRenderer
      */
-    function __construct(HandyMan &$hm) {
-        $this->hm =& $hm;
-        $this->modx =& $modx;
+    function __construct(HandyMan &$hm, $data = array()) {
+        parent::__construct($hm, $data);
     }
 
     /**
@@ -39,16 +39,26 @@ class hmTvInputRenderer extends hmInputRenderer {
             break;
             case 'option':
                 $type = 'radio'; break;
+            case 'richtext':
+                if ($this->allowRichtext && $this->useRichtext)
+                    $type = 'richtext';
+                else
+                    $type = 'textarea';
+            break;
+            case 'tag':
+            case 'autotag':
             case 'default':
                 $type = 'text';
-                break;
+            break;
+            default:
+                $tv->set('originaltype',$type);
+                $type = 'tvs/unsupported';
+            break;
         }
 
         $method = $this->_exists($type);
         if ($method) {
             $tv = $this->$method($tv);
-        } else {
-            $type = 'text';
         }
         $tv = is_object($tv) ? $tv->toArray() : $tv;
         $tv['name'] = 'tv'.$tv['id'];

@@ -3,8 +3,9 @@
     Created By: <strong>[[+createdby:userinfo=`fullname`]] &middot;</strong>
     Created On: <strong>[[+createdon]]</strong>
 </p>
-[[+use_richtext:notempty=`Currently editing with Textile based markup for richtext fields. <a href="[[+baseUrl]]index.php?hma=resource/update&ctx=[[+context_key]]&rid=[[+id]]&nort=1">Click here to use raw HTML markup instead.</a>`]]
-[[+richtext_allowed:notempty=`Textile based markup for richtext fields is available. <a href="[[+baseUrl]]index.php?hma=resource/update&ctx=[[+context_key]]&rid=[[+id]]">Click here to enable Textile based richtext editing.</a>`]]
+[[+richtextStatus:eq=`1`:then=`Currently using Textile processing for richtext fields. <a href="[[+baseUrl]]index.php?hma=resource/update&ctx=[[+context_key]]&rid=[[+id]]&nort=1">Disable Textile</a>.`]]
+[[+richtextStatus:eq=`2`:then=`Textile for richtext fields is available. <a href="[[+baseUrl]]index.php?hma=resource/update&ctx=[[+context_key]]&rid=[[+id]]">Enable Textile</a>.`]]
+
 <form action="[[+baseUrl]]index.php?hma=resource/update.save" method="post" data-transition="pop">
     <input type="hidden" name="id" value="[[+id]]" />
     <input type="hidden" name="context_key" value="[[+context_key]]" />

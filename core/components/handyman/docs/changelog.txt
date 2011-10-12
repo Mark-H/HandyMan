@@ -5,6 +5,8 @@ This changelog shows an overview of what changed throughout releases, starting a
 ++   Released on              ++
 ++++++++++++++++++++++++++++++++
 
+Add note to unsupported TV types that they are not (yet) fully supported.
+#5854 Add option to disable Textile while editing a resource and proper inheritance from system setting > resource setting.
 #5870 More UI/UX updates to start screen en resource update panel.
 Show number of resources in a context on context selection screen.
 #5849 Add option to context root to create a new Resource in the root.

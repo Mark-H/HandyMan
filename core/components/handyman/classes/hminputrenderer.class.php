@@ -8,6 +8,8 @@ class hmInputRenderer {
     /** @var modX $modx */
     public $modx;
     public $data;
+    public $useRichtext = false;
+    public $allowRichtext = false;
 
     /**
      * @param \HandyMan $hm
@@ -21,6 +23,15 @@ class hmInputRenderer {
         if (count($this->data) == 0) {
             $this->data['richtext'] = $this->modx->getOption('richtext_default',null,true);
         }
+
+        $useRichtext = $this->modx->getOption('handyman.useRichtext',null,true);
+        if ($useRichtext && $this->data['richtext']) {
+            $this->allowRichtext = true;
+            if (intval($_REQUEST['nort']))
+                $this->useRichtext = false;
+            else
+                $this->useRichtext = true;
+        }
     }
 
     /**
@@ -29,7 +40,6 @@ class hmInputRenderer {
      * @return string
      */
     public function render($type,$field) {
-        $useRichtext = $this->modx->getOption('handyman.useRichtext',null,true);
         switch ($type) {
             case 'flipswitch':
             case 'boolean':
@@ -41,12 +51,13 @@ class hmInputRenderer {
                 $type = 'select';
             break;
             case 'richtext':
-                if ($this->data['richtext'] && $useRichtext)
+                if ($this->allowRichtext && $this->useRichtext)
                     $type = 'richtext';
                 else
                     $type = 'textarea';
             break;
-            default: break;
+            default: 
+                break;
         }
         $method = $this->_exists($type);
         if ($method) {

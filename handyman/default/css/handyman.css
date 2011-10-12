@@ -48,6 +48,7 @@ div.ui-content {
 .subline {
     font-style: italic;
     margin-top: -1em;
+    font-size: 90%;
 }
 div[data-role=dialog] .ui-content {
     color: #1e1e1e;
