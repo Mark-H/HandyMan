@@ -18,6 +18,9 @@ class hmInputRenderer {
         $this->hm =& $hm;
         $this->modx =& $hm->modx;
         $this->data = $data;
+        if (count($this->data) == 0) {
+            $this->data['richtext'] = $this->modx->getOption('richtext_default',null,true);
+        }
     }
 
     /**
@@ -26,6 +29,7 @@ class hmInputRenderer {
      * @return string
      */
     public function render($type,$field) {
+        $useRichtext = $this->modx->getOption('handyman.useRichtext',null,true);
         switch ($type) {
             case 'flipswitch':
             case 'boolean':
@@ -37,7 +41,10 @@ class hmInputRenderer {
                 $type = 'select';
             break;
             case 'richtext':
-                $type = 'richtext';
+                if ($this->data['richtext'] && $useRichtext)
+                    $type = 'richtext';
+                else
+                    $type = 'textarea';
             break;
             default: break;
         }

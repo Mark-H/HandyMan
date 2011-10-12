@@ -8,6 +8,7 @@ $s = array(
     ),'Customization' => array(
         'templates' => 'default',
         'theme' => 'default',
+        'useRichtext' => true,
     ),
 );
 
