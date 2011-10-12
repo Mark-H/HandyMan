@@ -44,7 +44,12 @@ div.ui-content {
 .ui-listview-filter-inset {
     margin: -15px -5px 0;
 }
-
+.ui-btn-inner {
+    padding:  0.6em 18px;
+}
+.ui-btn-icon-right .ui-btn-inner {
+    padding-right: 36px;
+}
 .subline {
     font-style: italic;
     margin-top: -1em;
