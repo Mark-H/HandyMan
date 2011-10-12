@@ -41,6 +41,7 @@ $modx = new modX;
 $modx->initialize('mgr');
 $modx->getParser();
 $modx->getService('lexicon','modLexicon');
+$modx->setOption('modRequest.class','modRequest');
 $modx->getRequest();
 
 /* Include the main HandyMan class.
