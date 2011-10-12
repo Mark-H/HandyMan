@@ -5,6 +5,7 @@ This changelog shows an overview of what changed throughout releases, starting a
 ++   Released on              ++
 ++++++++++++++++++++++++++++++++
 
+Sort resources in resource/list on menuindex.
 #5874 Display full content on screen.
 #5868 Fix missing date and user being set on create/update.
 
