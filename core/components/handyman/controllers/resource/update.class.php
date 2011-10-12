@@ -40,7 +40,7 @@ class hmcResourceUpdate extends hmController {
         $this->modx->loadClass('hmInputRenderer',$this->hm->config['classesPath'],true,true);
         $this->renderer = new hmInputRenderer($this->hm,$this->resource->toArray());
         
-        $clearCache = array('type' => 'boolean','name' => 'clearcache','title' => 'Clear cache on save?','value' => true);
+        $clearCache = array('type' => 'boolean','name' => 'clearCache','title' => 'Clear cache on save?','value' => true);
         $clearCache = $this->renderer->render('boolean',$clearCache);
         $this->setPlaceholder('clearCache',$clearCache);
 
