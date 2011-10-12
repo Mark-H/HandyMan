@@ -45,10 +45,14 @@ class hmTvInputRenderer extends hmInputRenderer {
                 else
                     $type = 'textarea';
             break;
+            case 'text':
             case 'tag':
             case 'autotag':
             case 'default':
                 $type = 'text';
+            break;
+            case 'textarea':
+                $type = 'textarea';
             break;
             default:
                 $tv->set('originaltype',$type);
