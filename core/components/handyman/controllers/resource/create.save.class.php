@@ -14,11 +14,6 @@ class hmcResourceCreateSave extends hmController {
         return 'Creating new Resource';
     }
     public function setup() {
-        $this->resource = $this->modx->newObject('modResource');
-        $this->template = $this->modx->getObject('modTemplate',$_REQUEST['template']);
-        $this->resource->set('createdby',$this->modx->user->id);
-        $this->resource->set('createdon',strftime('%Y-%m-%d %H:%M:%S'));
-        $this->resource->set('template',$_REQUEST['template']);
         return true;
     }
 
@@ -28,31 +23,20 @@ class hmcResourceCreateSave extends hmController {
      */
     public function process() {
         $data = $this->processInput($_REQUEST);
-        $this->resource->fromArray($data);
 
-        // Find & parse any submitted TVs
-        foreach ($data as $key => $value) {
-            if (substr($key,0,2) == 'tv') {
-                if (is_array($value)) {
-                    $value = implode('||',$value);
-                }
-                if (!$this->resource->setTVValue((int)substr($key,2),$value)) {
-                    //return 'Error saving Template Variable '.substr($key,2);
-                }
+        /* @var modProcessorResponse $response */
+        $response = $this->modx->runProcessor('resource/create',$data);
+        
+        if (!$response->isError()) {
+            $tempRes = $response->getObject();
+            $this->resource = $this->modx->getObject('modResource',$tempRes['id']);
+
+            /* Make sure the createdby column is set */
+            $cb = $this->resource->get('createdby');
+            if (empty($cb)) {
+                $this->resource->set('createdby',$this->modx->user->get('id'));
+                $this->resource->save();
             }
-        }
-        $saved = $this->resource->save();
-
-        if ($_REQUEST['clearcache'] == 1) {
-            $this->modx->cacheManager->refresh(array(
-                'db' => array(),
-                'auto_publish' => array('contexts' => array($this->resource->get('context_key'))),
-                'context_settings' => array('contexts' => array($this->resource->get('context_key'))),
-                'resource' => array('contexts' => array($this->resource->get('context_key'))),
-            ));
-        }
-
-        if ($saved) {
             $this->setPlaceholders(
                 array(
                     'message' => 'Resource created.',
@@ -61,7 +45,8 @@ class hmcResourceCreateSave extends hmController {
                 )
             );
         } else {
-            $this->setPlaceholder('message','An error occurred while saving the Resource.');
+            $error = $response->getAllErrors();
+            $this->setPlaceholder('message','Something went wrong creating the Resource: '.implode(', ',$error));
         }
     }
 
@@ -72,15 +57,14 @@ class hmcResourceCreateSave extends hmController {
      */
     public function processInput($data) {
         foreach ($data as $key => $value) {
-
             /* If richtext, parse using textile */
             if (substr($key,-9) == '-richtext') {
                 $this->hm->modx->getService('t2h','textile',$this->hm->config['corePath'].'classes/textile/');
                 $data[substr($key,0,-9)] = $this->hm->modx->t2h->TextileThis($value);
                 unset ($data[$key]);
             }
-
         }
+
         /* If no context_key passed, default to web. */
         if (empty($data['context_key'])) { $data['context_key'] = 'web'; $this->modx->log(modX::LOG_LEVEL_ERROR,'Defaulting to web'); }
 

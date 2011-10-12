@@ -5,6 +5,7 @@ This changelog shows an overview of what changed throughout releases, starting a
 ++   Released on              ++
 ++++++++++++++++++++++++++++++++
 
+#5883 Use MODX core processors for resource/create & resource/update.
 #5854 Added setting to globally disable rich text.
 #5870 Change the startscreen and resource UI a tad to include splitter rows for clarity.
 #5876 Re-order resource options to make more sense and use the MODX lexicon.
