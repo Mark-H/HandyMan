@@ -145,6 +145,7 @@ class hmcResourceList extends hmController {
             'context_key' => $this->context,
             'parent' => $parent,
         ));
+        $c->sortby('menuindex','asc');
 
         $resources = array();
         $ress = $this->modx->getCollection('modResource',$c);
