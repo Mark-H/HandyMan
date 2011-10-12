@@ -16,10 +16,10 @@ div.ui-navbar {
 }
 
 .smallgroup {
-    margin: 0 0 65px 0;
 }
 .smallgroup li {
     float: left;
+    margin:  2px 0;
 }
 .smallgroup .ui-btn-inner {
     padding: .6em 35px .6em 10px;
@@ -27,6 +27,10 @@ div.ui-navbar {
 }
 .smallgroup .smallpadding .ui-btn-inner {
     padding: .6em 15px .6em 10px;
+}
+
+.clear {
+    clear: both;
 }
 
 div.ui-content {
