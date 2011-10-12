@@ -1,10 +1,15 @@
 This changelog shows an overview of what changed throughout releases, starting at the first distributed release.
 
 ++++++++++++++++++++++++++++++++
-++   HandyMan 0.9.0-dev2      ++
+++   HandyMan 0.9.1-dev1      ++
 ++   Released on              ++
 ++++++++++++++++++++++++++++++++
 
+#5854 Added setting to globally disable rich text.
+#5870 Change the startscreen and resource UI a tad to include splitter rows for clarity.
+#5876 Re-order resource options to make more sense and use the MODX lexicon.
+#5872 Make textarea / richtext fields larger by default. Pending framework fix to auto-resize when page loads.
+#5882 Fix breadcrumbs being split over multiple lines breaking the layout.
 Sort resources in resource/list on menuindex.
 #5874 Display full content on screen.
 #5868 Fix missing date and user being set on create/update.
