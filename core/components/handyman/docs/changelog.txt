@@ -2,7 +2,7 @@ This changelog shows an overview of what changed throughout releases, starting a
 
 ++++++++++++++++++++++++++++++++
 ++   HandyMan 0.9.1-dev1      ++
-++   Released on              ++
+++   Released on 2011-10-12   ++
 ++++++++++++++++++++++++++++++++
 
 #5877 Add buttons to update or view a resource in resource/view
