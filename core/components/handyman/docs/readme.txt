@@ -7,7 +7,8 @@
 ++                                  ++
 ++++++++++++++++++++++++++++++++++++++
 
-HandyMan is a mobile optimized Manager for MODX.
+HandyMan is a mobile optimized Manager for MODX, currently in Closed Contributor BETA.
+DO NOT USE HANDYMAN ON PRODUCTION SITES UNLESS YOU USE PROPER VERSION CONTROL AND CAN REVERT CONTENT CHANGES WITH EASE
 
 It allows you to update Resource content from a mobile device, using a Textile integration for richtext content.
 
@@ -25,6 +26,7 @@ Top Contributors:
 * Sepia River Studios, Yee Jee Tso
 * BMV Interactive, Benjamin Marte
 * CubedMEDIA, Travis Love
+* EdenWeb, Peter Knight
 
 But just their contribution would have been useless without these individuals!
 * Aaron Wardle
