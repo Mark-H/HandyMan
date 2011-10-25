@@ -7,7 +7,7 @@
     <br />
 </div>
 
-<div data-role="footer" data-position="fixed">
+<div data-role="footer">
     <div data-role="navbar">
     <ul>
         <li><a href="[[+baseUrl]]?hma=resource/create" id="create" data-icon="custom">Create Resource</a></li>
