@@ -1,6 +1,12 @@
 This changelog shows an overview of what changed throughout releases, starting at the first distributed release.
 
 ++++++++++++++++++++++++++++++++
+++   HandyMan 0.9.2-dev1      ++
+++   Released on 2011-10-12   ++
+++++++++++++++++++++++++++++++++
+Fix blocker bug with HandyMan where it would be using MODX chunks instead of file system templates.
+
+++++++++++++++++++++++++++++++++
 ++   HandyMan 0.9.1-dev1      ++
 ++   Released on 2011-10-12   ++
 ++++++++++++++++++++++++++++++++

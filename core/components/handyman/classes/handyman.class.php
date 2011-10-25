@@ -131,21 +131,18 @@ class HandyMan {
     }
 
     /**
-     * Gets a Template and caches it; also falls back to file-based templates.
+     * Gets a Template from the file system and caches it
      *
      * @access public
-     * @param string $name The name of the Chunk
-     * @param array $properties The properties for the Chunk
-     * @return string The processed content of the Chunk
+     * @param string $name The name of the template
+     * @param array $properties The properties for the template
+     * @return string The processed content of the template
      */
     public function getTpl($name,array $properties = array()) {
         $chunk = null;
         if (!isset($this->templates[$name])) {
-            $chunk = $this->modx->getObject('modChunk',array('name' => $name),true);
-            if (empty($chunk)) {
-                $chunk = $this->_getTpl($name,$this->config['tplSuffix']);
-                if ($chunk == false) return false;
-            }
+            $chunk = $this->_getTpl($name,$this->config['tplSuffix']);
+            if ($chunk == false) return false;
             $this->templates[$name] = $chunk->getContent();
         } else {
             $o = $this->templates[$name];
@@ -159,8 +156,8 @@ class HandyMan {
      * Returns a modChunk object from a template file.
      *
      * @access private
-     * @param string $name The name of the Chunk. Will parse to name.chunk.tpl by default.
-     * @param string $suffix The suffix to add to the chunk filename.
+     * @param string $name The name of the template. Will parse to name.tpl by default.
+     * @param string $suffix The suffix to add to the filename.
      * @return modChunk/boolean Returns the modChunk object if found, otherwise
      * false.
      */
