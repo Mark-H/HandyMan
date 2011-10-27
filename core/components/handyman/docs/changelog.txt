@@ -1,5 +1,7 @@
 This changelog shows an overview of what changed throughout releases, starting at the first distributed release.
 
+#5873 Force UTF-8 html entities to prevent encoding issues on view details.
+
 ++++++++++++++++++++++++++++++++
 ++   HandyMan 0.9.2-dev1      ++
 ++   Released on 2011-10-25   ++
