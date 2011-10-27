@@ -107,7 +107,7 @@ class hmcResourceView extends hmController {
      * @return mixed
      */
     public function safe($string, $raw = false) {
-        $string = ($raw) ? $string : htmlentities($string);
+        $string = ($raw) ? $string : htmlentities($string,ENT_QUOTES,'UTF-8');
         return str_replace(array('[',']'),array('&#91;','&#93;'),$string);
     }
 

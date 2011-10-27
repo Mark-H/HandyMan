@@ -36,8 +36,8 @@ while ($i < $amts) {
     $i++;
 }
 
-$entTextiled = htmlentities($textiled);
-$entTextiledRecursive = htmlentities($recursingTextile);
+$entTextiled = htmlentities($textiled,ENT_QUOTES,'UTF-8');
+$entTextiledRecursive = htmlentities($recursingTextile,ENT_QUOTES,'UTF-8');
 echo <<<HTML
 <table border=1>
     <tr>
