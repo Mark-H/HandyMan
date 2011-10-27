@@ -31,17 +31,17 @@ class hmcResourceView extends hmController {
     public $template;
     
     public function getPageTitle() {
-        return 'Resource Details - HandyMan';
+        return 'Resource Details';
     }
     public function setup() {
+        $this->modx->lexicon->load('default','resource');
         if (empty($_REQUEST['rid'])) {
-            return 'No valid resource id passed.';
+            return $this->modx->lexicon('resource_err_nf');
         }
         $this->resource = $this->modx->getObject('modResource',intval($_REQUEST['rid']));
         if (empty($this->resource)) {
-            return 'Resource not found.';
+            return $this->modx->lexicon('resource_err_nfs',array('id' => intval($_REQUEST['rid'])));
         }
-        $this->modx->lexicon->load('default','resource');
         return true;
     }
 

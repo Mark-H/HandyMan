@@ -30,7 +30,7 @@ class hmcResourcePublish extends hmController {
     public $resource;
 
     public function getPageTitle() {
-        return 'Publishing: '.$this->resource->get('pagetitle');
+        return $this->modx->lexicon($this->resource->get('published') ? 'unpublish' : 'publish').' '.$this->resource->get('pagetitle');
     }
     public function setup() {
         if (empty($_REQUEST['rid'])) {
@@ -40,6 +40,7 @@ class hmcResourcePublish extends hmController {
         if (empty($this->resource)) {
             return 'Resource not found.';
         }
+        $this->modx->lexicon->load('default','resource');
         return true;
     }
 

@@ -30,7 +30,7 @@ class hmcLogin extends hmController {
         return true;
     }
     public function getPageTitle() {
-        return 'Please login - HandyMan';
+        return 'Please login';
     }
 
     public function process() {

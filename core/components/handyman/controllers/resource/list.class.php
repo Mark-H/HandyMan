@@ -10,7 +10,7 @@ class hmcResourceList extends hmController {
     public $list;
 
     public function getPageTitle() {
-        return 'Listing Resources - HandyMan';
+        return 'Listing Resources';
     }
 
     public function setup() {

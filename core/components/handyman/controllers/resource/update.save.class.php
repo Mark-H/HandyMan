@@ -11,15 +11,18 @@ class hmcResourceUpdateSave extends hmController {
     public $template;
 
     public function getPageTitle() {
-        return 'Saving: '.$this->resource->get('pagetitle');
+        if ($this->resource instanceof modResource)
+            return $this->modx->lexicon('updated') . ' ' . $this->resource->get('pagetitle');
+        return $this->modx->lexicon('resource_err_nf');
     }
     public function setup() {
+        $this->modx->lexicon->load('default','resource');
         if (empty($_REQUEST['id'])) {
-            return 'No valid resource id passed.';
+            return $this->modx->lexicon('resource_err_nf');
         }
         $this->resource = $this->modx->getObject('modResource',intval($_REQUEST['id']));
         if (empty($this->resource)) {
-            return 'Resource not found.';
+            return $this->modx->lexicon('resource_err_nfs',array('id' => intval($_REQUEST['id'])));
         }
         $this->resource->set('editedby',$this->modx->user->get('id'));
         $this->resource->set('editedon',strftime('%Y-%m-%d %H:%M:%S'));
@@ -42,7 +45,7 @@ class hmcResourceUpdateSave extends hmController {
             $this->resource = $this->modx->getObject('modResource',$tempRes['id']);
             $this->setPlaceholders(
                 array(
-                    'message' => 'Resource updated.',
+                    'message' => $this->modx->lexicon('updated'),
                     'resid' => $this->resource->get('id'),
                     'ctx' => $this->resource->get('context_key'),
                 )

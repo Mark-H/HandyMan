@@ -26,10 +26,11 @@ class hmcHome extends hmController {
     protected $cache = true;
 
     public function getPageTitle() {
-        return 'Welcome to HandyMan';
+        return $this->modx->lexicon('home');
     }
 
     public function setup() {
+        $this->modx->lexicon->load('default','resource');
         return true;
     }
 

@@ -11,7 +11,7 @@ class hmcResourceCreateSave extends hmController {
     public $template;
 
     public function getPageTitle() {
-        return 'Creating new Resource';
+        return $this->modx->lexicon('resource_new');
     }
     public function setup() {
         return true;

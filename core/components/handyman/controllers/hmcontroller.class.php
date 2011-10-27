@@ -61,7 +61,7 @@ abstract class hmController {
      * @return string
      */
     public function getPageTitle() {
-        return 'HandyMan';
+        return $this->modx->lexicon('handyman');
     }
 
     /**

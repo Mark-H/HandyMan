@@ -1,7 +1,7 @@
 <div data-role="page" id="[[+id]]"[[+cache]]>
 <div data-role="header" data-position="fixed">
     <a href="javascript: history.go(-1);" data-icon="back" data-rel="back" data-direction="reverse">Back</a>
-    <h1>[[+title]]</h1>
+    <h1>[[+title]] :: HandyMan</h1>
     <a href="[[+baseUrl]]" data-icon="home" data-transition="flip">Home</a>
 </div>
 <div data-role="content">

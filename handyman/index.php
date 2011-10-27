@@ -31,7 +31,7 @@
 require_once(dirname(dirname(__FILE__))).'/config.core.php';
 if (!(include_once MODX_CORE_PATH . 'model/modx/modx.class.php')) {
     include MODX_CORE_PATH . 'error/unavailable.include.php';
-    die('Site temporarily unavailable!');
+    die('HandyMan temporarily unavailable!');
 }
 
 /**

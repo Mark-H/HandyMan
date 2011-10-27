@@ -10,7 +10,7 @@ class hmcResourceCreate extends hmController {
     public $template;
 
     public function getPageTitle() {
-        return 'Creating New Resource';
+        return $this->modx->lexicon('resource_new');
     }
     public function setup() {
         $this->template = $this->hm->modx->getObject('modTemplate',$this->hm->modx->getOption('default_template'));
@@ -26,11 +26,11 @@ class hmcResourceCreate extends hmController {
         $this->modx->loadClass('hmInputRenderer',$this->hm->config['classesPath'],true,true);
         $this->renderer = new hmInputRenderer($this->hm,array());
         
-        $clearCache = array('type' => 'boolean','name' => 'clearCache','title' => 'Clear cache on save?','value' => true);
+        $clearCache = array('type' => 'boolean','name' => 'clearCache','title' => $this->modx->lexicon('clear_cache_on_save'),'value' => true);
         $clearCache = $this->renderer->render('boolean',$clearCache);
         $this->setPlaceholder('clearCache',$clearCache);
 
-        $content = array('type' => 'richtext', 'name' => 'content', 'value' => '');
+        $content = array('type' => 'richtext', 'name' => 'content', 'title' => $this->modx->lexicon('resource_content'), 'value' => '');
         $content = $this->renderer->render('richtext',$content);
         $this->setPlaceholder('content',$content);
 
@@ -59,12 +59,12 @@ class hmcResourceCreate extends hmController {
             'context_key' => array('type' => 'hidden', 'value' => ($_REQUEST['ctx']) ? $_REQUEST['ctx'] : 'web'),
             'menutitle' => array('type' => 'text'),
             'menuindex' => array('type' => 'text'),
-            'hidemenu' => array('type' => 'boolean', 'value' => $this->modx->getOption('hidemenu_default')),
+            'hidemenu' => array('type' => 'boolean', 'value' => $this->modx->getOption('hidemenu_default'), 'title' => $this->modx->lexicon('resource_hide_from_menus')),
         );
 
         $list = array();
         foreach ($fields as $name => $details) {
-            $details['title'] = ($this->modx->lexicon->exists($name)) ? $this->modx->lexicon($name) : $this->modx->lexicon('resource_'.$name);
+            $details['title'] = (($details['title']) ? $details['title'] : (($this->modx->lexicon->exists($name)) ? $this->modx->lexicon($name) : $this->modx->lexicon('resource_'.$name)));
             $details['name'] = $name;
             $list[$name] = $this->renderer->render($details['type'],$details);
         }
@@ -74,9 +74,9 @@ class hmcResourceCreate extends hmController {
     public function getResourceSettings() {
         $fields = array(
             'richtext' => array('type' => 'flipswitch', 'value' => $this->hm->modx->getOption('richtext_default')),
-            'isfolder' => array('type' => 'flipswitch', 'value' => false),
-            'pub_date' => array('type' => 'text'),
-            'unpub_date' => array('type' => 'text'),
+            'isfolder' => array('type' => 'flipswitch', 'value' => false, 'title' => $this->modx->lexicon('resource_folder')),
+            'pub_date' => array('type' => 'text', 'title' => $this->modx->lexicon('resource_publishdate')),
+            'unpub_date' => array('type' => 'text', 'title' => $this->modx->lexicon('resource_unpublishdate')),
             'searchable' => array('type' => 'boolean', 'value' => $this->hm->modx->getOption('search_default')),
             'cacheable' => array('type' => 'boolean', 'value' => $this->hm->modx->getOption('cache_default')),
             'deleted' => array('type' => 'boolean', 'value' => false),
@@ -86,7 +86,7 @@ class hmcResourceCreate extends hmController {
 
         $list = array();
         foreach ($fields as $name => $details) {
-            $details['title'] = ($this->modx->lexicon->exists($name)) ? $this->modx->lexicon($name) : $this->modx->lexicon('resource_'.$name);
+            $details['title'] = (($details['title']) ? $details['title'] : (($this->modx->lexicon->exists($name)) ? $this->modx->lexicon($name) : $this->modx->lexicon('resource_'.$name)));
             $details['name'] = $name;
             $list[$name] = $this->renderer->render($details['type'],$details);
         }
@@ -109,7 +109,7 @@ class hmcResourceCreate extends hmController {
                     $tvs[$categories[$tvArray['category']]][] = $tv;
                 else {
                     if ($tvArray['category'] == 0) {
-                        $tvs['Uncategorized'][] = $tv;
+                        $tvs[$this->modx->lexicon('uncategorized')][] = $tv;
                     }
                     else {
                         $cat = $tv->getOne('Category');
@@ -146,34 +146,6 @@ class hmcResourceCreate extends hmController {
         }
         $this->setPlaceholder('tvs',implode("\n",$list));
     }
-
-
-    /**
-     * Create a field for a TV type
-     * @param modTemplateVar $tv
-     * @return string
-     */
-    public function createTemplateVarField(modTemplateVar $tv) {
-        $value = $tv->get('value');
-        switch($tv->get('display')) {
-            default:
-            case 'default':
-                break;
-        }
-        $type = 'text';
-        switch ($tv->get('type')) {
-            case 'checkbox':
-                
-            default:
-            case 'text':
-                break;
-        }
-
-        $options = array();
-        $tvArray = $tv->toArray();
-        return $this->createField($type,'tv'.$tvArray['id'],$tvArray['caption'],$value,$options);
-    }
-
 
     /**
      * Get a list of options for a Template dropdown

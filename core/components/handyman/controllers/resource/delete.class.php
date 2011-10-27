@@ -30,9 +30,10 @@ class hmcResourceDelete extends hmController {
     public $resource;
 
     public function getPageTitle() {
-        return 'Deleting: '.$this->resource->get('pagetitle');
+        return $this->modx->lexicon('remove') . ' ' .$this->resource->get('pagetitle');
     }
     public function setup() {
+        $this->modx->lexicon->load('default','resource');
         if (empty($_REQUEST['rid'])) {
             return 'No valid resource id passed.';
         }
