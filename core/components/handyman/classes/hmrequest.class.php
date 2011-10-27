@@ -96,8 +96,11 @@ class hmRequest {
         if (count($this->action['options']) > 0) {
             $actionOptions = $this->action['options'];
         }
-        // @TODO: $_GET[] validation, sanitation
+
         $actionOptions['get'] = array_merge($_GET,$_POST);
+        foreach ($actionOptions['get'] as $k => $v) {
+            $actionOptions['get'][$k] = htmlentities($v,ENT_QUOTES,'UTF-8');
+        }
 
         $output = '';
         $this->modx->loadClass('hmController',$this->hm->config['controllersPath'],true,true);

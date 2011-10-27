@@ -3,6 +3,8 @@
 class hmcResourceCreate extends hmController {
     protected $cache = false;
     protected $templateFile = 'resource/create';
+    public $useRichtext = false;
+    public $allowRichtext = false;
 
     /** @var hmInputRenderer $renderer */
     public $renderer;
@@ -23,6 +25,19 @@ class hmcResourceCreate extends hmController {
      * @return void
      */
     public function process() {
+        $useRichtext = $this->modx->getOption('handyman.useRichtext',null,true);
+        if ($useRichtext && $this->hm->modx->getOption('richtext_default')) {
+            $this->allowRichtext = true;
+            if (intval($_REQUEST['nort']))
+                $this->setPlaceholder('richtextStatus',2);
+            else
+                $this->setPlaceholder('richtextStatus',1);
+        } else {
+            $this->setPlaceholder('richtextStatus',0);
+        }
+        $this->setPlaceholder('ctx',($_REQUEST['ctx']) ? $_REQUEST['ctx'] : 'web');
+        $this->setPlaceholder('parent',($_REQUEST['parent']) ? $_REQUEST['parent'] : 0);
+
         $this->modx->loadClass('hmInputRenderer',$this->hm->config['classesPath'],true,true);
         $this->renderer = new hmInputRenderer($this->hm,array());
         
