@@ -98,6 +98,9 @@ class hmcResourceUpdate extends hmController {
         $this->setPlaceholder('fields',implode("\n",$list));
     }
 
+    /**
+     * Gets resource fields to display
+     */
     public function getResourceSettings() {
         $fields = array(
             'richtext' => array('type' => 'flipswitch'),
@@ -126,7 +129,10 @@ class hmcResourceUpdate extends hmController {
      * @return void
      */
     public function getTemplateVariables() {
-        $tvObjs = $this->template->getTemplateVars();
+        if (method_exists('modResource','getTemplateVarCollection'))
+            $tvObjs = modResource::getTemplateVarCollection($this->resource);
+        else
+            $tvObjs = $this->_getTemplateVars();
         $tvs = array();
         $categories = array();
         /** @var modTemplateVar $tv */
@@ -192,5 +198,40 @@ class hmcResourceUpdate extends hmController {
             );
         }
         return $tplOptions;
+    }
+
+    /**
+     * Used in MODX < 2.1 where the modResource::getTemplateVarCollection method is not yet available.
+     * Collects modTemplateVar objects with their value for the current resource.
+     *
+     * @return array An array with TV objects.
+     */
+    private function _getTemplateVars() {
+        $c = $this->modx->newQuery('modTemplateVar');
+        $c->query['distinct'] = 'DISTINCT';
+        $c->select($this->modx->getSelectColumns('modTemplateVar', 'modTemplateVar'));
+        if ($this->resource->isNew()) {
+            $c->select(array(
+                'modTemplateVar.default_text AS value',
+                '0 AS resourceId'
+            ));
+        } else {
+            $c->select(array(
+                'IF(ISNULL(tvc.value),modTemplateVar.default_text,tvc.value) AS value',
+                $this->resource->get('id').' AS resourceId'
+            ));
+        }
+        $c->innerJoin('modTemplateVarTemplate','tvtpl',array(
+            'tvtpl.tmplvarid = modTemplateVar.id',
+            'tvtpl.templateid' => $this->resource->get('template'),
+        ));
+        if (!$this->resource->isNew()) {
+            $c->leftJoin('modTemplateVarResource','tvc',array(
+                'tvc.tmplvarid = modTemplateVar.id',
+                'tvc.contentid' => $this->resource->get('id'),
+            ));
+        }
+        $c->sortby('tvtpl.rank,modTemplateVar.rank');
+        return $this->modx->getCollection('modTemplateVar', $c);
     }
 }
