@@ -126,7 +126,7 @@ class hmcResourceUpdate extends hmController {
      * @return void
      */
     public function getTemplateVariables() {
-        $tvObjs = modResource::getTemplateVarCollection($this->resource);
+        $tvObjs = $this->template->getTemplateVars();
         $tvs = array();
         $categories = array();
         /** @var modTemplateVar $tv */
