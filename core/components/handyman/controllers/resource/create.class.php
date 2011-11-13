@@ -28,15 +28,15 @@ class hmcResourceCreate extends hmController {
         $useRichtext = $this->modx->getOption('handyman.useRichtext',null,true);
         if ($useRichtext && $this->hm->modx->getOption('richtext_default')) {
             $this->allowRichtext = true;
-            if (intval($_REQUEST['nort']))
+            if (intval($this->config['gpc']['nort']))
                 $this->setPlaceholder('richtextStatus',2);
             else
                 $this->setPlaceholder('richtextStatus',1);
         } else {
             $this->setPlaceholder('richtextStatus',0);
         }
-        $this->setPlaceholder('ctx',($_REQUEST['ctx']) ? $_REQUEST['ctx'] : 'web');
-        $this->setPlaceholder('parent',($_REQUEST['parent']) ? $_REQUEST['parent'] : 0);
+        $this->setPlaceholder('ctx',($this->config['gpc']['ctx']) ? $this->config['gpc']['ctx'] : 'web');
+        $this->setPlaceholder('parent',($this->config['gpc']['parent']) ? $this->config['gpc']['parent'] : 0);
 
         $this->modx->loadClass('hmInputRenderer',$this->hm->config['classesPath'],true,true);
         $this->renderer = new hmInputRenderer($this->hm,array());
@@ -70,8 +70,8 @@ class hmcResourceCreate extends hmController {
             'alias' => array('type' => 'text'),
             'link_attributes' => array('type' => 'text'),
             'introtext' => array('type' => 'textarea'),
-            'parent' => array('type' => 'text', 'value' => $_REQUEST['parent']),
-            'context_key' => array('type' => 'hidden', 'value' => ($_REQUEST['ctx']) ? $_REQUEST['ctx'] : 'web'),
+            'parent' => array('type' => 'text', 'value' => $this->config['gpc']['parent']),
+            'context_key' => array('type' => 'hidden', 'value' => ($this->config['gpc']['ctx']) ? $this->config['gpc']['ctx'] : 'web'),
             'menutitle' => array('type' => 'text'),
             'menuindex' => array('type' => 'text'),
             'hidemenu' => array('type' => 'boolean', 'value' => $this->modx->getOption('hidemenu_default'), 'title' => $this->modx->lexicon('resource_hide_from_menus')),

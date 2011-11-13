@@ -101,6 +101,10 @@ class hmRequest {
         foreach ($actionOptions['get'] as $k => $v) {
             $actionOptions['get'][$k] = htmlentities($v,ENT_QUOTES,'UTF-8');
         }
+        if (function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc()) {
+            array_walk_recursive($actionOptions['get'], create_function('&$val', '$val = stripslashes($val);'));
+        }
+        $this->action['gpc'] = $actionOptions['get'];
 
         $output = '';
         $this->modx->loadClass('hmController',$this->hm->config['controllersPath'],true,true);

@@ -33,7 +33,7 @@ class hmcResourcePreview extends hmController {
     }
 
     public function setup() {
-        $this->resource = $this->modx->getObject('modResource',$_REQUEST['rid']);
+        $this->resource = $this->modx->getObject('modResource',$this->config['gpc']['rid']);
         if (!($this->resource instanceof modResource)) {
             return 'Error fetching Resource.';
         }

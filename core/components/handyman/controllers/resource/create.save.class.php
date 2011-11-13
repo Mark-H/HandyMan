@@ -22,7 +22,7 @@ class hmcResourceCreateSave extends hmController {
      * @return void
      */
     public function process() {
-        $data = $this->processInput($_REQUEST);
+        $data = $this->processInput($this->config['gpc']);
 
         /* @var modProcessorResponse $response */
         $response = $this->modx->runProcessor('resource/create',$data);
@@ -66,7 +66,7 @@ class hmcResourceCreateSave extends hmController {
         }
 
         /* If no context_key passed, default to web. */
-        if (empty($data['context_key'])) { $data['context_key'] = 'web'; $this->modx->log(modX::LOG_LEVEL_ERROR,'Defaulting to web'); }
+        if (empty($data['context_key'])) { $data['context_key'] = 'web'; }
 
         return $data;
     }

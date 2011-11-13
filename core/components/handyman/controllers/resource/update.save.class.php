@@ -17,12 +17,12 @@ class hmcResourceUpdateSave extends hmController {
     }
     public function setup() {
         $this->modx->lexicon->load('default','resource');
-        if (empty($_REQUEST['id'])) {
+        if (empty($this->config['gpc']['id'])) {
             return $this->modx->lexicon('resource_err_nf');
         }
-        $this->resource = $this->modx->getObject('modResource',intval($_REQUEST['id']));
+        $this->resource = $this->modx->getObject('modResource',intval($this->config['gpc']['id']));
         if (empty($this->resource)) {
-            return $this->modx->lexicon('resource_err_nfs',array('id' => intval($_REQUEST['id'])));
+            return $this->modx->lexicon('resource_err_nfs',array('id' => intval($this->config['gpc']['id'])));
         }
         $this->resource->set('editedby',$this->modx->user->get('id'));
         $this->resource->set('editedon',strftime('%Y-%m-%d %H:%M:%S'));
@@ -35,7 +35,7 @@ class hmcResourceUpdateSave extends hmController {
      * @return void
      */
     public function process() {
-        $data = $this->processInput($_REQUEST);
+        $data = $this->processInput($this->config['gpc']);
 
         /* @var modProcessorResponse $response */
         $response = $this->modx->runProcessor('resource/update',$data);

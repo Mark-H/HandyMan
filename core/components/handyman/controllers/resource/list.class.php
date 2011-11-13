@@ -14,10 +14,10 @@ class hmcResourceList extends hmController {
     }
 
     public function setup() {
-        if (empty($_REQUEST['ctx'])) {
+        if (empty($this->config['gpc']['ctx'])) {
             $this->context = null;
         } else {
-            $this->context = $_REQUEST['ctx'];
+            $this->context = $this->config['gpc']['ctx'];
         }
         $this->modx->lexicon->load('default','resource');
         return true;

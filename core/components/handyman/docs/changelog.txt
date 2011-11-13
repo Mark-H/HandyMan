@@ -1,5 +1,6 @@
 This changelog shows an overview of what changed throughout releases, starting at the first distributed release.
 
+#5957 Fix slash issues on server configurations which have magic_quotes_gpc enabled. 
 Add option to disable/enable textile on create resource controller.
 Further internationalization efforts. Will need more work than this, but every bit helps..!
 #5873 Force UTF-8 html entities to prevent encoding issues on view details.

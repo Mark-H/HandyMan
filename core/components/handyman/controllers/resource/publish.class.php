@@ -33,10 +33,10 @@ class hmcResourcePublish extends hmController {
         return $this->modx->lexicon($this->resource->get('published') ? 'unpublish' : 'publish').' '.$this->resource->get('pagetitle');
     }
     public function setup() {
-        if (empty($_REQUEST['rid'])) {
+        if (empty($this->config['gpc']['rid'])) {
             return 'No valid resource id passed.';
         }
-        $this->resource = $this->modx->getObject('modResource',intval($_REQUEST['rid']));
+        $this->resource = $this->modx->getObject('modResource',intval($this->config['gpc']['rid']));
         if (empty($this->resource)) {
             return 'Resource not found.';
         }

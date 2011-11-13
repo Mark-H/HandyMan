@@ -85,11 +85,9 @@ class HandyMan {
         ),$config);
 
         /**
-         * Echo errors with a level of ERROR or higher.
+         * Send errors with a level of ERROR or higher to the error log
          */
-        $this->modx->setLogTarget('ECHO');
         $this->modx->setLogLevel(modX::LOG_LEVEL_ERROR);
-        error_reporting(E_ALL); ini_set('display_errors',true);
     } // End of method __construct()
 
     /**

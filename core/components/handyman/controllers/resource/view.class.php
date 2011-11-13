@@ -35,12 +35,12 @@ class hmcResourceView extends hmController {
     }
     public function setup() {
         $this->modx->lexicon->load('default','resource');
-        if (empty($_REQUEST['rid'])) {
+        if (empty($this->config['gpc']['rid'])) {
             return $this->modx->lexicon('resource_err_nf');
         }
-        $this->resource = $this->modx->getObject('modResource',intval($_REQUEST['rid']));
+        $this->resource = $this->modx->getObject('modResource',intval($this->config['gpc']['rid']));
         if (empty($this->resource)) {
-            return $this->modx->lexicon('resource_err_nfs',array('id' => intval($_REQUEST['rid'])));
+            return $this->modx->lexicon('resource_err_nfs',array('id' => intval($this->config['gpc']['rid'])));
         }
         return true;
     }
