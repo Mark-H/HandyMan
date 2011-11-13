@@ -54,6 +54,9 @@ class hmTvInputRenderer extends hmInputRenderer {
             case 'textarea':
                 $type = 'textarea';
             break;
+            case 'date':
+                $type = 'date';
+            break;
             default:
                 $tv->set('originaltype',$type);
                 $type = 'tvs/unsupported';
@@ -178,5 +181,19 @@ class hmTvInputRenderer extends hmInputRenderer {
      */
     public function prepareRichtext($field) {
         return parent::prepareRichtext($field);
+    }
+
+    /**
+     * Prepares date fields.
+     * @param $field
+     */
+    public function prepareDate($field) {
+        $value = $field->get('value');
+        if (strtotime($value) > 0) {
+            $field->set('value',date(DATE_ATOM,strtotime($value)));
+        } else {
+            $field->set('value','');
+        }
+        return $field;
     }
 }
