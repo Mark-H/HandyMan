@@ -1,5 +1,6 @@
 This changelog shows an overview of what changed throughout releases, with the latest release or development log on top.
 
+#6008 Improve credits list on homepage for smaller screens, better tribute to premier contributors.
 Update resource/view for more granular control, different displays (text/boolean for now) and using lexicons for headers.
 #6113 Fix lexicons for settings on resource/view
 #5994 Inherit template from parent when creating a new resource, or use default_template system setting.

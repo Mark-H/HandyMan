@@ -4,26 +4,28 @@
 </ul>
 
 <br />
-
-<p>HandyMan has been developed by <a href="http://www.markhamstra.nl" rel="external">Mark Hamstra</a> with both donations and time from the following awesome companies and individuals:</p>
-<ul data-inset="true" data-role="listview" id="credits" data-dividertheme="a">
-    <li data-role="list-divider">Top Contributing Companies &amp; Individuals</li>
-    <li><a href="http://www.modx.com" title="MODX - Content Management as it should be">MODX, LLC </a> <span class="ui-li-count">&nbsp; Encouragement &amp; Dev. Support&nbsp;</span></li>
-    <li><a href="http://www.butter.com.hk" title="Web Design &amp; Development in Hong Kong and Vancouver">Digital Butter, James Bodell</a> <span class="ui-li-count">&nbsp; Encouragement &amp; Finances &nbsp;</span></li>
-    <li><a href="http://www.skytoaster.com" title="Creative Design and Web Development">SkyToaster, Patrick Rice</a> <span class="ui-li-count">&nbsp; Hosting &amp; Web Design &nbsp;</span></li>
-    <li><a href="http://www.sepiariver.com" title="Construction Marketing Specialists">Sepia River, YJ Tso</a> <span class="ui-li-count">&nbsp; Marketing &amp; Copywriting &nbsp;</span></li>
-    <li><a href="http://www.bmv-interactive.com/" title="BMV Interactive Media Development">BMV Interactive, Benjamin Marte</a> <span class="ui-li-count">&nbsp; jQuery Mobile Skills &nbsp;</span></li>
-    <li><a href="http://cubed-media.com/" title="CubedMEDIA">CubedMEDIA, Travis Love</a> <span class="ui-li-count">&nbsp; Web Design &amp; Logo &nbsp;</span></li>
-    <li><a href="http://www.edenweb.ie/" title="EdenWeb">EdenWeb, Peter Knight</a> <span class="ui-li-count">&nbsp; Encouragement &amp; Finances &nbsp;</span></li>
-    <li data-role="list-divider">And also many thanks to..</li>
-    <li>Aaron Wardle</li>
-    <li>Anselm Hannemann</li>
-    <li>Martijn van Turnhout</li>
-    <li>Gareth Bissland</li>
-    <li>Jared Loman</li>
-    <li>Adam Smith</li>
-    <li>Crawford Paul</li>
-    <li>Anne Sallee</li>
-    <li>Frank Los</li>
-</ul>
-<p>But there's more individuals that contributed, <a href="http://www.modxmobile.com/">browse the site to find out!</a></p>
+<div class="credits [[++handyman.credits]]">
+    <p>HandyMan has been developed by <a href="http://www.markhamstra.nl" rel="external">Mark Hamstra</a> with great help of donations and time from the following amazing companies and individuals:</p>
+    <ul data-inset="true" data-role="listview" id="credits" data-dividertheme="a">
+        <li data-role="list-divider">Top Contributing Companies &amp; Individuals</li>
+        <li><a href="http://www.modx.com" title="MODX - Content Management as it should be">MODX, LLC <p class="ui-li-desc">Thanks for developing MODX, the Encouragement &amp; Shaun "splittingred" McCormick in particular for the amazing help with development.</p></a></li>
+        <li><a href="http://www.butter.com.hk" title="Web Design &amp; Development in Hong Kong and Vancouver">Digital Butter, James Bodell <p class="ui-li-desc">Thanks for the Encouragement &amp; generous Contribution!</p></a></li>
+        <li><a href="http://www.skytoaster.com" title="Creative Design and Web Development">SkyToaster, Patrick Rice <p class="ui-li-desc">Thanks for hosting the site and contributing the first Web Design.</p></a></li>
+        <li><a href="http://www.sepiariver.com" title="Construction Marketing Specialists">Sepia River, YJ Tso <p class="ui-li-desc">Thanks for the outstanding job on the Marketing &amp; Copywriting side of things.</p></a></li>
+        <li><a href="http://www.bmv-interactive.com/" title="BMV Interactive Media Development">BMV Interactive, Benjamin Marte <p class="ui-li-desc">Thanks for borrowing me your jQuery Mobile and Design Skills.</p></a></li>
+        <li><a href="http://cubed-media.com/" title="CubedMEDIA">CubedMEDIA, Travis Love <p class="ui-li-desc">Thanks for the great work on the refreshed (responsive) Web Design &amp; Logo</p></a></li>
+        <li><a href="http://www.edenweb.ie/" title="EdenWeb">EdenWeb, Peter Knight <p class="ui-li-desc">Thanks for the Encouragement &amp; generous Contribution!</p></a></li>
+        <li data-role="list-divider">And also many thanks to..</li>
+        <li>Aaron Wardle</li>
+        <li>Anselm Hannemann</li>
+        <li>Martijn van Turnhout</li>
+        <li>Gareth Bissland</li>
+        <li>Jared Loman</li>
+        <li>Adam Smith</li>
+        <li>Crawford Paul</li>
+        <li>Anne Sallee</li>
+        <li>Frank Los</li>
+    </ul>
+    <p>That should be a near complete list.. but if you are still missing, visit the website and <a href="http://www.modxmobile.com/">Contribute to HandyMan!</a></p>
+    <p class="smallnote">Should you be in that list but are missing? <a href="mailto:hello@markhamstra.com">Let me know!</a></p>
+</div>
