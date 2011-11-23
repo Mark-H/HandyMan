@@ -1,5 +1,6 @@
 This changelog shows an overview of what changed throughout releases, with the latest release or development log on top.
 
+Update jQuery  Mobile to 1.0-final (Great job jQuery Mobile team!!)
 #5976 Enhanced support for date input type TVs on mobile devices.
 #5867 Support for MODX 2.0.8.
 Fix breadcrumb links passing the wrong URL parameter.
