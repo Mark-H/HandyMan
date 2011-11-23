@@ -123,7 +123,7 @@ li a{
     text-align: center;
 }
 /*---------------- fixed Nav background color ------------------*/
-#create, #manage, #logout, .redGradient {
+#nav-home, #manage, #logout, .redGradient {
     background: transparent;
     /*background-image: -webkit-gradient(linear, left top, left bottom, from(#666666), to(#777777));
 	background-image: -webkit-linear-gradient(top, #666666, #777777);
@@ -134,7 +134,7 @@ li a{
     font-size: 12px;
 }
 /*---------------- fixed Nav background color on hover ------------------*/
-#create:hover, #manage:hover, #logout:hover {
+#nav-home:hover, #manage:hover, #logout:hover {
     background: #779937;
     background-image: -webkit-gradient(linear, left top, left bottom, from(#779937), to(#5C7F17)); /* Saf4+, Chrome */
 	background-image: -webkit-linear-gradient(top, #779937, #5C7F17); /* Chrome 10+, Saf5.1+ */
@@ -144,22 +144,22 @@ li a{
 	background-image:         linear-gradient(top, #779937, #5C7F17);
 }
 /*---------------- fixed Nav button custom icons ------------------*/
-#create .ui-icon {
-    background: url(../images/create_icon.png) 50% 50% no-repeat;
-    background-size: 20px 25px;
+#nav-home .ui-icon {
+    background: url(../images/icon_home.png) 50% 50% no-repeat;
+    background-size: 30px 40px;
 }
 #manage .ui-icon {
-    background: url(../images/manage_icon.png) 50% 50% no-repeat;
+    background: url(../images/icon_resources.png) 50% 50% no-repeat;
     background-size: 20px 25px;
 }
 #logout .ui-icon {
-    background: url(../images/logout_icon.png)50% 50% no-repeat;
+    background: url(../images/icon_logout.png)50% 50% no-repeat;
     background-size: 20px 25px;
 }
-#create.ui-btn .ui-btn-inner, #manage.ui-btn .ui-btn-inner, #logout.ui-btn .ui-btn-inner {
+#nav-home.ui-btn .ui-btn-inner, #manage.ui-btn .ui-btn-inner, #logout.ui-btn .ui-btn-inner {
     padding-top: 40px !important
 }
-#create.ui-btn .ui-icon, #manage.ui-btn .ui-icon, #logout.ui-btn .ui-icon {
+#nav-home.ui-btn .ui-icon, #manage.ui-btn .ui-icon, #logout.ui-btn .ui-icon {
     width: 30px!important;
     height: 30px!important;
     margin-left: -15px !important;
