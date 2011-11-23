@@ -7,26 +7,26 @@
 
 <div data-role="collapsible-set" data-inset="true">
     <div data-role="collapsible">
-        <h3>Resource Fields</h3>
+        <h3>[[%createedit_document? &topic=`resource`]]</h3>
         <ul data-role="listview" data-inset="true">
             [[+resourceFields]]
         </ul>
     </div>
 
     <div data-role="collapsible">
-        <h3>Content</h3>
+        <h3>[[%resource_content? &topic=`resource`]]</h3>
         [[+content]]
     </div>
 
     <div data-role="collapsible" data-collapsed="true">
-        <h3>Page Settings</h3>
+        <h3>[[%page_settings? &topic=`resource`]]</h3>
         <ul data-role="listview" data-inset="true">
             [[+pageSettings]]
         </ul>
     </div>
 
     [[+tvs:notempty=`<div data-role="collapsible" data-collapsed="true">
-        <h3>Template Variables</h3>
+        <h3>[[%template_variables? &topic=`resource`]]</h3>
         <ul data-role="listview" data-inset="true">
             [[+tvs]]
         </ul>

@@ -29,9 +29,12 @@ class hmcResourceView extends hmController {
     public $resource;
     /** @var modTemplate $template */
     public $template;
-    
+    /* @var array $resourceFields */
+    public $resourceFields = array();
+    public $resourceSettings = array();
+
     public function getPageTitle() {
-        return 'Resource Details';
+        return $this->modx->lexicon->exists('resource_overview') ?  $this->modx->lexicon('resource_overview') : $this->modx->lexicon('resource_view');
     }
     public function setup() {
         $this->modx->lexicon->load('default','resource');
@@ -42,9 +45,42 @@ class hmcResourceView extends hmController {
         if (empty($this->resource)) {
             return $this->modx->lexicon('resource_err_nfs',array('id' => intval($this->config['gpc']['rid'])));
         }
+        $this->setFieldArrays();
         return true;
     }
 
+    public function setFieldArrays() {
+        $this->resourceFields = array(
+            'published' => array('type' => 'boolean'),
+            'template' => array('type' => 'text'),
+            'pagetitle' => array('type' => 'text'),
+            'longtitle' => array('type' => 'text'),
+            'description' => array('type' => 'text'),
+            'alias' => array('type' => 'text'),
+            'link_attributes' => array('type' => 'text'),
+            'introtext' => array('type' => 'textarea'),
+            'parent' => array('type' => 'text'),
+            'menutitle' => array('type' => 'text'),
+            'menuindex' => array('type' => 'text'),
+            'hidemenu' => array('type' => 'boolean', 'title' => 'resource_hide_from_menus'),
+        );
+
+        $this->resourceSettings = array(
+            'richtext' => array('type' => 'boolean'),
+            'isfolder' => array('type' => 'boolean', 'title' => 'resource_folder'),
+            'publishedon' => array('type' => 'text'),
+            'pub_date' => array('type' => 'text', 'title' => 'resource_publishdate'),
+            'unpub_date' => array('type' => 'text', 'title' => 'resource_unpublishdate'),
+            'searchable' => array('type' => 'boolean'),
+            'cacheable' => array('type' => 'boolean'),
+            'deleted' => array('type' => 'boolean'),
+            'content_type' => array('type' => 'text'),
+            'content_dispo' => array('type' => 'text'),
+            'class_key' => array('type' => 'text'),
+            'uri' => array('type' => 'text'),
+            'uri_override' => array('type' => 'boolean'),
+        );
+    }
     /**
      * Process this page, load the resource, and present its values
      * @return void
@@ -56,6 +92,10 @@ class hmcResourceView extends hmController {
         if ($this->template) {
             $this->setPlaceholder('template',$this->template->get('templatename'));
         }
+
+        $contentType = $this->resource->getOne('ContentType');
+        if ($contentType)
+            $this->setPlaceholder('content_type',$contentType->get('name'));
 
         $this->getContent();
         $this->getResourceFields();
@@ -82,23 +122,16 @@ class hmcResourceView extends hmController {
      * @return void
      */
     public function getResourceFields() {
-        $fields = array();
-        $rfields = array('id', 'template', 'pagetitle', 'longtitle', 'description', 'alias', 'link_attributes', 'introtext', 'parent', 'menutitle', 'menuindex', 'resource_hide_from_menus' => 'hidemenu');
-        foreach ($rfields as $fieldLexicon => $fieldName) {
-            $text = '';
-            $fieldValue = $this->getPlaceholder($fieldName);
-            if (!empty($fieldValue)) {
-                $key = (!is_numeric($fieldLexicon)) ? $fieldLexicon : $fieldName;
-                $lexstring = ($this->modx->lexicon->exists($key)) ? $this->modx->lexicon($key) : $this->modx->lexicon('resource_'.$key);
-                $text = $lexstring.': '.$fieldValue;
-            }
-            if (!empty($text)) {
-                $fields[] = $this->hm->getTpl('widgets/simpleli',array(
-                    'text' => $this->safe($text),
-                ));
-            }
-        }
+        $fields = $this->prepareFields($this->resourceFields);
         $this->setPlaceholder('resourceFields',implode("\n",$fields));
+    }
+    /**
+     * Get all the Resource Settings for this Resource
+     * @return void
+     */
+    public function getResourceSettings() {
+        $settings = $this->prepareFields($this->resourceSettings);
+        $this->setPlaceholder('pageSettings',implode("\n",$settings));
     }
 
     /**
@@ -112,28 +145,33 @@ class hmcResourceView extends hmController {
         return str_replace(array('[',']'),array('&#91;','&#93;'),$string);
     }
 
-    /**
-     * Get all the Resource Settings for this Resource
-     * @return void
-     */
-    public function getResourceSettings() {
-        $rfields = array('resource_folder' => 'isfolder', 'richtext', 'publishedon', 'resource_publishdate' => 'pub_date','resource_unpublishdate' => 'unpub_date', 'searchable', 'cacheable', 'deleted', 'content_type','resource_contentdispo' => 'content_dispo', 'class_key');
-        $settings = array();
-        foreach ($rfields as $fieldLexicon => $fieldName) {
+    public function prepareFields($fields) {
+        $fld = array();
+        foreach ($fields as $fieldName => $options) {
             $text = '';
             $fieldValue = $this->getPlaceholder($fieldName);
-            if ($fieldValue !== null) {
-                $key = (!is_numeric($fieldLexicon)) ? $fieldLexicon : $fieldName;
-                $lexstring = ($this->modx->lexicon->exists($key)) ? $this->modx->lexicon($key) : $this->modx->lexicon('resource_'.$key);
-                $text = $lexstring.': '.$fieldValue;
+            if (!empty($fieldValue)) {
+                $key = (isset($options['title'])) ? $options['title'] : $fieldName;
+                $lexicon = ($this->modx->lexicon->exists($key)) ? $this->modx->lexicon($key) : $this->modx->lexicon('resource_'.$key);
+
+                switch ($options['type']) {
+                    case 'boolean':
+                        $fieldValue = ((boolean)$fieldValue) ? $this->modx->lexicon('yes') : $this->modx->lexicon('no');
+                        break;
+                    case 'text':
+                    default:
+                        break;
+                }
+
+                $text = $lexicon.': '.$fieldValue;
             }
             if (!empty($text)) {
-                $settings[] = $this->hm->getTpl('widgets/simpleli',array(
+                $fld[] = $this->hm->getTpl('widgets/simpleli',array(
                     'text' => $this->safe($text),
                 ));
             }
         }
-        $this->setPlaceholder('pageSettings',implode("\n",$settings));
+        return $fld;
     }
 
     /**
