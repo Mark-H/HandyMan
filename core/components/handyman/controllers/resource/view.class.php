@@ -83,12 +83,13 @@ class hmcResourceView extends hmController {
      */
     public function getResourceFields() {
         $fields = array();
-        $rfields = array('id', 'template', 'pagetitle', 'longtitle', 'description', 'alias', 'link_attributes', 'introtext', 'parent', 'menutitle', 'menuindex', 'hidemenu');
-        foreach ($rfields as $fieldName) {
+        $rfields = array('id', 'template', 'pagetitle', 'longtitle', 'description', 'alias', 'link_attributes', 'introtext', 'parent', 'menutitle', 'menuindex', 'resource_hide_from_menus' => 'hidemenu');
+        foreach ($rfields as $fieldLexicon => $fieldName) {
             $text = '';
             $fieldValue = $this->getPlaceholder($fieldName);
             if (!empty($fieldValue)) {
-                $lexstring = ($this->modx->lexicon->exists($fieldName)) ? $this->modx->lexicon($fieldName) : $this->modx->lexicon('resource_'.$fieldName);
+                $key = (!is_numeric($fieldLexicon)) ? $fieldLexicon : $fieldName;
+                $lexstring = ($this->modx->lexicon->exists($key)) ? $this->modx->lexicon($key) : $this->modx->lexicon('resource_'.$key);
                 $text = $lexstring.': '.$fieldValue;
             }
             if (!empty($text)) {
@@ -116,13 +117,14 @@ class hmcResourceView extends hmController {
      * @return void
      */
     public function getResourceSettings() {
-        $rfields = array('container', 'richtext', 'publishedon', 'pub_date', 'unpub_date', 'searchable', 'cacheable', 'deleted', 'content_type', 'content_dispo', 'class_key');
+        $rfields = array('resource_folder' => 'isfolder', 'richtext', 'publishedon', 'resource_publishdate' => 'pub_date','resource_unpublishdate' => 'unpub_date', 'searchable', 'cacheable', 'deleted', 'content_type','resource_contentdispo' => 'content_dispo', 'class_key');
         $settings = array();
-        foreach ($rfields as $fieldName) {
+        foreach ($rfields as $fieldLexicon => $fieldName) {
             $text = '';
             $fieldValue = $this->getPlaceholder($fieldName);
             if ($fieldValue !== null) {
-                $lexstring = ($this->modx->lexicon->exists($fieldName)) ? $this->modx->lexicon($fieldName) : $this->modx->lexicon('resource_'.$fieldName);
+                $key = (!is_numeric($fieldLexicon)) ? $fieldLexicon : $fieldName;
+                $lexstring = ($this->modx->lexicon->exists($key)) ? $this->modx->lexicon($key) : $this->modx->lexicon('resource_'.$key);
                 $text = $lexstring.': '.$fieldValue;
             }
             if (!empty($text)) {
