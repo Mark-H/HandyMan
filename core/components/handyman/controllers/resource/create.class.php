@@ -15,7 +15,17 @@ class hmcResourceCreate extends hmController {
         return $this->modx->lexicon('resource_new');
     }
     public function setup() {
-        $this->template = $this->hm->modx->getObject('modTemplate',$this->hm->modx->getOption('default_template'));
+        if (intval($this->config['gpc']['parent']) > 0) {
+            $pid = (int)$this->config['gpc']['parent'];
+            /* @var modResource $pObj */
+            $pObj = $this->modx->getObject('modResource',$pid);
+            if ($pObj instanceof modResource) {
+                $this->template = $pObj->getOne('Template');
+            }
+        }
+        if (!$this->template) {
+            $this->template = $this->hm->modx->getObject('modTemplate',$this->hm->modx->getOption('default_template'));
+        }
         $this->modx->lexicon->load('default','resource');
         return true;
     }
