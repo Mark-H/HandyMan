@@ -43,15 +43,18 @@ class hmcHome extends hmController {
             'action' => 'resource/list',
             'text' => 'List Resources',
             'icon' => 'grid',
+            'permission' => $this->modx->hasPermission('list'),
         ),array(
             'action' => 'resource/create',
             'text' => 'Create resource',
             'icon' => 'plus',
+            'permission' => $this->modx->hasPermission('new_document'),
         ),array(
             'action' => 'logout',
             'text' => 'Logout',
             'icon' => '',
             'reset' => true,
+            'permission' => $this->modx->hasPermission('logout'),
         ));
         $this->setPlaceholder('actions',$this->processActions($actions));
     }

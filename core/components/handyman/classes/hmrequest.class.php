@@ -45,6 +45,8 @@ class hmRequest {
                 if ($return['success'] == 1) {
                     $this->action = array('hma' => 'login','options' => array('message' => 'Successfully logged out.'));
                     $this->authorized = false;
+                    // We redirect to make sure the session is available to other scripts.
+                    return $this->modx->sendRedirect($this->hm->config['baseUrl']); 
                 } else {
                     $this->action = array('hma' => 'home','options' => array('message' => $return['message']));
                 }
@@ -67,6 +69,8 @@ class hmRequest {
                 $this->modx);
                 if ($return['success'] == 1) {
                     $this->action = array('hma' => 'home','options' => array('source' => 'login'));
+                    // We redirect to make sure the session is available to other scripts.
+                    return $this->modx->sendRedirect($this->hm->config['baseUrl']);
                 } else {
                     $msg = $return['message'];
                     $this->action = array('hma' => 'login','options' => array('message' => $msg));

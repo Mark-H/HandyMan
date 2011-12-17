@@ -221,7 +221,7 @@ abstract class hmController {
         foreach ($actions as $action) {
             if (!empty($action[hmController::LIST_DIVIDER])) {
                 $output[] = $this->hm->getTpl('widgets/dividerli',array('text' => $action[hmController::LIST_DIVIDER]));
-            } else {
+            } elseif (!isset($action['permission']) || $action['permission'] === true) {
                 if (isset($action['dialog'])) {
                     $action['dialog'] = ' data-rel="dialog"';
                     $action['transition'] = $action['transition'] ? $action['transition'] : 'pop';

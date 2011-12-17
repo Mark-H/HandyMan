@@ -83,7 +83,8 @@ class hmcResourceList extends hmController {
                         'ctx' => $this->context,
                         'rid' => $parent,
                     ),
-                    'icon' => 'grid'
+                    'icon' => 'grid',
+                    'permission' => $this->modx->hasPermission('view_document'),
                 ),
                 array(
                     'action' => 'resource/update',
@@ -92,7 +93,8 @@ class hmcResourceList extends hmController {
                         'ctx' => $this->context,
                         'rid' => $parent,
                     ),
-                    'icon' => 'gear'
+                    'icon' => 'gear',
+                    'permission' => $this->modx->hasPermission('save_document'),
                 ),
                 array(
                     'action' => 'resource/preview',
@@ -101,7 +103,8 @@ class hmcResourceList extends hmController {
                         'rid' => $parent,
                     ),
                     'icon' => 'arrow-r',
-                    'target' => '_blank'
+                    'target' => '_blank',
+                    'permission' => $this->modx->hasPermission('view_document'),
                 ),
                 array(
                     'action' => 'resource/create',
@@ -110,7 +113,8 @@ class hmcResourceList extends hmController {
                         'ctx' => $this->context,
                         'parent' => $parent,
                     ),
-                    'icon' => 'plus'
+                    'icon' => 'plus',
+                    'permission' => $this->modx->hasPermission('new_document'),
                 ),
                 array(
                     hmController::LIST_DIVIDER => 'Quick Options',
@@ -123,7 +127,8 @@ class hmcResourceList extends hmController {
                         'rid' => $parent,
                     ),
                     'icon' => 'star',
-                    'dialog' => true
+                    'dialog' => true,
+                    'permission' => $this->modx->hasPermission('publish_document'),
                 ),
                 array(
                     'action' => 'resource/delete',
@@ -134,6 +139,7 @@ class hmcResourceList extends hmController {
                     ),
                     'icon' => 'delete',
                     'dialog' => true,
+                    'permission' => $this->modx->hasPermission('delete_document'),
                 ),
             );
             $this->setPlaceholder('actions',$this->processActions($resEditMap));
@@ -152,7 +158,8 @@ class hmcResourceList extends hmController {
                         'ctx' => $this->context,
                         'parent' => 0,
                     ),
-                    'icon' => 'plus'
+                    'icon' => 'plus',
+                    'permission' => $this->modx->hasPermission('new_document'),
                 )
             );
             $this->setPlaceholder('actions',$this->processActions($contextActionMap));
