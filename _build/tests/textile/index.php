@@ -2,6 +2,13 @@
 /* JUST FOR TESTING THE TEXTILE IMPLEMENTATION */
 /* Instantiate constants and variables for later use.
  ***/
+dirname(dirname(dirname(dirname(__FILE__)))).'core.config.php';
+require_once 'C:/wamp/www/revolution/core/model/modx/modx.class.php';
+$modx = new modX;
+$modx->initialize('mgr');
+$modx->getParser();
+$modx->getService('lexicon','modLexicon');
+
 define('HANDYMAN', true);
 $hmo = '';
 
@@ -11,8 +18,8 @@ $hmo = '';
  *
  * After inclusion, set up the $hm variable as the main object.
  **/
-include_once dirname(dirname(dirname(dirname(__FILE__)))) . '/handyman/core/classes/handyman.class.php';
-$hm = new HandyMan;
+include_once dirname(dirname(dirname(dirname(__FILE__)))) . '/core/components/handyman/classes/handyman.class.php';
+$hm = new HandyMan($modx);
 $hm->initialize();
 
 $hm->modx->getService('h2t','html2textile',$hm->config['corePath'].'classes/textile/');
