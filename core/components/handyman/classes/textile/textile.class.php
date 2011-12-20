@@ -254,7 +254,7 @@ Table syntax:
 				<col />
 				<col width="300" />
 			</colgroup>
-		
+
 		(Note that, per the HTML specification, you should not add span
 		to the colgroup if specifying col elements.)
 

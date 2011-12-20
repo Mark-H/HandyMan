@@ -12,7 +12,7 @@ Update jQuery  Mobile to 1.0-final (Great job jQuery Mobile team!!)
 #5976 Enhanced support for date input type TVs on mobile devices.
 #5867 Support for MODX 2.0.8.
 Fix breadcrumb links passing the wrong URL parameter.
-#5957 Fix slash issues on server configurations which have magic_quotes_gpc enabled. 
+#5957 Fix slash issues on server configurations which have magic_quotes_gpc enabled.
 Add option to disable/enable textile on create resource controller.
 Further internationalization efforts. Will need more work than this, but every bit helps..!
 #5873 Force UTF-8 html entities to prevent encoding issues on view details.

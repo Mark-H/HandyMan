@@ -175,7 +175,7 @@ class hmcResourceList extends hmController {
         }
         $this->setPlaceholder('resources',$resources);
     }
-    
+
     public function listResources($parent = 0) {
         $c = $this->modx->newQuery('modResource');
         $c->where(array(
@@ -206,7 +206,7 @@ class hmcResourceList extends hmController {
         }
         return $resources;
     }
-    
+
     public function listContexts() {
         $c = $this->modx->newQuery('modContext');
         $c->where(array(
