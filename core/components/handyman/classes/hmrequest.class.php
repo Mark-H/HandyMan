@@ -46,7 +46,7 @@ class hmRequest {
                     $this->action = array('hma' => 'login','options' => array('message' => 'Successfully logged out.'));
                     $this->authorized = false;
                     // We redirect to make sure the session is available to other scripts.
-                    return $this->modx->sendRedirect($this->hm->config['baseUrl']); 
+                    $this->modx->sendRedirect($this->hm->config['baseUrl']); 
                 } else {
                     $this->action = array('hma' => 'home','options' => array('message' => $return['message']));
                 }
@@ -70,7 +70,7 @@ class hmRequest {
                 if ($return['success'] == 1) {
                     $this->action = array('hma' => 'home','options' => array('source' => 'login'));
                     // We redirect to make sure the session is available to other scripts.
-                    return $this->modx->sendRedirect($this->hm->config['baseUrl']);
+                    $this->modx->sendRedirect($this->hm->config['baseUrl']);
                 } else {
                     $msg = $return['message'];
                     $this->action = array('hma' => 'login','options' => array('message' => $msg));
@@ -124,7 +124,7 @@ class hmRequest {
         $initialized = $this->controller->initialize();
         /* assuming all went well, process and render the page */
         if ($initialized === true) {
-            if ($this->controller->meta) {
+            if (isset($this->controller->meta) && is_array($this->controller->meta)) {
                 $this->action['meta'] = $this->controller->meta;
             } else {
                 $this->action['meta'] = array(
