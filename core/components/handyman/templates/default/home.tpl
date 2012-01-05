@@ -15,7 +15,7 @@
         <li><a href="http://www.bmv-interactive.com/" title="BMV Interactive Media Development">BMV Interactive, Benjamin Marte <p class="ui-li-desc">Thanks for borrowing me your jQuery Mobile and Design Skills.</p></a></li>
         <li><a href="http://cubed-media.com/" title="CubedMEDIA">CubedMEDIA, Travis Love <p class="ui-li-desc">Thanks for the great work on the refreshed (responsive) Web Design &amp; Logo</p></a></li>
         <li><a href="http://www.edenweb.ie/" title="EdenWeb">EdenWeb, Peter Knight <p class="ui-li-desc">Thanks for the Encouragement &amp; generous Contribution!</p></a></li>
-        <li><a href="http://www.jaredloman.com/" title="Jared Loman Creative">Jared Loman <p class="ui-li-desc">Thanks for the financial support, screencasts and motivation!</p></li>
+        <li><a href="http://www.jaredloman.com/" title="Jared Loman Creative">Jared Loman <p class="ui-li-desc">Thanks for the financial support, screencasts and motivation!</p></a></li>
         <li data-role="list-divider">And also many thanks to..</li>
         <li>Aaron Wardle</li>
         <li>Anselm Hannemann</li>
@@ -25,7 +25,8 @@
         <li>Crawford Paul</li>
         <li>Anne Sallee</li>
         <li>Frank Los</li>
+        <li>Helen Warner</li>
     </ul>
-    <p>View the <a href="http://www.modxmobile.com/contribute/wall-of-fame.html">site for a complete list</a> and <a href="http://www.modxmobile.com/contribute/">Contribute to HandyMan!</a></p>
+    <p>View the <a href="http://www.modxmobile.com/contribute/wall-of-fame/">site for a complete list</a> and <a href="http://www.modxmobile.com/contribute/">Contribute to HandyMan!</a></p>
     <p class="smallnote">Should you be in that list but are missing? <a href="mailto:hello@markhamstra.com">Let me know!</a></p>
 </div>
