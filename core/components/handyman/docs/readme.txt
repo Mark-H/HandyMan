@@ -1,12 +1,17 @@
+!!! PLEASE READ THIS CAREFULLY !!!
+
+After running this setup, you can access HandyMan from www.yoursite.com/handyman/. You can use your MODX details to login and start editing right away. 
+
+!! If your server is set up in a way that it cannot write files and folders on the file system without world-writable permissions (777), please create a "handyman" folder at your MODX base url (usually right in the public_html or www folder) and give that the proper permissions.
+
+HandyMan is a mobile optimized Manager for MODX, based on the open source and awesome jQuery Mobile Framework.
+HandyMan allows you to easily update Resource content from a mobile device, optionally using a Textile integration for richtext content. 
+
+!! Textile has been *disabled* by default, but you can easily turn it on from the HandyMan System Settings. 
+
 ## HandyMan
 ## Developed by Mark Hamstra, Shaun McCormick
 ## Licensed under the GPL GNU v2
-## Please read this readme carefully if this is the first time installing HandyMan!
-
-After running this setup, you can access HandyMan from www.yoursite.com/handyman/. You can use your MODX details to login and start editing right away. If your server is set up in a way that it cannot write files and folders on the file system without world-writable permissions (777), please create a "handyman" folder at your MODX base url (usually right in the public_html or www folder) and give that the proper permissions.
-
-HandyMan is a mobile optimized Manager for MODX, based on the open source and awesome jQuery Mobile Framework.
-HandyMan allows you to easily update Resource content from a mobile device, optionally using a Textile integration for richtext content. Textile has been *disabled* by default, but you can easily turn it on from the HandyMan System Settings. 
 
 ## Links
 Documentation: 		http://rtfm.modx.com/display/ADDON/HandyMan
