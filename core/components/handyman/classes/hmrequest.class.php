@@ -103,7 +103,7 @@ class hmRequest {
 
         $actionOptions['get'] = array_merge($_GET,$_POST);
         foreach ($actionOptions['get'] as $k => $v) {
-            $actionOptions['get'][$k] = htmlentities($v,ENT_QUOTES,'UTF-8');
+            $actionOptions['get'][$k] = $v; // Fixed from htmlentities($v,ENT_QUOTES,'UTF-8') which broke in non-textile mode.
         }
         if (function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc()) {
             array_walk_recursive($actionOptions['get'], create_function('&$val', '$val = stripslashes($val);'));
