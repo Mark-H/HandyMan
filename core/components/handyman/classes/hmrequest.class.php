@@ -38,14 +38,12 @@ class hmRequest {
         if ($this->authorized) {
             // Check if it needs to log out
             if ($_GET['hma'] == 'logout') {
-                $return = $this->hm->runProcessor(array(
-                    'action' => 'logout',
-                    'location' => 'security'),
-                $this->modx);
-                if ($return['success'] == 1) {
+                /* @var modProcessorResponse $return */
+                $return = $this->modx->runProcessor('security/logout');
+                if (!$return->isError()) {
                     $this->action = array('hma' => 'login','options' => array('message' => 'Successfully logged out.'));
                     $this->authorized = false;
-                    // We redirect to make sure the session is available to other scripts.
+                    // We redirect to make sure the session is available to other scripts and we don't get stuck in an endless logout
                     $this->modx->sendRedirect($this->hm->config['baseUrl']); 
                 } else {
                     $this->action = array('hma' => 'home','options' => array('message' => $return['message']));
@@ -63,20 +61,24 @@ class hmRequest {
         else if (!$this->authorized) {
             // Check if there is a login attempt, and if so validate it
             if ($_POST['hm_action'] == 'login') {
-                $return = $this->hm->runProcessor(array(
-                    'action' =>'login',
-                    'location' => 'security'),
-                $this->modx);
-                if ($return['success'] == 1) {
+                /* @var modProcessorResponse $return */
+                $return = $this->modx->runProcessor('security/login',array(
+                    'username' => $_POST['username'],
+                    'password' => $_POST['password'],
+                    'rememberme' => ($_POST['rememberme'] == 'on') ? true : false,
+                ));
+
+                if (!$return->isError()) {
                     $this->action = array('hma' => 'home','options' => array('source' => 'login'));
                     // We redirect to make sure the session is available to other scripts.
                     $this->modx->sendRedirect($this->hm->config['baseUrl']);
                 } else {
-                    $msg = $return['message'];
-                    $this->action = array('hma' => 'login','options' => array('message' => $msg));
+                    $this->action = array('hma' => 'login','options' => array('message' => $return->getMessage()));
                 }
-            // Show the "login" action -> a login form.
-            } else {
+            } 
+            
+            // If nothing applies show the login screen
+            else {
                 $this->action = array('hma' => 'login','options' => array('source' => 'default'));
             }
         }

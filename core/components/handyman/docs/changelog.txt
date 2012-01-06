@@ -1,5 +1,6 @@
 This changelog shows an overview of what changed throughout releases, with the latest release or development log on top.
 
+Refactor included runProcessor to properly wrap modX::runProcessor yet be backwards compatible.
 Fix menu on dialog screens.
 #6543 Using without textile runs htmlentities on html tags
 Fix credit list markup and update list.

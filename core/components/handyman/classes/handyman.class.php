@@ -186,31 +186,47 @@ class HandyMan {
     }
 
     /**
-     * Runs a processor.
+     * Runs a processor. Basically wraps modX::runProcessor, with backwards compatibility to oldstyle processor calls.
      *
-     * @param array $options
+     * @param array|string $processor The location/name of the processor to run. 
+     * @param array $scriptProperties Properties to pass to the processor (ie values)
+     * @param array $options Optional options array, use processors_path to override the processor path.
+     *
      * @return mixed|string
      */
-    public function runProcessor(array $options = array()) {
-        $processor = isset($options['processors_path']) && !empty($options['processors_path']) ? $options['processors_path'] : MODX_PROCESSORS_PATH;
-        if (isset($options['location']) && !empty($options['location'])) $processor .= $options['location'] . '/';
-        $processor .= str_replace('../', '', $options['action']) . '.php';
-        if (file_exists($processor)) {
-            if (empty($this->modx->lexicon)) $this->modx->getService('lexicon', 'modLexicon');
-            if (empty($this->modx->error)) $this->modx->getService('error','error.modError');
-
-            $modx =& $this->modx;
-
-            /* create scriptProperties array from HTTP GPC vars */
+    public function runProcessor($processor, $scriptProperties = array(), $options = array()) {
+        $oldstyle = false;
+        if (is_array($processor)) {
+            $oldstyle = true;
+            $scriptProperties = $processor;
+            $processor = $scriptProperties['action'];
+            if (isset($scriptProperties['location'])) { $processor = $scriptProperties['location'] . '/' . $processor; }
+            
+            /* Some old calls may pass modX as third property, don't want that :) */
+            if ($options instanceof modX) { $options = array(); }
+            
+            /* If the processor path is not set, it may've been overriden. Else just ignore it. */
+            if (!isset($options['processors_path'])) {
+                if (isset($scriptProperties['processors_path'])) { $options['processors_path'] = $scriptProperties['processors_path']; }
+            }
+            
+            /* Old-style processors may rely on GPC vars that aren't always passed to the scriptProperties array, so we add 'm */
             if (!isset($_POST)) $_POST = array();
             if (!isset($_GET)) $_GET = array();
-            $scriptProperties = array_merge($_GET,$_POST,$options);
+            $scriptProperties = array_merge($_GET,$_POST,$scriptProperties);
             if (isset($_FILES) && !empty($_FILES)) {
                 $scriptProperties = array_merge($scriptProperties,$_FILES);
-            }
-            $result = include $processor;
-        } else {
-            $result = 'Processor not found: '.$processor;
+            }            
+        }
+
+        /* @var modProcessorResponse $result */
+        $result = $this->modx->runProcessor($processor,$scriptProperties, $options);
+        if ($oldstyle && $result instanceof modProcessorResponse) {
+            $resultArray = array(
+                'success' => ($result->isError()) ? 0 : 1,
+                'message' => $result->getMessage(),
+            );
+            return $resultArray;
         }
         return $result;
     }
