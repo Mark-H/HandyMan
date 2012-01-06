@@ -1,5 +1,9 @@
 This changelog shows an overview of what changed throughout releases, with the latest release or development log on top.
 
+++++++++++++++++++++++++++++++++
+++   HandyMan 1.0.0-rc2       ++
+++   Released on 2012-01-06   ++
+++++++++++++++++++++++++++++++++
 Refactor included runProcessor to properly wrap modX::runProcessor yet be backwards compatible.
 Fix menu on dialog screens.
 #6543 Using without textile runs htmlentities on html tags
