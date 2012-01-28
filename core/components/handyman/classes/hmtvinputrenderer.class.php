@@ -38,7 +38,8 @@ class hmTvInputRenderer extends hmInputRenderer {
                 $type = 'select';
             break;
             case 'option':
-                $type = 'radio'; break;
+                $type = 'radio'; 
+                break;
             case 'richtext':
                 if ($this->allowRichtext && $this->useRichtext)
                     $type = 'richtext';
@@ -57,6 +58,9 @@ class hmTvInputRenderer extends hmInputRenderer {
             case 'date':
                 $type = 'date';
             break;
+            case 'checkbox':
+                $type = 'checkbox';
+                break;
             default:
                 $tv->set('originaltype',$type);
                 $type = 'tvs/unsupported';
