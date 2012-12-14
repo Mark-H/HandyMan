@@ -95,7 +95,7 @@ class hmTvInputRenderer extends hmInputRenderer {
 
             /* set checked status */
             $checked = in_array($opt[1],$value) ? ' checked="checked"' : '';
-            
+
             /* add checkbox id to defaults if is a default value */
             if (in_array($opt[1],$default)) {
                 $defaults[] = 'tv'.$tv->get('id').'-'.$i;
@@ -141,10 +141,10 @@ class hmTvInputRenderer extends hmInputRenderer {
         foreach ($options as $option) {
             $opt = explode("==",$option);
             if (!isset($opt[1])) $opt[1] = $opt[0];
-            
+
             /* set checked status */
             $checked = strcmp($opt[1],$value) == 0 ? ' checked="checked"' : '';
-            
+
             /* set default value */
             if (strcmp($opt[1],$default) == 0) {
                 $defaultIndex = 'tv'.$tv->get('id').'-'.$i;

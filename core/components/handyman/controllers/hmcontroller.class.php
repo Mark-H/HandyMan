@@ -71,7 +71,7 @@ abstract class hmController {
 
     /**
      * Render the page.
-     * 
+     *
      * @final
      * @param array $options An array of page-specific options, including details about the page
      * @return string
@@ -123,7 +123,7 @@ abstract class hmController {
 
     /**
      * Wrap the page in the header and footer.
-     * 
+     *
      * @param string $body
      * @return string
      */

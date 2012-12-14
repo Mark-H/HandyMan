@@ -56,7 +56,7 @@ class hmInputRenderer {
                 else
                     $type = 'textarea';
             break;
-            default: 
+            default:
                 break;
         }
         $method = $this->_exists($type);
@@ -82,7 +82,7 @@ class hmInputRenderer {
 
     /**
      * Checks if a method exists in this class.
-     * 
+     *
      * @param $type
      * @return bool|string
      */

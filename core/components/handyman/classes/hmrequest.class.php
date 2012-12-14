@@ -32,7 +32,7 @@ class hmRequest {
      */
     public function checkAuthentication() {
         $this->authorized = $this->modx->user && $this->modx->user->hasSessionContext('mgr');
-        
+
         /* If we are authorized, the $this->authorized variable will have a value
          ***/
         if ($this->authorized) {
@@ -46,7 +46,7 @@ class hmRequest {
                     $this->action = array('hma' => 'login','options' => array('message' => 'Successfully logged out.'));
                     $this->authorized = false;
                     // We redirect to make sure the session is available to other scripts.
-                    return $this->modx->sendRedirect($this->hm->config['baseUrl']); 
+                    return $this->modx->sendRedirect($this->hm->config['baseUrl']);
                 } else {
                     $this->action = array('hma' => 'home','options' => array('message' => $return['message']));
                 }
@@ -143,7 +143,7 @@ class hmRequest {
 
     /**
      * Sanitizes MODX tags from $string.
-     * 
+     *
      * @param $string
      * @return string
      */

@@ -1,5 +1,5 @@
 <?php
-     
+
 class hmcResourceUpdate extends hmController {
     protected $cache = false;
     protected $templateFile = 'resource/update';
@@ -52,7 +52,7 @@ class hmcResourceUpdate extends hmController {
 
         $this->modx->loadClass('hmInputRenderer',$this->hm->config['classesPath'],true,true);
         $this->renderer = new hmInputRenderer($this->hm,$this->resource->toArray());
-        
+
         $clearCache = array('type' => 'boolean','name' => 'clearCache','title' => $this->modx->lexicon('clear_cache_on_save'),'value' => true);
         $clearCache = $this->renderer->render('boolean',$clearCache);
         $this->setPlaceholder('clearCache',$clearCache);

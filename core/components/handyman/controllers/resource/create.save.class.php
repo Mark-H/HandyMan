@@ -26,7 +26,7 @@ class hmcResourceCreateSave extends hmController {
 
         /* @var modProcessorResponse $response */
         $response = $this->modx->runProcessor('resource/create',$data);
-        
+
         if (!$response->isError()) {
             $tempRes = $response->getObject();
             $this->resource = $this->modx->getObject('modResource',$tempRes['id']);

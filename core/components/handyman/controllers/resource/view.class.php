@@ -1,5 +1,5 @@
 <?php
-    /* HandyMan - a Mobile Manager for MODX 
+    /* HandyMan - a Mobile Manager for MODX
      *
      * Copyright 2010-2011 by Mark Hamstra (contact via www.markhamstra.nl)
      *
@@ -20,7 +20,7 @@
      *
      * @package HandyMan
      ***/
-     
+
 class hmcResourceView extends hmController {
     protected $cache = false;
     protected $templateFile = 'resource/view';
@@ -100,7 +100,7 @@ class hmcResourceView extends hmController {
         $this->getContent();
         $this->getResourceFields();
         $this->getResourceSettings();
-        
+
         if ($this->template) {
             $this->getTemplateVariables();
         }

@@ -93,7 +93,7 @@ class HandyMan {
     /**
      * Separate out initialization methods for better abstraction.
      * Loads the request handler and checks authentication.
-     * 
+     *
      * @return void
      */
     public function initialize() {

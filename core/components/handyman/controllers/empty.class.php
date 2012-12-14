@@ -1,5 +1,5 @@
 <?php
-    /* HandyMan - a Mobile Manager for MODX 
+    /* HandyMan - a Mobile Manager for MODX
      *
      * Copyright 2010-2011 by Mark Hamstra (contact via www.markhamstra.nl)
      *
