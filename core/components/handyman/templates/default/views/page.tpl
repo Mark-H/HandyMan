@@ -1,6 +1,6 @@
 <div data-role="page" id="[[+id]]"[[+cache]]>
 <div data-role="header" data-position="fixed">
-    <a href="javascript: history.go(-1);" data-icon="back" data-rel="back" data-direction="reverse">Back</a>
+    <a data-icon="back" data-rel="back">Back</a>
     <h1>[[+title]] :: HandyMan</h1>
 </div>
 <div data-role="content">
