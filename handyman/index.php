@@ -40,6 +40,7 @@ if (!(include_once MODX_CORE_PATH . 'model/modx/modx.class.php')) {
 $modx = new modX;
 $modx->initialize('mgr');
 $modx->getParser();
+$modx->getService('error','error.modError');
 $modx->getService('lexicon','modLexicon');
 $modx->setOption('modRequest.class','modRequest');
 $modx->getRequest();
@@ -54,7 +55,12 @@ define('HANDYMAN', true);
 
 $hmPath = $modx->getOption('handyman.core_path');
 if (empty($hmPath)) { $hmPath = MODX_CORE_PATH.'components/handyman/'; }
-require_once $hmPath.'classes/handyman.class.php';
+$hmPath .= 'classes/handyman.class.php';
+if (!file_exists($hmPath)) {
+    error_log('HandyMan class not found at ' . $hmPath);
+    die('HandyMan class not found :(');
+}
+require_once $hmPath;
 $hm = new HandyMan($modx);
 $hm->initialize();
 
