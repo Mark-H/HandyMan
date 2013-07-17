@@ -19,6 +19,10 @@ abstract class hmController {
     public $config = array();
     /** @var array $placeholders */
     protected $placeholders = array();
+    /* @var array $meta
+     * @deprecated
+     */
+    public $meta = array();
 
     /**
      * hmController constructor
@@ -105,11 +109,11 @@ abstract class hmController {
     }
 
     /**
-     * @param $k Key of the placeholder
+     * @param string $k Key of the placeholder
      * @param string $default Value of the placeholder
      * @return null|string
      */
-    public function getPlaceholder($k,$default = null) {
+    public function getPlaceholder($k = '',$default = null) {
         return isset($this->placeholders[$k]) ? $this->placeholders[$k] : $default;
     }
 

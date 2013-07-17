@@ -59,6 +59,7 @@ class hmcResourceList extends hmController {
             foreach ($parents as $p) {
                 if ($p > 0) {
                     $obj = $this->modx->getObject('modResource',$p);
+                    /* @var modResource $obj */
                     if ($obj instanceof modResource) {
                         $phs = array_merge($this->placeholders,array('resid' => $p, 'ctx' => $this->context, 'title' => $obj->get('pagetitle')));
                         $trail[] = $this->hm->getTpl('widgets/crumbsli',$phs);
@@ -147,6 +148,9 @@ class hmcResourceList extends hmController {
         } else {
             $parent = 0;
             $this->setPlaceholder('context_key',$this->context);
+            $context = $this->modx->getContext($this->context);
+            $ctxstart = ($context instanceof modContext) ? $context->getOption('site_start') : 0;
+            
             $contextActionMap = array(
                 array(
                     hmController::LIST_DIVIDER => $this->modx->lexicon('options'),
@@ -160,7 +164,17 @@ class hmcResourceList extends hmController {
                     ),
                     'icon' => 'plus',
                     'permission' => $this->modx->hasPermission('new_document'),
-                )
+                ),
+                array(
+                    'action' => 'resource/preview',
+                    'text' => 'View Website',
+                    'linkparams' => array(
+                        'rid' => $ctxstart,
+                    ),
+                    'icon' => 'arrow-r',
+                    'target' => '_blank',
+                    'permission' => $this->modx->hasPermission('view'),
+                ),
             );
             $this->setPlaceholder('actions',$this->processActions($contextActionMap));
             $this->setPlaceholder('view',$this->hm->getTpl('resource/list.view.context',$this->getPlaceholders()));
@@ -187,6 +201,7 @@ class hmcResourceList extends hmController {
         $resources = array();
         $ress = $this->modx->getCollection('modResource',$c);
         foreach ($ress as $res) {
+            /* @var modResource $res */
             $aside = array();
             $aside[] = ($res->get('published')) ? 'Published' : 'Unpublished';
             if ($res->get('deleted')) { $aside[] = 'Deleted'; }
@@ -215,6 +230,7 @@ class hmcResourceList extends hmController {
         $contexts = array();
         $contextobjects = $this->modx->getCollection('modContext',$c);
         foreach ($contextobjects as $ctx) {
+            /* @var modContext $ctx */
             $count = $this->modx->getCount('modResource',array('context_key' => $ctx->get('key')));
             $contexts[] = array(
                 'action' => 'resource/list',

@@ -50,6 +50,13 @@ class hmcHome extends hmController {
             'icon' => 'plus',
             'permission' => $this->modx->hasPermission('new_document'),
         ),array(
+            'action' => 'clearcache',
+            'text' => 'Clear the Cache',
+            'icon' => 'refresh',
+            'reset' => true,
+            'permission' => $this->modx->hasPermission('empty_cache'),
+            'dialog' => true,
+        ),array(
             'action' => 'logout',
             'text' => 'Logout',
             'icon' => '',

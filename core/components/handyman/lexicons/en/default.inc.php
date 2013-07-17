@@ -1,6 +1,7 @@
 <?php
 
 $_lang['handyman'] = 'HandyMan';
+$_lang['handyman.view_context_start'] = 'View Website';
 /*
 $_lang['setting_handyman.core_path'] = 'Core Path';
 $_lang['setting_handyman.core_path_desc'] = 'The absolute path to the core/components/handyman/ directory. Leave empty to let HandyMan calculate the default.';

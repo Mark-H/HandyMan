@@ -1,1 +1,1 @@
-<option value="[[+value]]"[[+selected]]>[[+name]]</option>
+<option value="[[+value:htmlent]]"[[+selected]]>[[+name]]</option>

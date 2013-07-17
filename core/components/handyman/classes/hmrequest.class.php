@@ -38,15 +38,13 @@ class hmRequest {
         if ($this->authorized) {
             // Check if it needs to log out
             if ($_GET['hma'] == 'logout') {
-                $return = $this->hm->runProcessor(array(
-                    'action' => 'logout',
-                    'location' => 'security'),
-                $this->modx);
-                if ($return['success'] == 1) {
+                /* @var modProcessorResponse $return */
+                $return = $this->modx->runProcessor('security/logout');
+                if (!$return->isError()) {
                     $this->action = array('hma' => 'login','options' => array('message' => 'Successfully logged out.'));
                     $this->authorized = false;
-                    // We redirect to make sure the session is available to other scripts.
-                    return $this->modx->sendRedirect($this->hm->config['baseUrl']); 
+                    // We redirect to make sure the session is available to other scripts and we don't get stuck in an endless logout
+                    $this->modx->sendRedirect($this->hm->config['baseUrl']); 
                 } else {
                     $this->action = array('hma' => 'home','options' => array('message' => $return['message']));
                 }
@@ -63,20 +61,24 @@ class hmRequest {
         else if (!$this->authorized) {
             // Check if there is a login attempt, and if so validate it
             if ($_POST['hm_action'] == 'login') {
-                $return = $this->hm->runProcessor(array(
-                    'action' =>'login',
-                    'location' => 'security'),
-                $this->modx);
-                if ($return['success'] == 1) {
+                /* @var modProcessorResponse $return */
+                $return = $this->modx->runProcessor('security/login',array(
+                    'username' => $_POST['username'],
+                    'password' => $_POST['password'],
+                    'rememberme' => ($_POST['rememberme'] == 'on') ? true : false,
+                ));
+
+                if (!$return->isError()) {
                     $this->action = array('hma' => 'home','options' => array('source' => 'login'));
                     // We redirect to make sure the session is available to other scripts.
-                    return $this->modx->sendRedirect($this->hm->config['baseUrl']);
+                    $this->modx->sendRedirect($this->hm->config['baseUrl']);
                 } else {
-                    $msg = $return['message'];
-                    $this->action = array('hma' => 'login','options' => array('message' => $msg));
+                    $this->action = array('hma' => 'login','options' => array('message' => $return->getMessage()));
                 }
-            // Show the "login" action -> a login form.
-            } else {
+            } 
+            
+            // If nothing applies show the login screen
+            else {
                 $this->action = array('hma' => 'login','options' => array('source' => 'default'));
             }
         }
@@ -103,7 +105,7 @@ class hmRequest {
 
         $actionOptions['get'] = array_merge($_GET,$_POST);
         foreach ($actionOptions['get'] as $k => $v) {
-            $actionOptions['get'][$k] = htmlentities($v,ENT_QUOTES,'UTF-8');
+            $actionOptions['get'][$k] = $v; // Fixed from htmlentities($v,ENT_QUOTES,'UTF-8') which broke in non-textile mode.
         }
         if (function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc()) {
             array_walk_recursive($actionOptions['get'], create_function('&$val', '$val = stripslashes($val);'));
@@ -124,7 +126,7 @@ class hmRequest {
         $initialized = $this->controller->initialize();
         /* assuming all went well, process and render the page */
         if ($initialized === true) {
-            if ($this->controller->meta) {
+            if (isset($this->controller->meta) && is_array($this->controller->meta)) {
                 $this->action['meta'] = $this->controller->meta;
             } else {
                 $this->action['meta'] = array(
