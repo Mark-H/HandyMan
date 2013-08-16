@@ -19,11 +19,29 @@ $mtime = $mtime[1] + $mtime[0];
 $tstart = $mtime;
 set_time_limit(0);
 
-/* define package */
-define('PKG_NAME','HandyMan');
-define('PKG_NAME_LOWER',strtolower(PKG_NAME));
-define('PKG_VERSION','1.0.0');
-define('PKG_RELEASE','pl');
+if (!defined('MOREPROVIDER_BUILD')) {
+    /* define version */
+    define('PKG_NAME','HandyMan');
+    define('PKG_NAME_LOWER',strtolower(PKG_NAME));
+    define('PKG_VERSION','1.0.0');
+    define('PKG_RELEASE','pl');
+
+    /* load modx */
+    require_once dirname(dirname(__FILE__)) . '/config.core.php';
+    require_once MODX_CORE_PATH . 'model/modx/modx.class.php';
+    $modx= new modX();
+    $modx->initialize('mgr');
+    $modx->setLogLevel(modX::LOG_LEVEL_INFO);
+    $modx->setLogTarget('ECHO');
+
+
+    echo '<pre>';
+    flush();
+    $targetDirectory = dirname(dirname(__FILE__)) . '/_packages/';
+}
+else {
+    $targetDirectory = MOREPROVIDER_BUILD_TARGET;
+}
 
 $root = dirname(dirname(__FILE__)).'/';
 $sources = array (
@@ -38,14 +56,6 @@ $sources = array (
     'model' => $root.'core/components/'.PKG_NAME_LOWER.'/model/',
 );
 unset($root);
-
-require_once $sources['root'] . 'config.core.php';
-require_once MODX_CORE_PATH . 'model/modx/modx.class.php';
-
-$modx= new modX();
-$modx->initialize('mgr');
-$modx->setLogLevel(modX::LOG_LEVEL_INFO);
-$modx->setLogTarget('ECHO'); echo 'Packing '.PKG_NAME_LOWER.'-'.PKG_VERSION.'-'.PKG_RELEASE.'<pre>'; flush();
 
 $modx->loadClass('transport.modPackageBuilder','',false, true);
 $builder = new modPackageBuilder($modx);
@@ -116,4 +126,3 @@ $totalTime = sprintf("%2.4f s", $totalTime);
 
 $modx->log(modX::LOG_LEVEL_INFO,"\n<br />Package Built.<br />\nExecution time: {$totalTime}\n");
 
-?>
